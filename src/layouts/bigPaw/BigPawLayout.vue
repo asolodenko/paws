@@ -23,6 +23,7 @@
   background-image: url('@/assets/bigpaw.svg');
   /* Adjust background styles as needed */
   background-position: bottom right;
+  background-repeat: no-repeat;
   position: fixed;
   top: 0;
   left: 0;
