@@ -1,19 +1,13 @@
 <template>
-  <v-container class="fill-height">
-    <v-responsive class="align-center text-start fill-height">
-      
-      <h1 class="text-h1">Sign up</h1>
+  <h1 class="text-h1">Sign up</h1>
 
-      <div class="py-14" />
-      <v-btn
-        to="/paws"
-        color="primary"
-      >
-        Find my paws
-      </v-btn>
-
-    </v-responsive>
-  </v-container>
+  <div class="py-14" />
+  <v-btn
+    to="/"
+    color="primary"
+  >
+    Sign in with Google btn
+  </v-btn>
 </template>
 
 <script lang="ts" setup>

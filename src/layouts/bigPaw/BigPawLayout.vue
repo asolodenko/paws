@@ -3,10 +3,12 @@
     <div class="background-image"></div>
     <app-header />
     <v-main>
-      <router-view />
+      <v-container>
+        <v-responsive class="text-start mt-16 pt-16">
+          <router-view />
+        </v-responsive>
+      </v-container>
     </v-main>
-
-    <!-- <default-view /> -->
   </v-app>
 </template>
 
