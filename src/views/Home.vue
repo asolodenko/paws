@@ -1,13 +1,13 @@
 <template>
-  <v-container class="fill-height">
-    <v-responsive class="align-center text-start fill-height">
-      <!-- <v-img height="300" src="@/assets/logo.svg" /> -->
-
-      
+  <v-container>
+    <v-responsive class="text-start mt-16 pt-16">
       <h1 class="text-h1 color-primary">The paws</h1>
-    <!-- </v-defaults-provider> -->
 
-      <div class="py-14" />
+      <div class="d-flex w-50 my-8">
+        <h3 class="font-weight-medium">
+          We help cats find homes and gentle parents. Please login to have access to all features. Or just find your paws first.
+        </h3>
+      </div>
 
       <v-row class="d-flex align-center">
         <v-col cols="auto">

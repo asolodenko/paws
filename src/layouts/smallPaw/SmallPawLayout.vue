@@ -1,14 +1,12 @@
 <template>
-  <v-defaults-provider :defaults="{ VApp: { style: 'font-family: Jua, sans-serif; font-weight: 400; font-style: normal;' } }">
-    <v-app>
-      <div class="background-image"></div>
-      <app-header />
+  <v-app :icon="'mdi-paw'">
+    <div class="background-image"></div>
+    <app-header />
 
-      <v-main>
-        <router-view />
-      </v-main>
-    </v-app>
-  </v-defaults-provider>
+    <v-main>
+      <router-view />
+    </v-main>
+  </v-app>
 </template>
 
 <script lang="ts" setup>
