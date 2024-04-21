@@ -8,8 +8,9 @@
 
       <v-btn variant="plain">Contact us</v-btn>
 
-      <v-btn variant="plain" v-if="isAuth()">Login</v-btn>
-  </template>
+      <v-btn variant="plain" v-if="!isAuth()">Login</v-btn>
+      <v-btn icon="mdi-account" v-if="isAuth()"></v-btn>
+    </template>
   </v-app-bar>
 </template>
 

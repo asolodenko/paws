@@ -34,13 +34,22 @@ const routes = [
         path: '',
         name: 'Paws',
         component: () => import(/* webpackChunkName: "paws" */ '@/views/Paws.vue'),
+        // children: [
+        //   {
+        //     path: ':id',
+        //     name: 'Paw',
+        //     component: () => import(/* webpackChunkName: "paw" */ '@/views/Paw.vue'),
+        //   }
+        // ]
       },
       {
-        path: '/:id',
+        path: '/paws/:id',
         name: 'Paw',
         component: () => import(/* webpackChunkName: "paw" */ '@/views/Paw.vue'),
       },
     ],
+    // isAdmin?: boolean
+    // requiresAuth: boolean
   },
 ]
 
