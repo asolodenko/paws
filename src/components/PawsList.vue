@@ -2,7 +2,12 @@
   <v-container style="height: 98%;">
     <v-responsive class="fill-height">
       <!-- <v-card> -->
-        <v-data-iterator :items="paws" :items-per-page="8" :search="search" class="fill-height">
+        <!-- sort by name, age; other for filters -->
+        <v-data-iterator
+          :items="paws"
+          :items-per-page="8"
+          :search="search"
+          class="fill-height">
           <template v-slot:header>
             <v-toolbar class="px-2">
               <v-text-field
@@ -21,7 +26,7 @@
           <template v-slot:default="{ items }">
             <v-container class="pa-2" fluid>
               <v-row dense>
-                <v-col v-for="item in items" :key="item.raw.id" cols="12" lg="3" md="4" sm="6">
+                <v-col v-for="item in items" :key="item.raw.id" :cols="12" lg="3" md="4" sm="6">
                   <PawCard :paw="item.raw" />
                 </v-col>
               </v-row>
@@ -60,9 +65,17 @@
 </template>
 
 <script lang="ts" setup>
-import paws from './MOCK_DATA.ts';
+import { ref } from 'vue';
+import mockPaws from './MOCK_DATA.ts';
 import PawCard from '@/components/PawCard.vue';
-const search = '';
+
+const paws = ref(mockPaws);
+const search = ref('');
+
+function customKeyFilter(): number {
+
+  return 0;
+}
 </script>
 
 <style>
