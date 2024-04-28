@@ -2,7 +2,7 @@
   <v-container style="height: 98%;">
     <v-responsive class="fill-height">
       <!-- <v-card> -->
-        <v-data-iterator :items="paws" :items-per-page="6" :search="search" class="fill-height">
+        <v-data-iterator :items="paws" :items-per-page="8" :search="search" class="fill-height">
           <template v-slot:header>
             <v-toolbar class="px-2">
               <v-text-field
@@ -19,9 +19,9 @@
           </template>
 
           <template v-slot:default="{ items }">
-            <v-container class="pa-2 fill-height" fluid>
+            <v-container class="pa-2" fluid>
               <v-row dense>
-                <v-col v-for="item in items" :key="item.raw.id" cols="3" md="4">
+                <v-col v-for="item in items" :key="item.raw.id" cols="12" lg="3" md="4" sm="6">
                   <PawCard :paw="item.raw" />
                 </v-col>
               </v-row>

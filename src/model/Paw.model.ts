@@ -1,6 +1,6 @@
-enum Gender {
-  Female,
-  Male
+export enum Gender {
+  Female = 'Female',
+  Male = 'Male'
 }
 
 enum GroomingNeeds {
