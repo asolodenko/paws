@@ -12,10 +12,11 @@ import { createApp } from 'vue'
 
 // Plugins
 import { registerPlugins } from '@/plugins'
-import router from './router'
+import router from './router';
+import pinia from './store';
 
 const app = createApp(App)
 
 registerPlugins(app)
 
-app.use(router).mount('#app')
+app.use(router).use(pinia).mount('#app')

@@ -21,6 +21,7 @@
       <v-btn
         variant="outlined"
         to="/login"
+        v-if="!userStore.isAuth"
       >
         Login
       </v-btn>
@@ -29,4 +30,7 @@
 </template>
 
 <script lang="ts" setup>
+  import { useUserStore } from '@/store/user';
+
+  const userStore = useUserStore();
 </script>

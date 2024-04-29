@@ -8,15 +8,19 @@
 
       <v-btn variant="plain">Contact us</v-btn>
 
-      <v-btn variant="plain" v-if="!isAuth()">Login</v-btn>
-      <v-btn icon="mdi-account" v-if="isAuth()"></v-btn>
+      <v-btn variant="plain" v-if="!userStore.isAuth" @click="login">Login</v-btn>
+      <v-btn icon="mdi-account" v-if="userStore.isAuth"></v-btn>
     </template>
   </v-app-bar>
 </template>
 
 <script lang="ts" setup>
-  //
-  
-  function isAuth() { return true; }
-  
+  import { handleSignIn } from '@/firebase';
+  import { useUserStore } from '@/store/user';
+
+  const userStore = useUserStore();
+
+  const login = () => {
+    handleSignIn();
+  }
 </script>
