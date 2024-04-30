@@ -36,7 +36,7 @@ export const handleSignIn = () => {
     // The signed-in user info.
     const user = result.user;
     store.setCurrentUser(user);
-    router.push('/');
+    router.push('/'); // to prev route
     // IdP data available using getAdditionalUserInfo(result)
     // ...
   }).catch((error) => {

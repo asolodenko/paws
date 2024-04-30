@@ -51,6 +51,17 @@ const routes = [
     // isAdmin?: boolean
     // requiresAuth: boolean
   },
+  {
+    path: '/account',
+    component: () => import('@/layouts/smallPaw/SmallPawLayout.vue'),
+    children: [
+      {
+        path: '',
+        name: 'Account',
+        component: () => import(/* webpackChunkName: "paws" */ '@/views/Account.vue'),
+      }
+    ]
+  },
 ]
 
 const router = createRouter({
