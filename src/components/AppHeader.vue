@@ -1,14 +1,14 @@
 <template>
   <v-app-bar flat color="primary">
     <v-app-bar-title>
-      <v-btn to="/" variant="plain">The paws</v-btn>
+      <AppLink to="/" class="text-h5">The paws</AppLink>
     </v-app-bar-title>
     <template v-slot:append>
-      <v-btn to="/about" variant="plain">About us</v-btn>
+      <AppLink to="/about" class="mr-4">About us</AppLink>
 
-      <v-btn variant="plain">Contact us</v-btn>
+      <AppLink to="/about" class="mr-4">Contact us</AppLink>
 
-      <v-btn variant="plain" v-if="!userStore.isAuth" @click="login">Login</v-btn>
+      <AppLink to="" v-if="!userStore.isAuth" @click="login">Login</AppLink>
       <v-btn icon="mdi-account" v-if="userStore.isAuth" to="/account">
         <v-avatar
           size="36px"
@@ -33,6 +33,7 @@
 <script lang="ts" setup>
   import { handleSignIn } from '@/firebase';
   import { useUserStore } from '@/store/user';
+  import AppLink from '@/components/AppLink.vue'
 
   const userStore = useUserStore();
   const user = userStore.user;
