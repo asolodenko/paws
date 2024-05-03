@@ -3,23 +3,17 @@ export enum Gender {
   Male = 'Male'
 }
 
-enum GroomingNeeds {
-  moderate,
-  low,
-  high
-}
-
-enum ActivityLevel {
-  moderate,
-  low,
-  high
+enum ThreeLevel {
+  Moderate = 'moderate',
+  Low = 'low',
+  High = 'high'
 }
 
 enum HealthCondition {
-  healthy,
-  underweight,
-  overweight,
-  'dental issues'
+  Healthy = 'healthy',
+  Underweight = 'underweight',
+  Overweight = 'overweight',
+  DentalIssues = 'dental issues'
 }
 
 export type Paw = {
@@ -32,9 +26,9 @@ export type Paw = {
   weight: string;
   coatColor: string;
   temperament: string;
-  groomingNeeds: GroomingNeeds;
-  activityLevel: ActivityLevel;
+  groomingNeeds: ThreeLevel;
+  activityLevel: ThreeLevel;
   foodFlavor: string;
   toyType: string;
-  healthCondition: HealthCondition
+  healthCondition: HealthCondition;
 }

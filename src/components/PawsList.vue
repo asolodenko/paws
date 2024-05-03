@@ -4,7 +4,7 @@
       <!-- <v-card> -->
         <!-- sort by name, age; other for filters -->
         <v-data-iterator
-          :items="paws"
+          :items="props.paws"
           :items-per-page="8"
           :search="search"
           class="fill-height">
@@ -66,10 +66,11 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import mockPaws from './MOCK_DATA.ts';
 import PawCard from '@/components/PawCard.vue';
-
-const paws = ref(mockPaws);
+import { Paw } from '@/model/Paw.model';
+const props = defineProps<{
+  paws: Paw[]
+}>();
 const search = ref('');
 
 function customKeyFilter(): number {

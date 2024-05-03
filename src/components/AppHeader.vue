@@ -8,17 +8,18 @@
 
       <AppLink to="/about" class="mr-4">Contact us</AppLink>
 
-      <AppLink to="" v-if="!userStore.isAuth" @click="login">Login</AppLink>
-      <v-btn icon="mdi-account" v-if="userStore.isAuth" to="/account">
+      <AppLink to="" v-if="!isAuth" @click="login">Login</AppLink>
+      <v-btn icon="mdi-account" v-if="isAuth" to="/account">
         <v-avatar
           size="36px"
-          v-if="userStore.isAuth"
+          v-if="isAuth"
         >
           <v-img
             v-if="user?.photoURL"
             alt="Avatar"
             :src="user?.photoURL"
           ></v-img>
+          <!-- <div v-if="user?.photoURL">{{ user?.displayName }}</div> -->
           <v-icon
             v-else
             icon="mdi-account"
@@ -34,9 +35,10 @@
   import { handleSignIn } from '@/firebase';
   import { useUserStore } from '@/store/user';
   import AppLink from '@/components/AppLink.vue'
+  import { storeToRefs } from 'pinia';
 
   const userStore = useUserStore();
-  const user = userStore.user;
+  const { user, isAuth } = storeToRefs(userStore);
 
   const login = () => {
     handleSignIn();

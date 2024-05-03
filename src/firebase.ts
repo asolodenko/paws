@@ -25,7 +25,7 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
-const store = useUserStore();
+const { setCurrentUser, resetCurrentUser } = useUserStore();
 
 export const handleSignIn = () => {
   signInWithPopup(auth, provider)
@@ -35,7 +35,7 @@ export const handleSignIn = () => {
     const token = credential?.accessToken;
     // The signed-in user info.
     const user = result.user;
-    store.setCurrentUser(user);
+    setCurrentUser(user);
     router.push('/'); // to prev route
     // IdP data available using getAdditionalUserInfo(result)
     // ...
@@ -54,7 +54,7 @@ export const handleSignIn = () => {
 export const handleSignOut = () => {
   signOut(auth).then(() => {
     // Sign-out successful.
-    store.resetCurrentUser();
+    resetCurrentUser();
     console.log('Sign out');
   }).catch((error) => {
     // An error happened.
