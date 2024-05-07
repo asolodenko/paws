@@ -4,10 +4,18 @@
 
 <script lang="ts" setup>
 import PawsList from '@/components/PawsList.vue';
+import { Paw } from '@/model/Paw.model';
 import { usePawsStore } from '@/store/paws';
-import { storeToRefs } from 'pinia';
+import { onMounted, onUnmounted, ref } from 'vue';
 
+const paws = ref([] as Paw[])
+const { fetchPaws } = usePawsStore();
 
-const pawsStore = usePawsStore();
-const { paws } = storeToRefs(pawsStore);
+onMounted(() => {
+  const unsubscribe = fetchPaws((newItems: Paw[]) => {
+    paws.value = newItems
+  })
+
+  onUnmounted(unsubscribe)
+})
 </script>
