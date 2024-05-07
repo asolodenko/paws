@@ -1,22 +1,20 @@
 // Utilities
 import { User } from 'firebase/auth';
 import { defineStore } from 'pinia'
+import { computed, ref } from 'vue';
 
-export const useUserStore = defineStore('user', {
-  state: () => ({
-    user: null as User | null
-  }),
-  getters: {
-    isAuth(): boolean {
-      return !!this.user;
-    }
-  },
-  actions: {
-    setCurrentUser(usr: User) {
-      this.user = usr;
-    },
-    resetCurrentUser() {
-      this.user = null
-    }
+export const useUserStore = defineStore('user', () => {
+  const user = ref(null as User | null)
+
+  const isAuth = computed(() => !!user.value)
+
+  function setCurrentUser(usr: User) {
+    user.value = usr
   }
+
+  function resetCurrentUser() {
+    user.value = null
+  }
+
+  return { user, isAuth, setCurrentUser, resetCurrentUser }
 })
