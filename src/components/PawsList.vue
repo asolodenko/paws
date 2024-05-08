@@ -7,6 +7,7 @@
           :items="props.paws"
           :items-per-page="8"
           :search="search"
+          :loading="loading"
           class="fill-height">
           <template v-slot:header>
             <v-toolbar class="px-2">
@@ -58,6 +59,24 @@
             ></v-btn>
           </div>
         </template>
+
+        <template v-slot:loader>
+          <v-container class="pa-2" fluid>
+          <v-row>
+            <v-col
+              v-for="(_, k) in [0, 1, 2, 3, 4, 5]"
+              :key="k"
+              cols="12" lg="3" md="4" sm="6"
+            >
+              <v-skeleton-loader
+                style="height: 410px; width: 250px;"
+                class="border"
+                type="image, article"
+              ></v-skeleton-loader>
+            </v-col>
+          </v-row>
+        </v-container>
+        </template>
         </v-data-iterator>
       <!-- </v-card> -->
     </v-responsive>
@@ -68,10 +87,14 @@
 import { ref } from 'vue';
 import PawCard from '@/components/PawCard.vue';
 import { Paw } from '@/model/Paw.model';
+import { usePawsStore } from '@/store/paws';
+import { storeToRefs } from 'pinia';
 const props = defineProps<{
   paws: Paw[]
 }>();
 const search = ref('');
+
+const { loading } = storeToRefs(usePawsStore());
 
 function customKeyFilter(): number {
 

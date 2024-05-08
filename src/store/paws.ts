@@ -1,15 +1,18 @@
+import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { collection, getDocs, onSnapshot } from "firebase/firestore"
 import { Paw } from '@/model/Paw.model'
 import { firestore } from '@/firebase'
 
 export const usePawsStore = defineStore('paws', () => {
-
+  const loading = ref(false);
   // Action to fetch paws data from Firestore
   async function fetchPawsData(): Promise<Paw[]> {
+    loading.value = true;
     const pawsRef = collection(firestore, "paws");
     const querySnapshot = await getDocs(pawsRef);
     const paws = querySnapshot.docs.map(doc => doc.data() as Paw)
+    loading.value = false;
     return paws
   }
 
@@ -26,5 +29,5 @@ export const usePawsStore = defineStore('paws', () => {
     })
   }
 
-  return { fetchPawsData, fetchPaws }
+  return { loading, fetchPawsData, fetchPaws }
 })
