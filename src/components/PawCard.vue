@@ -39,7 +39,6 @@ import { Paw, Gender } from '@/model/Paw.model.ts';
 const props = defineProps<{
   paw: Paw
 }>();
-console.log(props.paw)
 </script>
 
 <style>

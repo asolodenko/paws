@@ -1,5 +1,5 @@
 <template>
-  <v-container style="height: 98%;">
+  <v-container class="fill-height">
     <v-responsive class="fill-height">
       <!-- <v-card> -->
         <!-- sort by name, age; other for filters -->
@@ -8,6 +8,7 @@
           :items-per-page="8"
           :search="search"
           :loading="loading"
+          :sort-by="[{key: 'name', order: 'asc'}]"
           class="fill-height">
           <template v-slot:header>
             <v-toolbar class="px-2">
@@ -27,7 +28,10 @@
           <template v-slot:default="{ items }">
             <v-container class="pa-2" fluid>
               <v-row dense>
-                <v-col v-for="item in items" :key="item.raw.id" :cols="12" lg="3" md="4" sm="6">
+                <v-col v-for="item in items"
+                  :key="item.raw.id"
+                  :cols="12" lg="3" md="4" sm="6"
+                  class="d-flex justify-center">
                   <PawCard :paw="item.raw" />
                 </v-col>
               </v-row>
@@ -35,7 +39,7 @@
           </template>
 
         <template v-slot:footer="{ page, pageCount, prevPage, nextPage }">
-          <div class="d-flex align-center justify-center pa-4">
+          <div class="d-flex align-center justify-center pa-2">
             <v-btn
               :disabled="page === 1"
               density="comfortable"
@@ -64,9 +68,10 @@
           <v-container class="pa-2" fluid>
           <v-row>
             <v-col
-              v-for="(_, k) in [0, 1, 2, 3, 4, 5]"
+              v-for="(_, k) in [0, 1, 2, 3, 4, 5, 6, 7]"
               :key="k"
               cols="12" lg="3" md="4" sm="6"
+              class="d-flex justify-center"
             >
               <v-skeleton-loader
                 style="height: 410px; width: 250px;"
