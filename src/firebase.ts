@@ -1,9 +1,9 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
-import { getAuth, GoogleAuthProvider, signOut, User, signInWithRedirect, getRedirectResult, signInWithPopup } from 'firebase/auth';
-import { useUserStore } from "./store/user";
-import router from "./router";
+import { getAuth, GoogleAuthProvider, signOut, User, signInWithRedirect, getRedirectResult, signInWithPopup, onAuthStateChanged } from 'firebase/auth';
+import { useUserStore } from "@/store/user";
+import router from "@/router";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -26,7 +26,7 @@ export const firestore = getFirestore(app);
 
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
-const { setCurrentUser, resetCurrentUser } = useUserStore();
+const { setCurrentUser, resetCurrentUser, setIsAdmin } = useUserStore();
 
 export const handleSignIn = () => {
   signInWithPopup(auth, provider)
@@ -62,3 +62,23 @@ export const handleSignOut = () => {
     console.log('Sign-out error:', error);
   });
 };
+
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    // User is signed in, retrieve custom claims
+    user.getIdTokenResult()
+      .then((idTokenResult) => {
+        // Get custom claims from the ID token result
+        const customClaims = idTokenResult.claims;
+        
+        // Access custom claims (e.g., admin)
+        if (setIsAdmin) setIsAdmin(customClaims.admin === true)
+      })
+      .catch((error) => {
+        console.error('Error getting custom claims:', error);
+      });
+  } else {
+    // User is signed out
+    console.log('User is signed out');
+  }
+});

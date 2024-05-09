@@ -26,6 +26,7 @@
             color="white"
           ></v-icon>
         </v-avatar>
+        <div v-if="isAdmin">ADMIN</div>
       </v-btn>
     </template>
   </v-app-bar>
@@ -38,7 +39,7 @@
   import { storeToRefs } from 'pinia';
 
   const userStore = useUserStore();
-  const { user, isAuth } = storeToRefs(userStore);
+  const { user, isAdmin, isAuth } = storeToRefs(userStore);
 
   const login = () => {
     handleSignIn();
