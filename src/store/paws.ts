@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import { collection, getDocs, onSnapshot } from "firebase/firestore"
+import { collection, getDocs, onSnapshot, addDoc } from "firebase/firestore"
 import { Paw } from '@/model/Paw.model'
 import { firestore } from '@/firebase'
 
@@ -29,5 +29,13 @@ export const usePawsStore = defineStore('paws', () => {
     })
   }
 
-  return { loading, fetchPawsData, fetchPaws }
+  function postPaws(paws: Paw[]) {
+    const pawsCollection = collection(firestore, "paws");
+    paws.forEach(async (paw) => {
+      const docRef = await addDoc(pawsCollection, paw);
+      console.log("Document written with ID: ", docRef.id);
+    })
+  }
+
+  return { loading, fetchPawsData, fetchPaws, postPaws }
 })
