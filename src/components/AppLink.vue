@@ -6,6 +6,7 @@
   <router-link
     v-else
     v-bind="$props"
+    :to="$props.to"
     custom
     v-slot="{ isActive, href, navigate }"
     exact-active-class="text-primaryLight"
@@ -21,7 +22,7 @@
   </router-link>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
 
@@ -30,7 +31,7 @@ defineOptions({
 })
 
 const props = defineProps({
-  // add @ts-ignore if using TypeScript
+  // @ts-ignore
   ...RouterLink.props,
   inactiveClass: String,
 })

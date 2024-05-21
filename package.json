@@ -15,14 +15,14 @@
     "firebase-admin": "^12.1.0",
     "pinia": "^2.1.7",
     "roboto-fontface": "*",
-    "vue": "^3.4.23",
+    "vue": "^3.4.27",
     "vue-router": "^4.3.2",
     "vuetify": "^3.6.4"
   },
   "devDependencies": {
     "@babel/types": "^7.21.4",
     "@types/node": "^18.15.0",
-    "@vitejs/plugin-vue": "^4.0.0",
+    "@vitejs/plugin-vue": "^4.6.2",
     "@vue/eslint-config-typescript": "^11.0.0",
     "eslint": "^8.37.0",
     "eslint-plugin-vue": "^9.3.0",

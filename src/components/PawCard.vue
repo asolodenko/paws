@@ -35,7 +35,7 @@
 </template>
 
 <script lang="ts" setup>
-import { Paw, Gender } from '@/model/Paw.model.ts';
+import { Paw, Gender } from '@/model/Paw.model';
 const props = defineProps<{
   paw: Paw
 }>();
