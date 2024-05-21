@@ -1,10 +1,6 @@
 
 <template>
-  <a v-if="isExternalLink" v-bind="$attrs" :href="to" target="_blank">
-    <slot />
-  </a>
   <router-link
-    v-else
     v-bind="$props"
     :to="$props.to"
     custom
@@ -23,25 +19,21 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue'
-import { RouterLink } from 'vue-router'
+import { RouterLinkProps } from 'vue-router'
 
 defineOptions({
   inheritAttrs: false,
 })
 
-const props = defineProps({
-  // @ts-ignore
-  ...RouterLink.props,
-  inactiveClass: String,
-})
+interface CustomProps {
+  inactiveClass?: string;
+}
+
+const props = defineProps<RouterLinkProps & CustomProps>();
 
 const activeClassDefault = props.activeClass ?? 'text-white text-decoration-none';
 const inactiveClassDefault = props.inactiveClass ?? 'text-white text-decoration-none';
 
-const isExternalLink = computed(() => {
-  return typeof props.to === 'string' && props.to.startsWith('http')
-})
 </script>
 
 <style>

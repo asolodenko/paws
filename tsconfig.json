@@ -12,10 +12,14 @@
     "sourceMap": false,
     "resolveJsonModule": true,
     "esModuleInterop": true,
+    "importHelpers": true,
+    "skipLibCheck": true,
+    "experimentalDecorators": true,
     "lib": ["esnext", "dom"],
     "types": [
       "node",
-      "vuetify"
+      "vuetify",
+      "vite/client"
     ],
     "paths": {
       "@/*": ["src/*"]
