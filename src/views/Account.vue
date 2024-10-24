@@ -44,10 +44,8 @@
       }
 
       const data = await res.json();
-      this.response = data;
     } catch (error) {
       console.error('Error sending request:', error);
-      this.response = { error: error.message };
     }
   }
 </script>
