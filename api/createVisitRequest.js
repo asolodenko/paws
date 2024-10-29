@@ -28,8 +28,6 @@ import { getFirestore } from 'firebase-admin/firestore';
 
 // Initialize Firebase Admin SDK if not already initialized
 if (!getApps().length) {
-  const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY);
-
   initializeApp({
     credential: //cert(serviceAccount)
     cert({
@@ -39,7 +37,6 @@ if (!getApps().length) {
     })
   });
 }
-console.log(process.env.FIREBASE_PROJECT_ID)
 const db = getFirestore();
 
 export default async (req, res) => {
