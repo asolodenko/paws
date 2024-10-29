@@ -38,6 +38,7 @@
           pawId: '0OOo9CZwKjZRvNsEqLje'
         })
       });
+      console.log(res);
 
       if (!res.ok) {
         throw new Error(`HTTP error! Status: ${res.status}`);

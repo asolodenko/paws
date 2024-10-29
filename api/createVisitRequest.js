@@ -48,7 +48,7 @@ export default async (req, res) => {
     return;
   }
 
-  const { userId } = req.body;
+  const { userId, pawId } = req.body;
 
   if (!userId) {
     res.status(400).json({ error: 'Missing userId or requestId' });
@@ -65,7 +65,7 @@ export default async (req, res) => {
 
     const docRef = await db.collection('adoptionRequests').add(newRequest);
 
-    res.status(200).json({ message: 'Request received successfully', id: docRef.id });
+    res.setHeader('Access-Control-Allow-Origin', '*').status(200).json({ message: 'Request received successfully', id: docRef.id });
   } catch (error) {
     console.error('Error adding document: ', error);
     res.status(500).json({ error: 'Internal Server Error' });
