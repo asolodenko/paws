@@ -39,7 +39,7 @@ if (!getApps().length) {
     })
   });
 }
-
+console.log(process.env.FIREBASE_PROJECT_ID)
 const db = getFirestore();
 
 export default async (req, res) => {
