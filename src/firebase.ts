@@ -11,13 +11,13 @@ import router from "@/router";
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 
 const firebaseConfig = {
-  apiKey: "AIzaSyD0JlkHY2yzZgnXRYhRh74zO-RdY_nggsM",
-  authDomain: "the-paws-cef04.firebaseapp.com",
-  projectId: "the-paws-cef04",
-  storageBucket: "the-paws-cef04.appspot.com",
-  messagingSenderId: "312247159937",
-  appId: "1:312247159937:web:ba679ab21a8c120df15180",
-  measurementId: "G-GPY8SBV1M9"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
 };
 
 // Initialize Firebase
@@ -29,7 +29,8 @@ const provider = new GoogleAuthProvider();
 const { setCurrentUser, resetCurrentUser, setIsAdmin } = useUserStore();
 
 export const handleSignIn = () => {
-  signInWithPopup(auth, provider)
+  // signInWithRedirect(auth, provider)
+  signInWithPopup(auth, provider) //CORS error in console, but still login 
   .then((result) => {
     // This gives you a Google Access Token. You can use it to access the Google API.
     const credential = GoogleAuthProvider.credentialFromResult(result);
