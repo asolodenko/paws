@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+import { doc, getDoc, getFirestore, serverTimestamp, setDoc, updateDoc } from "firebase/firestore";
 import { getAuth, GoogleAuthProvider, signOut, User, signInWithRedirect, getRedirectResult, signInWithPopup, onAuthStateChanged } from 'firebase/auth';
 import { useUserStore } from "@/store/user";
 import router from "@/router";
@@ -26,31 +26,15 @@ export const firestore = getFirestore(app);
 
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
-const { setCurrentUser, resetCurrentUser, setIsAdmin } = useUserStore();
 
 export const handleSignIn = () => {
   // signInWithRedirect(auth, provider)
   signInWithPopup(auth, provider) //CORS error in console, but still login 
-  .then((result) => {
-    // This gives you a Google Access Token. You can use it to access the Google API.
-    const credential = GoogleAuthProvider.credentialFromResult(result);
-    const token = credential?.accessToken;
-    // The signed-in user info.
-    const user = result.user;
-    setCurrentUser(user);
-    router.push('/'); // to prev route
-    // IdP data available using getAdditionalUserInfo(result)
-    // ...
-  }).catch((error) => {
-    // Handle Errors here.
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    // The email of the user's account used.
-    const email = error.customData.email;
-    // The AuthCredential type that was used.
-    const credential = GoogleAuthProvider.credentialFromError(error);
-    // ...
-  });
+    .then((result) => {
+      router.push('/'); // to prev route
+    }).catch((error) => {
+      console.log('Sign-in error:', error);
+    });
 }
 
 export const handleSignOut = () => {
@@ -64,8 +48,55 @@ export const handleSignOut = () => {
   });
 };
 
+const handleUserData = (user: User) => {
+  const {
+    uid,
+    displayName,
+    email,
+    emailVerified,
+    phoneNumber,
+    photoURL
+  } = user;
+  const userRef = doc(firestore, 'users', uid);
+
+  getDoc(userRef).then((docSnapshot) => {
+    if (docSnapshot.exists()) {
+      updateDoc(userRef, {
+        lastLogin: serverTimestamp(),
+      });
+    } else {
+      setDoc(userRef, {
+        uid,
+        displayName,
+        email,
+        emailVerified,
+        phoneNumber,
+        photoURL,
+        firstLogin: serverTimestamp(),
+        lastLogin: serverTimestamp()
+      });
+    }
+  }).catch((error) => {
+    console.error("Error adding or updating user:", error);
+  });
+}
+
 onAuthStateChanged(auth, (user) => {
+  const { setCurrentUser, resetCurrentUser, setIsAdmin, setLoading } = useUserStore();
+
   if (user) {
+    const {
+      uid,
+      displayName,
+      email,
+      emailVerified,
+      phoneNumber,
+      photoURL
+    } = user;
+    setCurrentUser(user);
+    handleUserData(user);
+    
+
     // User is signed in, retrieve custom claims
     user.getIdTokenResult()
       .then((idTokenResult) => {
@@ -79,7 +110,10 @@ onAuthStateChanged(auth, (user) => {
         console.error('Error getting custom claims:', error);
       });
   } else {
+    resetCurrentUser();
     // User is signed out
     console.log('User is signed out');
   }
+
+  setLoading(false);
 });

@@ -5,9 +5,10 @@ import { User } from 'firebase/auth';
 
 export const useUserStore = defineStore('user', () => {
   const user = ref(null as User | null)
-  const isAdmin = ref(false)
+  const isAdmin = ref(false);
+  const isLoading = ref(true);
 
-  const isAuth = computed(() => !!user.value)
+  const isAuth = computed(() => !!user.value && !isLoading.value)
 
   function setCurrentUser(usr: User) {
     user.value = usr
@@ -21,5 +22,9 @@ export const useUserStore = defineStore('user', () => {
     isAdmin.value = value
   }
 
-  return { user, isAdmin, isAuth, setCurrentUser, resetCurrentUser, setIsAdmin }
+  function setLoading(value: boolean) {
+    isLoading.value = value;
+  }
+
+  return { user, isAdmin, isAuth, isLoading, setCurrentUser, resetCurrentUser, setIsAdmin, setLoading }
 })
