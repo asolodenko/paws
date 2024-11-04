@@ -38,14 +38,12 @@ export const handleSignIn = () => {
 }
 
 export const handleSignOut = () => {
-  signOut(auth).then(() => {
-    // Sign-out successful.
-    resetCurrentUser();
-    console.log('Sign out');
-  }).catch((error) => {
-    // An error happened.
-    console.log('Sign-out error:', error);
-  });
+  signOut(auth)
+    .then(() => {})
+    .catch((error) => {
+      // An error happened.
+      console.log('Sign-out error:', error);
+    });
 };
 
 const handleUserData = (user: User) => {
@@ -81,39 +79,39 @@ const handleUserData = (user: User) => {
   });
 }
 
-onAuthStateChanged(auth, (user) => {
+export const monitorAuthStore = () => {
   const { setCurrentUser, resetCurrentUser, setIsAdmin, setLoading } = useUserStore();
 
-  if (user) {
-    const {
-      uid,
-      displayName,
-      email,
-      emailVerified,
-      phoneNumber,
-      photoURL
-    } = user;
-    setCurrentUser(user);
-    handleUserData(user);
-    
+  onAuthStateChanged(auth, (user: User | null) => {
+    if (user) {
+      const {
+        uid,
+        displayName,
+        email,
+        emailVerified,
+        phoneNumber,
+        photoURL
+      } = user;
+      setCurrentUser(user);
+      handleUserData(user);
+      
 
-    // User is signed in, retrieve custom claims
-    user.getIdTokenResult()
-      .then((idTokenResult) => {
-        // Get custom claims from the ID token result
-        const customClaims = idTokenResult.claims;
-        
-        // Access custom claims (e.g., admin)
-        if (setIsAdmin) setIsAdmin(customClaims.admin === true)
-      })
-      .catch((error) => {
-        console.error('Error getting custom claims:', error);
-      });
-  } else {
-    resetCurrentUser();
-    // User is signed out
-    console.log('User is signed out');
-  }
+      // User is signed in, retrieve custom claims
+      user.getIdTokenResult()
+        .then((idTokenResult) => {
+          // Get custom claims from the ID token result
+          const customClaims = idTokenResult.claims;
+          
+          // Access custom claims (e.g., admin)
+          if (setIsAdmin) setIsAdmin(customClaims.admin === true)
+        })
+        .catch((error) => {
+          console.error('Error getting custom claims:', error);
+        });
+    } else {
+      resetCurrentUser();
+    }
 
-  setLoading(false);
-});
+    setLoading(false);
+  })
+};
