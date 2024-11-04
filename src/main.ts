@@ -12,9 +12,12 @@ import { createApp } from 'vue'
 
 // Plugins
 import { registerPlugins } from '@/plugins'
+import { monitorAuthStore } from './firebase'
 
 const app = createApp(App)
 
 registerPlugins(app)
 
 app.mount('#app')
+
+monitorAuthStore();

@@ -8,26 +8,29 @@
 
       <AppLink to="/about" class="mr-4">Contact us</AppLink>
 
-      <AppLink to="/login" v-if="!isAuth">Login</AppLink>
-      <v-btn icon="mdi-account" v-if="isAuth" to="/account">
-        <v-avatar
-          size="36px"
-          v-if="isAuth"
-        >
-          <v-img
-            v-if="user?.photoURL"
-            alt="Avatar"
-            :src="user?.photoURL"
-          ></v-img>
-          <!-- <div v-if="user?.photoURL">{{ user?.displayName }}</div> -->
-          <v-icon
-            v-else
-            icon="mdi-account"
-            color="white"
-          ></v-icon>
-        </v-avatar>
-        <!-- <div v-if="isAdmin">ADMIN</div> -->
-      </v-btn>
+      <div v-if="isLoading">Loading...</div>
+      <div v-else>
+        <AppLink to="/login" v-if="!isAuth">Login</AppLink>
+        <v-btn icon="mdi-account" v-if="isAuth" to="/account">
+          <v-avatar
+            size="36px"
+            v-if="isAuth"
+          >
+            <v-img
+              v-if="user?.photoURL"
+              alt="Avatar"
+              :src="user?.photoURL"
+            ></v-img>
+            <!-- <div v-if="user?.photoURL">{{ user?.displayName }}</div> -->
+            <v-icon
+              v-else
+              icon="mdi-account"
+              color="white"
+            ></v-icon>
+          </v-avatar>
+          <!-- <div v-if="isAdmin">ADMIN</div> -->
+        </v-btn>
+      </div>
     </template>
   </v-app-bar>
 </template>
@@ -38,5 +41,5 @@
   import { storeToRefs } from 'pinia';
 
   const userStore = useUserStore();
-  const { user, isAdmin, isAuth } = storeToRefs(userStore);
+  const { user, isAdmin, isAuth, isLoading } = storeToRefs(userStore);
 </script>
