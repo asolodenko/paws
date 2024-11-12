@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { handleSignOut } from '@/firebase';
+  import { handleSignOut } from '@/auth';
   import { useUserStore } from '@/store/user';
   import { storeToRefs } from 'pinia';
 

@@ -8,9 +8,13 @@
 
       <AppLink to="/about" class="mr-4">Contact us</AppLink>
 
-      <div v-if="isLoading">Loading...</div>
+      <div v-if="isLoading">
+        <v-icon icon="mdi-sync" color="white"></v-icon>
+      </div>
       <div v-else>
-        <AppLink to="/login" v-if="!isAuth">Login</AppLink>
+        <AppLink to="/login" v-if="!isAuth">
+          <v-icon icon="mdi-login" color="white"></v-icon>
+        </AppLink>
         <v-btn icon="mdi-account" v-if="isAuth" to="/account">
           <v-avatar
             size="36px"
@@ -21,7 +25,6 @@
               alt="Avatar"
               :src="user?.photoURL"
             ></v-img>
-            <!-- <div v-if="user?.photoURL">{{ user?.displayName }}</div> -->
             <v-icon
               v-else
               icon="mdi-account"
