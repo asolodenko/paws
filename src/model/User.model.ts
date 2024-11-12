@@ -1,10 +1,10 @@
 export interface User {
   uid: string,
-  displayName: string,
-  email: string,
+  displayName: string | null,
+  email: string | null,
   emailVerified: boolean,
-  phoneNumber: string,
-  photoURL: string,
-  firstLogin: number,
-  lastLogin: number
+  phoneNumber: string | null,
+  photoURL: string | null,
+  firstLogin?: string,
+  lastLogin: string
 }

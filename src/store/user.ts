@@ -1,7 +1,7 @@
 // Utilities
 import { computed, ref } from 'vue';
 import { defineStore } from 'pinia'
-import { User } from 'firebase/auth';
+import { User } from '@/model/User.model';
 
 export const useUserStore = defineStore('user', () => {
   const user = ref(null as User | null)

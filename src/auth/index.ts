@@ -26,7 +26,7 @@ export const handleSignOut = () => {
     });
 };
 
-const handleUserData = (user: User) => {
+const handleUserData = async (user: User) => {
   const {
     uid,
     displayName,
@@ -37,44 +37,45 @@ const handleUserData = (user: User) => {
   } = user;
   const userRef = doc(firestore, 'users', uid);
 
-  getDoc(userRef).then((docSnapshot) => {
+  try {
+    const docSnapshot = await getDoc(userRef);
+    const dateTimeNow = new Date().toISOString();
+    const updUser = {
+      uid,
+      displayName,
+      email,
+      emailVerified,
+      phoneNumber,
+      photoURL,
+      lastLogin: dateTimeNow
+    }
+
     if (docSnapshot.exists()) {
-      updateDoc(userRef, {
-        lastLogin: serverTimestamp(),
+      await updateDoc(userRef, {
+        lastLogin: dateTimeNow,
       });
     } else {
-      setDoc(userRef, {
-        uid,
-        displayName,
-        email,
-        emailVerified,
-        phoneNumber,
-        photoURL,
-        firstLogin: serverTimestamp(),
-        lastLogin: serverTimestamp()
-      });
+      const newUser = {
+        ...updUser,
+        firstLogin: dateTimeNow
+      };
+      await setDoc(userRef, newUser);
     }
-  }).catch((error) => {
+
+    return updUser;
+  } catch (error) {
     console.error("Error adding or updating user:", error);
-  });
+    throw new Error("Failed to handle user data.");
+  }
 }
 
 export const monitorAuthStore = () => {
   const { setCurrentUser, resetCurrentUser, setIsAdmin, setLoading } = useUserStore();
 
-  onAuthStateChanged(auth, (user: User | null) => {
+  onAuthStateChanged(auth, async (user: User | null) => {
     if (user) {
-      const {
-        uid,
-        displayName,
-        email,
-        emailVerified,
-        phoneNumber,
-        photoURL
-      } = user;
-      setCurrentUser(user);
-      handleUserData(user);
-      
+      const userData = await handleUserData(user);
+      setCurrentUser(userData);
 
       // User is signed in, retrieve custom claims
       user.getIdTokenResult()
