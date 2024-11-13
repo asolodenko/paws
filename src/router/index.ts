@@ -12,17 +12,17 @@ const routes = [
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
-        component: () => import(/* webpackChunkName: "home" */ '@/views/Home.vue'),
+        component: () => import('@/views/Home.vue'),
       },
       {
         path: '/about',
         name: 'About',
-        component: () => import(/* webpackChunkName: "about" */ '@/views/About.vue'),
+        component: () => import('@/views/About.vue'),
       },
       {
         path: '/login',
         name: 'Login',
-        component: () => import(/* webpackChunkName: "about" */ '@/views/Login.vue'),
+        component: () => import('@/views/Login.vue'),
       },
     ],
   },
@@ -33,19 +33,12 @@ const routes = [
       {
         path: '',
         name: 'Paws',
-        component: () => import(/* webpackChunkName: "paws" */ '@/views/Paws.vue'),
-        // children: [
-        //   {
-        //     path: ':id',
-        //     name: 'Paw',
-        //     component: () => import(/* webpackChunkName: "paw" */ '@/views/Paw.vue'),
-        //   }
-        // ]
+        component: () => import('@/views/Paws.vue')
       },
       {
         path: '/paws/:id',
         name: 'Paw',
-        component: () => import(/* webpackChunkName: "paw" */ '@/views/Paw.vue'),
+        component: () => import('@/views/Paw.vue')
       },
     ],
     // isAdmin?: boolean
@@ -58,7 +51,7 @@ const routes = [
       {
         path: '',
         name: 'Account',
-        component: () => import(/* webpackChunkName: "paws" */ '@/views/Account.vue'),
+        component: () => import('@/views/Account.vue'),
       }
     ]
   },

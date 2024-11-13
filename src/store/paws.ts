@@ -11,9 +11,14 @@ export const usePawsStore = defineStore('paws', () => {
     loading.value = true;
     const pawsRef = collection(firestore, "paws");
     const querySnapshot = await getDocs(pawsRef);
-    const paws = querySnapshot.docs.map(doc => doc.data() as Paw)
+    const paws = querySnapshot.docs.map(doc => {
+      return {
+        id: doc.id,
+        ...doc.data()
+      } as Paw
+    });
     loading.value = false;
-    return paws
+    return paws;
   }
 
   // Action to set up a listener for real-time updates from Firestore
