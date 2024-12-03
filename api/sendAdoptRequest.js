@@ -1,28 +1,3 @@
-// const admin = require('firebase-admin');
-// admin.initializeApp();
-
-// module.exports = async (req, res) => {
-//   if (req.method !== 'POST') {
-//     res.status(405).send({ message: 'Only POST requests are allowed' });
-//     return;
-//   }
-
-//   const { userId, requestId } = req.body;
-
-//   if (!userId || !requestId) {
-//     res.status(400).json({ error: 'Missing userId or requestId' });
-//     return;
-//   }
-
-//   const db = admin.firestore();
-//   await db.collection('visitRequests').doc(requestId).update({
-//     adminId: req.user.uid,
-//     timestamp: admin.firestore.FieldValue.serverTimestamp()
-//   });
-
-//   res.status(200).send({ success: true });
-// };
-import admin from 'firebase-admin';
 import { initializeApp, getApps, cert } from 'firebase-admin/app';
 import { getFirestore } from 'firebase-admin/firestore';
 
@@ -45,19 +20,18 @@ export default async (req, res) => {
     return;
   }
 
-  const { userId, pawId } = req.body;
+  const { userId, pawId, status } = req.body;
 
-  if (!userId) {
-    res.status(400).json({ error: 'Missing userId or requestId' });
+  if (!userId || !pawId) {
+    res.status(400).json({ error: 'Missing one of the required parameters' });
     return;
   }
 
   try {
     const newRequest = {
-      userId,
-      pawId,
-      status: 'pending', // Example field
-      createdAt: admin.firestore.FieldValue.serverTimestamp()
+      createdAt: new Date().toISOString(),
+      status: status || 'pending',
+      ...req.body
     };
 
     const docRef = await db.collection('adoptionRequests').add(newRequest);

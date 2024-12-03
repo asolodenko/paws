@@ -6,10 +6,11 @@ export interface Request {
   userId: string,
   userName: string,
   userEmail: string,
-  date?: number, // for visit
-  createdAt: number,
+  date?: string, // for visit
+  time?: string, // for visit
+  createdAt: string,
   status: Status,
-  respondedAt: number,
-  respondedBy: string,
-  reason?: string
+  respondedAt?: string,
+  respondedBy?: string,
+  comment?: string
 }
