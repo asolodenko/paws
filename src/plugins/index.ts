@@ -1,6 +1,4 @@
 /**
- * plugins/index.ts
- *
  * Automatically included in `./src/main.ts`
  */
 
@@ -18,3 +16,8 @@ export function registerPlugins (app: App) {
     .use(router)
     .use(pinia)
 }
+
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+
+dayjs.extend(utc);

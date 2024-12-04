@@ -5,7 +5,7 @@ import { Paw } from '@/model/Paw.model'
 import { firestore } from '@/firebase'
 
 export const usePawStore = defineStore('paw', () => {
-  const currentPaw = ref();
+  const currentPaw = ref({} as Paw);
   const loading = ref(false);
   const error = ref('');
 

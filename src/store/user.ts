@@ -4,7 +4,7 @@ import { defineStore } from 'pinia'
 import { User } from '@/model/User.model';
 
 export const useUserStore = defineStore('user', () => {
-  const user = ref(null as User | null)
+  const user = ref({} as User)
   const isAdmin = ref(false);
   const isLoading = ref(true);
 
