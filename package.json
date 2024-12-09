@@ -11,7 +11,10 @@
   },
   "dependencies": {
     "@mdi/font": "^7.4.47",
+    "axios": "^1.7.9",
     "core-js": "^3.38.1",
+    "dayjs": "^1.11.13",
+    "dayjs-plugin-utc": "^0.1.2",
     "firebase": "^11.0.1",
     "firebase-admin": "^12.6.0",
     "pinia": "^2.2.4",

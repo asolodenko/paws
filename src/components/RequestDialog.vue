@@ -23,6 +23,7 @@ import { Paw } from '@/model/Paw.model';
 import { User } from '@/model/User.model';
 import { ref, watch } from 'vue';
 import VisitForm from './VisitForm.vue';
+import axios from '../plugins/axios';
 
 const props = defineProps<{
   action: string,
@@ -78,19 +79,13 @@ const send = async () => {
 
 const sendRequest = async (api: string, body: object) => {
   try {
-    const response = await fetch(`/api/${api}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(body)
-    });
+    const response = await axios.post(`/api/${api}`, body);
 
-    if (!response.ok) {
+    if (response.status !== 200) {
       throw new Error(`Error: ${response.statusText}`);
     }
 
-    const result = await response.json();
+    const result = response.data;
     console.log('Request approved:', result);
   } catch (error) {
     console.error('Error sending request:', error);
