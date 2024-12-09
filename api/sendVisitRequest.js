@@ -1,4 +1,5 @@
 import { initializeApp, getApps, cert } from 'firebase-admin/app';
+import { getAuth } from 'firebase-admin/auth';
 import { getFirestore } from 'firebase-admin/firestore';
 
 // Initialize Firebase Admin SDK if not already initialized
@@ -19,9 +20,24 @@ export default async (req, res) => {
     res.status(405).json({ error: 'Method Not Allowed' });
     return;
   }
+  const idToken = req.headers.authorization;
+  if (!idToken) {
+    res.status(401).json({ error: 'Unauthorized' });
+    return;
+  }
 
-  const { userId, pawId, date, time, status} = req.body;
+  const decodedToken = await getAuth().verifyIdToken(idToken);
+  const decodedUserId = decodedToken.uid;
 
+  const userDocRef = db.doc(`users/${decodedUserId}`);
+  const userDocSnap = await userDocRef.get();
+
+  if (!userDocSnap.exists) {
+    res.status(403).json({ error: 'Forbidden: User not found' });
+    return;
+  }
+
+  const { userId, pawId, date, time, status } = req.body;
   if (!userId || !pawId || !date || !time) {
     res.status(400).json({ error: 'Missing one of the required parameters' });
     return;
