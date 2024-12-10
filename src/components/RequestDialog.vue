@@ -6,7 +6,7 @@
       </v-card-title>
 
       <v-card-text>
-        <VisitForm v-if="action === 'visit'" v-model="dateTimeObj" />
+        <VisitForm v-if="action === 'visit'" v-model:date="date" v-model:time="time" />
         <p v-else>Adopt pet {{ props.paw.name }}</p>
       </v-card-text>
 
@@ -35,10 +35,9 @@ const props = defineProps<{
 const emit = defineEmits(['update:modelValue']);
 
 const dialog = ref(props.modelValue);
-const dateTimeObj = ref({
-  date: '',
-  time: ''
-});
+
+const date = ref('');
+const time = ref('');
 
 // Watch for v-model changes
 watch(() => props.modelValue, (newVal: boolean) => {
@@ -74,6 +73,7 @@ const send = async () => {
     });
   }
   dialog.value = false;
+  
   emit('update:modelValue', false);
 };
 

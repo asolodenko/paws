@@ -50,18 +50,15 @@
 import { ref } from 'vue';
 import { useDate } from 'vuetify';
 
-const props = defineProps<{
-  dateTimeObj: object
-}>();
+const date = defineModel('date');
+const time = defineModel('time');
 
-const time = ref(props.dateTimeObj);
 const timeMenu = ref(false);
-const date = ref('2010-04-13')//useDate();
 const formatted = '2010-04-13'//, 'fullDateWithWeekday')
 const dateMenu = ref(false);
 
 
-const timeMin = `${process.env.WORKING_DAY_START}:00`;
-const timeMax = `${process.env.WORKING_DAY_END - 1}:50`;
+const timeMin = `${process.env.WORKING_DAY_START ?? 8}:00`;
+const timeMax = `${process.env.WORKING_DAY_END ?? 21 - 1}:50`;
 
 </script>
