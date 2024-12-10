@@ -79,7 +79,7 @@ const send = async () => {
 
 const sendRequest = async (api: string, body: object) => {
   try {
-    const response = await axios.post(`/api/${api}`, body);
+    const response = await axios.post(`/${api}`, body);
 
     if (response.status !== 200) {
       throw new Error(`Error: ${response.statusText}`);

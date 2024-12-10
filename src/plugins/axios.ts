@@ -2,7 +2,7 @@ import axios from 'axios';
 import { getAuth } from 'firebase/auth';
 // Create a new Axios instance
 const instance = axios.create({
-  baseURL: 'http://localhost:3000', // VITE... 
+  baseURL: import.meta.env.VITE_API_URL,
   timeout: 5000,
   headers: {
     'Content-Type': 'application/json',
