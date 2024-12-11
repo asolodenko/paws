@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { firebaseApp } from "@/firebase";
 import { getAuth } from 'firebase/auth';
 // Create a new Axios instance
 const instance = axios.create({
@@ -10,7 +11,7 @@ const instance = axios.create({
 });
 
 instance.interceptors.request.use(async (config) => {
-  const auth = getAuth();
+  const auth = getAuth(firebaseApp);
   const idToken = await auth?.currentUser?.getIdToken();
   if (idToken) {
     config.headers.Authorization = idToken;
