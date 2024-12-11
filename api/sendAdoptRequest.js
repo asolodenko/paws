@@ -1,4 +1,4 @@
-import { initializeApp, getApps, cert } from 'firebase-admin/app';
+import { initializeApp, getApps, cert, getApp } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
 import { getFirestore } from 'firebase-admin/firestore';
 
@@ -27,7 +27,7 @@ export default async (req, res) => {
     return;
   }
 
-  const decodedToken = await getAuth().verifyIdToken(idToken);
+  const decodedToken = await getAuth(getApp()).verifyIdToken(idToken);
   const decodedUserId = decodedToken.uid;
 
   const userDocRef = db.doc(`users/${decodedUserId}`);
