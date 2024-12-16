@@ -28,7 +28,7 @@ import axios from '../plugins/axios';
 const props = defineProps<{
   action: string,
   paw: Paw,
-  user: User,
+  user: User | null,
   modelValue: boolean
 }>();
 
@@ -52,8 +52,8 @@ const close = () => {
 const send = async () => {
   const pawId = props.paw.id;
   const pawName = props.paw.name;
-  const userId = props.user.uid;
-  const userName = props.user.displayName;
+  const userId = props.user?.uid;
+  const userName = props.user?.displayName;
 
   if (props.action === 'visit') {
     await sendRequest('sendVisitRequest', {

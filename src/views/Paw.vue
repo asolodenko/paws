@@ -66,10 +66,9 @@
         </v-card>
 
         <!-- Actions -->
-        <v-row class="mt-4">
+        <v-row class="mt-4" v-if="isAuth">
           <v-col cols="6">
             <v-btn
-              v-if="user"
               color="primary" 
               block 
               @click="openModal('visit')"
@@ -79,7 +78,6 @@
           </v-col>
           <v-col cols="6">
             <v-btn
-              v-if="user"
               color="secondary" 
               block 
               @click="openModal('adopt')"
@@ -89,7 +87,7 @@
           </v-col>
         </v-row>
 
-        <div v-if="!user">
+        <div v-else>
           Please login to send requests
         </div>
       </v-col>
@@ -119,7 +117,7 @@ const { fetchPawData } = usePawStore();
 const pawStore = usePawStore();
 const userStore = useUserStore();
 const { currentPaw } = storeToRefs(pawStore);
-const { user } = storeToRefs(userStore);
+const { isAuth, user } = storeToRefs(userStore);
 const isModalOpen = ref(false);
 const modalAction = ref('visit');
 
