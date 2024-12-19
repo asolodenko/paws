@@ -5,4 +5,5 @@
 - Browse adoptable pets
 - Request visits and adoption approvals
 - Admin panel for handling requests and approvals
-- Target Audience: General users and admin staff of adoption centers.
+### Target Audience:
+ General users and admin staff of adoption centers.
