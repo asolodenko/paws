@@ -19,7 +19,7 @@
 
 ### User page
 - An auth-ed user should be able to see a list of requests he made.
-  - Readonly list should display information about requests: type (visit/adoption), pet name, date, status (pending/approved/rejected/fulfilled/unfulfilled), comment.
+  - List should display information about requests: type (visit/adoption), pet name, date, status (pending/approved/rejected/fulfilled/unfulfilled), comment.
  
 ### Admin page
 - Admin user should be able to see a list of requests.
