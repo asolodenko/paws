@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { ref, reactive } from 'vue'
 import { defineStore } from 'pinia'
 import { collection, getDocs, onSnapshot, addDoc } from "firebase/firestore"
 import { Paw } from '@/model/Paw.model'
@@ -6,6 +6,7 @@ import { firestore } from '@/firebase'
 
 export const usePawsStore = defineStore('paws', () => {
   const loading = ref(false);
+  const paws = reactive([] as Paw[]);
   // Action to fetch paws data from Firestore
   async function fetchPawsData(): Promise<Paw[]> {
     loading.value = true;
@@ -20,18 +21,22 @@ export const usePawsStore = defineStore('paws', () => {
     loading.value = false;
     return paws;
   }
-
   // Action to set up a listener for real-time updates from Firestore
-  function fetchPaws(callback: any) {
+  function fetchPaws() {
     const pawsCollection = collection(firestore, "paws");
-
-    return onSnapshot(pawsCollection, (snapshot) => {
-      const paws = [] as Paw[];
-      snapshot.forEach((doc) => {
-        paws.push(doc.data() as Paw)
-      })
-      if(callback) callback(paws)
-    })
+    onSnapshot(pawsCollection, (snapshot) => {
+      snapshot.docs.forEach((doc) => {
+        const pet = { id: doc.id, ...doc.data() } as Paw;
+  
+        // Find existing pet index
+        const index = paws.findIndex((p) => p.id === pet.id);
+        if (index !== -1) {
+          paws[index] = pet; // Update existing pet
+        } else {
+          paws.push(pet); // Add new pet
+        }
+      });
+    });
   }
 
   function postPaws(paws: Paw[]) {
@@ -42,5 +47,5 @@ export const usePawsStore = defineStore('paws', () => {
     })
   }
 
-  return { loading, fetchPawsData, fetchPaws, postPaws }
+  return { loading, paws, fetchPawsData, fetchPaws, postPaws }
 })

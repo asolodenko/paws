@@ -1,13 +1,12 @@
 <template>
   <v-container class="fill-height">
-    <v-responsive class="fill-height">
+    <v-responsive class="fill-height" v-if="paws.length">
       <!-- <v-card> -->
         <!-- sort by name, age; other for filters -->
         <v-data-iterator
           :items="props.paws"
           :items-per-page="8"
           :search="search"
-          :loading="loading"
           :sort-by="[{key: 'name', order: 'asc'}]"
           class="fill-height">
           <template v-slot:header>
@@ -85,6 +84,18 @@
         </v-data-iterator>
       <!-- </v-card> -->
     </v-responsive>
+    <v-responsive v-else>
+      <v-container class="fill-height">
+        <v-row class="fill-height" align="center" justify="center">
+          <v-col cols="12" class="text-center">
+            <v-progress-circular
+              indeterminate
+              color="primary"
+            ></v-progress-circular>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-responsive>
   </v-container>
 </template>
 
@@ -92,19 +103,10 @@
 import { ref } from 'vue';
 import PawCard from '@/components/PawCard.vue';
 import { Paw } from '@/model/Paw.model';
-import { usePawsStore } from '@/store/paws';
-import { storeToRefs } from 'pinia';
 const props = defineProps<{
   paws: Paw[]
 }>();
 const search = ref('');
-
-const { loading } = storeToRefs(usePawsStore());
-
-function customKeyFilter(): number {
-
-  return 0;
-}
 </script>
 
 <style>

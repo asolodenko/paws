@@ -1,6 +1,7 @@
-type Status = 'pending' | 'approved' | 'rejected';
+type Status = 'pending' | 'approved' | 'rejected' | 'fulfilled' | 'unfulfilled';
 
 export interface Request {
+  id: string;
   pawId: string,
   pawName: string,
   userId: string,

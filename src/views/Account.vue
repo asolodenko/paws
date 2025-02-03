@@ -1,30 +1,105 @@
 <template>
-  <h1 class="text-h1">Account page</h1>
-
-  <div class="py-14" />
-  <div>
-    {{ user?.displayName }}
-  </div>
-  <div>
-    {{ user?.email }}
-  </div>
-  <v-btn
-    color="primary"
-    @click="logout"
-  >
-    Sign out
-  </v-btn>
+  <v-container>
+    <v-row justify="center">
+      <v-col cols="12" md="8">
+        <v-card class="pa-5">
+          <v-card-title>
+            <h1 class="text-h1">Account page</h1>
+          </v-card-title>
+          <v-card-text>
+            <div class="py-4">
+              <v-row>
+                <v-col cols="12" md="6">
+                  <div>{{ user?.displayName }}</div>
+                </v-col>
+                <v-col cols="12" md="6">
+                  <div>{{ user?.email }}</div>
+                </v-col>
+              </v-row>
+            </div>
+            <v-btn
+              color="primary"
+              @click="logout"
+              class="mb-4"
+            >
+              Sign out
+            </v-btn>
+          </v-card-text>
+        </v-card>
+        <v-divider class="my-6" />
+          <v-tabs v-model="activeTab">
+            <v-tab>Visit Requests</v-tab>
+            <v-tab>Adoption Requests</v-tab>
+          </v-tabs>
+          <v-tabs-window v-model="activeTab">
+            <v-tabs-window-item :value="0">
+              <RequestsTable :requests="visitRequests" :table-type="'Visit Requests'" />
+              <RequestsTable :requests="archiveVisitRequests" :table-type="'Archive'" />
+            </v-tabs-window-item>
+            <v-tabs-window-item :value="1">
+              <RequestsTable :requests="adoptionRequests" :table-type="'Adoption Requests'" />
+              <RequestsTable :requests="archiveAdoptionRequests" :table-type="'Archive'" />
+            </v-tabs-window-item>
+          </v-tabs-window>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script lang="ts" setup>
   import { handleSignOut } from '@/auth';
   import { useUserStore } from '@/store/user';
   import { storeToRefs } from 'pinia';
+  import { Request } from '@/model/Request.model'
+  import { collection, onSnapshot } from "firebase/firestore"
+  import { firestore } from '@/firebase'
+  import { onMounted, onUnmounted, ref } from 'vue';
+  import RequestsTable from '@/components/RequestsTable.vue';
 
   const userStore = useUserStore();
   const { user, isAdmin, isAuth } = storeToRefs(userStore);
 
   const logout = async () => {
     handleSignOut();
+  }
+
+  const visitRequests = ref([] as Request[]);
+  const archiveVisitRequests = ref([] as Request[]);
+  const adoptionRequests = ref([] as Request[]);
+  const archiveAdoptionRequests = ref([] as Request[]);
+  const activeTab = ref(0);
+  const unsubscribeFunctions: Array<() => void> = [];
+
+  onMounted(() => {
+    const fetchRequests = async (collectionName: string, requestsRef: any, archiveRequestsRef: any) => {
+      try {
+        const collectionRef = collection(firestore, collectionName);
+        const unsubscribe = onSnapshot(collectionRef, (snapshot) => {
+          const allRequests = snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data()
+          } as Request)).filter((request) => request.userId === user.value?.uid);
+
+          requestsRef.value = allRequests.filter((request) => !isArchived(request));
+          archiveRequestsRef.value = allRequests.filter((request) => isArchived(request));
+        });
+        unsubscribeFunctions.push(unsubscribe);
+      } catch (error) {
+        console.error(`Error fetching ${collectionName}:`, error);
+      }
+    };
+
+    fetchRequests("visitRequests", visitRequests, archiveVisitRequests);
+    fetchRequests("adoptionRequests", adoptionRequests, archiveAdoptionRequests);
+
+  });
+
+  onUnmounted(() => {
+    unsubscribeFunctions.forEach(unsubscribe => unsubscribe());
+    unsubscribeFunctions.length = 0;
+  });
+
+  const isArchived = (request: Request) => {
+    return request.status === 'fulfilled' || request.status === 'unfulfilled';
   }
 </script>
