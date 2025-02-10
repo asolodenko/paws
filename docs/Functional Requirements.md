@@ -28,8 +28,8 @@
 - Admin should be able to perform the next actions with requests:
   - Approve pending request.
   - Reject pending request, adding a comment.
-  - Mark approved request fulfilled in case if visit happened/successful adoption.
-  - Mark approved request unfulfilled in case if visit didn't happen/adoption didn't happen.
+  - Mark approved request fulfilled in case if visit happened/successful adoption. (After actual request time, EOD)
+  - Mark approved request unfulfilled in case if visit didn't happen/adoption didn't happen. (After actual request time, EOD)
   - Move a request of status fulfilled/unfulfilled/rejected to archive list.
 - Admin should be able to manage list of pets: create, update, delete. (not inclided in MVP)
 - Admin should have a way to renew a pet in the system, due to the pet's returning to the shelter. (not inclided in MVP)
