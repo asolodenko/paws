@@ -7,7 +7,15 @@
 
       <v-card-text>
         <VisitForm v-if="action === 'visit'" v-model:date="date" v-model:time="time" />
-        <p v-else>Adopt pet {{ props.paw.name }}</p>
+        <div v-else>
+          Adopt pet {{ props.paw.name }}
+          <br>
+          <br>
+          <p>
+            In accordance with the rules of the shelter, to adopt a pet you need to send a request to the shelter administration.
+            The request will be considered within 24 hours. If the request is approved, you will see a notification in account page.
+          </p>
+        </div>
       </v-card-text>
 
       <v-card-actions>
@@ -21,7 +29,7 @@
 <script lang="ts" setup>
 import { Paw } from '@/model/Paw.model';
 import { User } from '@/model/User.model';
-import { ref, watch } from 'vue';
+import { ref } from 'vue';
 import VisitForm from './VisitForm.vue';
 import axios from '../plugins/axios';
 
@@ -29,31 +37,22 @@ const props = defineProps<{
   action: string,
   paw: Paw,
   user: User | null,
-  modelValue: boolean
 }>();
-
-const emit = defineEmits(['update:modelValue']);
-
-const dialog = ref(props.modelValue);
-
-const date = ref('');
-const time = ref('');
-
-// Watch for v-model changes
-watch(() => props.modelValue, (newVal: boolean) => {
-  dialog.value = newVal;
-});
+const dialog = defineModel<boolean>();
 
 const close = () => {
   dialog.value = false;
-  emit('update:modelValue', false);
 };
+
+const date = ref(new Date());
+const time = ref('');
 
 const send = async () => {
   const pawId = props.paw.id;
   const pawName = props.paw.name;
   const userId = props.user?.uid;
   const userName = props.user?.displayName;
+  const email = props.user?.email;
 
   if (props.action === 'visit') {
     await sendRequest('sendVisitRequest', {
@@ -61,21 +60,21 @@ const send = async () => {
       pawName,
       userId,
       userName,
-      date: '2024-12-05T00:00:00.634Z',
-      time: '10:00'
+      email,
+      date: date.value,
+      time: time.value
     });
   } else {
     await sendRequest('sendAdoptRequest', {
       pawId,
       pawName,
       userId,
-      userName
+      userName,
+      email
     });
   }
   dialog.value = false;
-  
-  emit('update:modelValue', false);
-};
+  };
 
 const sendRequest = async (api: string, body: object) => {
   try {
@@ -86,7 +85,6 @@ const sendRequest = async (api: string, body: object) => {
     }
 
     const result = response.data;
-    console.log('Request approved:', result);
   } catch (error) {
     console.error('Error sending request:', error);
   }

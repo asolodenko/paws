@@ -1,4 +1,7 @@
 <template>
+  <p>
+    We are open from {{ timeMin }} to {{ timeMax }}. Please select a time between these hours.
+  </p>
   <v-text-field
     :value="formatted"
     :active="dateMenu"
@@ -47,16 +50,22 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useDate } from 'vuetify';
 
-const date = defineModel('date');
-const time = defineModel('time');
-
+const date = defineModel<Date>('date');
+const time = defineModel<string>('time');
+const adapter = useDate()
 const timeMenu = ref(false);
-const formatted = '2010-04-13'//, 'fullDateWithWeekday')
+const formatted = computed(() => {
+  if (!date.value) return null;
+  const yyyy = date.value.getFullYear();
+  const mm = String(date.value.getMonth() + 1).padStart(2, '0');
+  const dd = String(date.value.getDate()).padStart(2, '0');
+  const formattedDate = `${yyyy}-${mm}-${dd}`;
+  return formattedDate;
+});
 const dateMenu = ref(false);
-
 
 const timeMin = `${process.env.WORKING_DAY_START ?? 8}:00`;
 const timeMax = `${process.env.WORKING_DAY_END ?? 21 - 1}:50`;
