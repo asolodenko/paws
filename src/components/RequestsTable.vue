@@ -1,9 +1,10 @@
 <template>
   <v-container>
     <v-data-table
-      :headers="headers" 
+      :headers="headersWithActions"
       :items="formattedRequests"
       class="elevation-1"
+      item-key="pawName"
     >
       <template v-slot:top>
         <v-toolbar flat>
@@ -25,18 +26,38 @@
           {{ item.status }}
         </v-chip>
       </template>
+      <template v-slot:item.actions="{ item }">
+        <v-icon
+          class="mr-2"
+          color="success"
+          size="24"
+          @click="handleAction(item, 'approve')"
+        >
+          mdi-check
+        </v-icon>
+        <v-icon
+          color="error"
+          size="24"
+          @click="handleAction(item, 'reject')"
+        >
+          mdi-close
+        </v-icon>
+      </template>
     </v-data-table>
   </v-container>
 </template>
 
 <script lang="ts" setup>
-import { computed, reactive, ref } from 'vue';
+import { computed, reactive, ref, defineEmits } from 'vue';
 import { Request } from '@/model/Request.model';
+import { APPROVED, FULFILLED, PENDING, REJECTED, UNFULFILLED } from '@/constants';
 
 const props = defineProps<{
   requests: Request[],
   tableType: string,
 }>();
+const emit = defineEmits(['requestUpdate']);
+
 const headers = ref([
   { title: 'Paw Name', key: 'pawName' },
   { title: 'User Name', key: 'userName' },
@@ -47,10 +68,14 @@ const headers = ref([
   { title: 'Status', key: 'status' },
 ]);
 
+const headersWithActions = computed(() => {
+  return headers.value.concat({ title: 'Actions', key: 'actions' });
+});
 
 const formattedRequests = computed(() => {
   return props.requests.map((request) => {
     return {
+      id: request.id,
       pawName: request.pawName,
       userName: request.userName,
       email: request.userEmail,
@@ -65,12 +90,12 @@ const formattedRequests = computed(() => {
 
 const getStatusColor = (status: string) => {
   switch (status) {
-    case 'pending':
+    case PENDING:
       return 'warning';
-    case 'approved':
-    case 'fulfilled':
+    case APPROVED:
+    case FULFILLED:
       return 'success';
-    case 'rejected':
+    case REJECTED:
       return 'error';
     default:
       return 'grey';
@@ -79,19 +104,29 @@ const getStatusColor = (status: string) => {
 
 const getStatusIcon = (status: string) => {
   switch (status) {
-    case 'pending':
+    case PENDING:
       return 'mdi-clock-outline';
-    case 'approved':
+    case APPROVED:
       return 'mdi-check';
-    case 'rejected':
+    case REJECTED:
       return 'mdi-close';
-    case 'fulfilled':
+    case FULFILLED:
       return 'mdi-check-all';
-    case 'unfulfilled':
+    case UNFULFILLED:
       return 'mdi-close';
     default:
       return 'mdi-help';
   }
+};
+
+// add click handler function that will emit event to the parent component passing the request id and action type
+const handleAction = (request: any, action: string) => {
+  console.log(`Request: ${request}, Action: ${action}`);
+  // emit event to parent component
+  // if (props.requestUpdate) {
+  //   props.requestUpdate(request);
+  // }
+  emit('requestUpdate', request, action);
 };
 
 </script>

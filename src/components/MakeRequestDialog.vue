@@ -31,7 +31,7 @@ import { Paw } from '@/model/Paw.model';
 import { User } from '@/model/User.model';
 import { ref } from 'vue';
 import VisitForm from './VisitForm.vue';
-import axios from '../plugins/axios';
+import { sendPOST } from '../plugins/axios';
 import { Request } from '@/model/Request.model';
 import { PENDING } from '@/constants';
 
@@ -57,6 +57,7 @@ const send = async () => {
   const email = props.user?.email || '';
 
   const request: Request = {
+    id: '',
     pawId,
     pawName,
     userId,
@@ -68,21 +69,8 @@ const send = async () => {
     ...(props.action === 'visit' && { date: date.value.toISOString(), time: time.value })
   };
 
-  await sendRequest('sendRequest', request);
+  await sendPOST('sendRequest', request);
   dialog.value = false;
 };
 
-const sendRequest = async (api: string, body: object) => {
-  try {
-    const response = await axios.post(`/${api}`, body);
-
-    if (response.status !== 200) {
-      throw new Error(`Error: ${response.statusText}`);
-    }
-
-    const result = response.data;
-  } catch (error) {
-    console.error('Error sending request:', error);
-  }
-}
 </script>

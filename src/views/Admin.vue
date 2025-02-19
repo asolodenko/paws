@@ -10,7 +10,7 @@
         </v-tabs>
         <v-tabs-window v-model="activeTab">
           <v-tabs-window-item :value="0">
-            <RequestsTable :requests="visitRequests" :table-type="'Visit Requests'" />
+            <RequestsTable :requests="visitRequests" :table-type="'Visit Requests'" @request-update="handleRequestUpdated" />
             <RequestsTable :requests="archiveVisitRequests" :table-type="'Archive'" />
           </v-tabs-window-item>
           <v-tabs-window-item :value="1">
@@ -31,6 +31,7 @@ import { firestore } from '@/firebase'
 import { onMounted, onUnmounted } from 'vue';
 import RequestsTable from '@/components/RequestsTable.vue';
 import { FULFILLED, UNFULFILLED } from '@/constants';
+import { sendPOST } from '../plugins/axios';
 
 const visitRequests = ref([] as Request[]);
 const archiveVisitRequests = ref([] as Request[]);
@@ -65,9 +66,14 @@ onMounted(() => {
 
 onUnmounted(() => {
   unsubscribeFunctions.forEach(unsubscribe => unsubscribe());
-  unsubscribeFunctions.length = 0;});
+  unsubscribeFunctions.length = 0;
+});
 
-  const isArchived = (request: Request) => {
-    return request.status === FULFILLED || request.status === UNFULFILLED;
-  }
+const isArchived = (request: Request) => {
+  return request.status === FULFILLED || request.status === UNFULFILLED;
+}
+
+const handleRequestUpdated = async (updatedRequest: Request, action: string) => {
+  await sendPOST('handleRequestTransition', { requestId: updatedRequest.id, action })
+}
 </script>

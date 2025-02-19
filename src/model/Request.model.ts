@@ -2,7 +2,7 @@ type Status = 'pending' | 'approved' | 'rejected' | 'fulfilled' | 'unfulfilled';
 type RequestType = 'visit' | 'adopt';
 
 export interface Request {
-  id?: string,
+  id: string,
   type: RequestType,
   pawId: string,
   pawName: string,
