@@ -8,6 +8,8 @@
 
       <AppLink to="/about" class="mr-4">Contact us</AppLink>
 
+      <AppLink v-if="isAdmin" to="/admin" class="mr-4">Admin page</AppLink>
+
       <div v-if="isLoading">
         <v-icon icon="mdi-sync" color="white"></v-icon>
       </div>

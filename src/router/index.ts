@@ -55,6 +55,17 @@ const routes = [
       }
     ]
   },
+  {
+    path: '/admin',
+    component: () => import('@/layouts/smallPaw/SmallPawLayout.vue'),
+    children: [
+      {
+        path: '',
+        name: 'Admin',
+        component: () => import('@/views/Admin.vue'),
+      }
+    ],
+  }
 ]
 
 const router = createRouter({

@@ -55,7 +55,6 @@ export default async (req, res) => {
   try {
     const newRequest = {
       createdAt: new Date().toISOString(),
-      status: 'pending',
       ...req.body
     };
 

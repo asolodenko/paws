@@ -94,7 +94,7 @@
     </v-row>
 
     <!-- Modal -->
-    <RequestDialog
+    <MakeRequestDialog
       v-model="isModalOpen"
       :action="modalAction"
       :paw="currentPaw"
@@ -108,7 +108,7 @@ import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { usePawStore } from '@/store/paw';
 import { storeToRefs } from 'pinia';
-import RequestDialog from '@/components/RequestDialog.vue';
+import MakeRequestDialog from '@/components/MakeRequestDialog.vue';
 import { useUserStore } from '@/store/user';
 
 const route = useRoute();
@@ -119,13 +119,13 @@ const userStore = useUserStore();
 const { currentPaw } = storeToRefs(pawStore);
 const { isAuth, user } = storeToRefs(userStore);
 const isModalOpen = ref(false);
-const modalAction = ref('visit');
+const modalAction = ref<'visit' | 'adopt'>('visit');
 
 onMounted(async () => {
   await fetchPawData(pawId);
 })
 
-const openModal = (action: string) => {
+const openModal = (action: 'visit' | 'adopt') => {
   modalAction.value = action;
   isModalOpen.value = true;
 }

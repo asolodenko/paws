@@ -32,9 +32,11 @@ import { User } from '@/model/User.model';
 import { ref } from 'vue';
 import VisitForm from './VisitForm.vue';
 import axios from '../plugins/axios';
+import { Request } from '@/model/Request.model';
+import { PENDING } from '@/constants';
 
 const props = defineProps<{
-  action: string,
+  action: 'visit' | 'adopt',
   paw: Paw,
   user: User | null,
 }>();
@@ -50,31 +52,25 @@ const time = ref('');
 const send = async () => {
   const pawId = props.paw.id;
   const pawName = props.paw.name;
-  const userId = props.user?.uid;
-  const userName = props.user?.displayName;
-  const email = props.user?.email;
+  const userId = props.user?.uid || '';
+  const userName = props.user?.displayName || '';
+  const email = props.user?.email || '';
 
-  if (props.action === 'visit') {
-    await sendRequest('sendVisitRequest', {
-      pawId,
-      pawName,
-      userId,
-      userName,
-      email,
-      date: date.value,
-      time: time.value
-    });
-  } else {
-    await sendRequest('sendAdoptRequest', {
-      pawId,
-      pawName,
-      userId,
-      userName,
-      email
-    });
-  }
-  dialog.value = false;
+  const request: Request = {
+    pawId,
+    pawName,
+    userId,
+    userName,
+    userEmail: email,
+    type: props.action,
+    createdAt: new Date().toISOString(),
+    status: PENDING,
+    ...(props.action === 'visit' && { date: date.value.toISOString(), time: time.value })
   };
+
+  await sendRequest('sendRequest', request);
+  dialog.value = false;
+};
 
 const sendRequest = async (api: string, body: object) => {
   try {
