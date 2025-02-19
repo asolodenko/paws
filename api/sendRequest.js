@@ -38,20 +38,28 @@ export default async (req, res) => {
     return;
   }
 
-  const { userId, pawId, status } = req.body;
-  if (!userId || !pawId) {
+  const { userId, pawId, type } = req.body;
+  if (!userId || !pawId || !type) {
     res.status(400).json({ error: 'Missing one of the required parameters' });
     return;
+  }
+
+  if (type === 'visit') {
+    const { date, time } = req.body;
+    if (!date || !time) {
+      res.status(400).json({ error: 'Missing one of the required parameters' });
+      return;
+    }
   }
 
   try {
     const newRequest = {
       createdAt: new Date().toISOString(),
-      status: status || 'pending',
+      status: 'pending',
       ...req.body
     };
 
-    const docRef = await db.collection('adoptionRequests').add(newRequest);
+    const docRef = await db.collection('requests').add(newRequest);
 
     res.setHeader('Access-Control-Allow-Origin', '*').status(200).json({ message: 'Request received successfully', id: docRef.id });
   } catch (error) {
