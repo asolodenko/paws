@@ -53,12 +53,8 @@ export default async (req, res) => {
   }
 
   try {
-    const newRequest = {
-      createdAt: new Date().toISOString(),
-      ...req.body
-    };
-
-    const docRef = await db.collection('requests').add(newRequest);
+    const docRef = db.collection("requests").doc();
+    await docRef.set({ ...req.body, id: docRef.id });
 
     res.setHeader('Access-Control-Allow-Origin', '*').status(200).json({ message: 'Request received successfully', id: docRef.id });
   } catch (error) {
