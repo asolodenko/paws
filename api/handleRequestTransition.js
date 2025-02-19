@@ -25,8 +25,9 @@ export default async (req, res) => {
     res.status(401).json({ error: 'Unauthorized' });
     return;
   }
-    
-  // check if user is an admin by claims
+  const decodedToken = await getAuth(getApp()).verifyIdToken(idToken);
+  const decodedUserId = decodedToken.uid;
+
   const user = await getAuth(getApp()).getUser(decodedUserId);
   if (!user.customClaims || !user.customClaims.admin) {
     res.status(403).send({ message: 'Forbidden: User is not an admin' });
