@@ -1,6 +1,6 @@
 import { firebaseApp, firestore } from "@/firebase";
-import { doc, getDoc, serverTimestamp, setDoc, updateDoc } from "firebase/firestore";
-import { getAuth, GoogleAuthProvider, signOut, User, signInWithRedirect, getRedirectResult, signInWithPopup, onAuthStateChanged } from 'firebase/auth';
+import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { getAuth, GoogleAuthProvider, signOut, User, signInWithPopup, onAuthStateChanged } from 'firebase/auth';
 import { useUserStore } from "@/store/user";
 import router from "@/router";
 
@@ -10,8 +10,8 @@ const provider = new GoogleAuthProvider();
 export const handleSignIn = () => {
   // signInWithRedirect(auth, provider)
   signInWithPopup(auth, provider) //CORS error in console, but still login 
-    .then((result) => {
-      router.push('/'); // to prev route
+    .then(() => {
+      router.go(-1); // push ? to prev route
     }).catch((error) => {
       console.log('Sign-in error:', error);
     });

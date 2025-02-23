@@ -12,7 +12,7 @@
 
     <div class="d-flex flex-column flex-wrap align-start px-4">
       <div class="d-flex flex-row text-caption">
-        <v-icon :icon="props.paw?.gender === Gender.Male ? 'mdi-gender-male' : 'mdi-gender-female'" start></v-icon>
+        <v-icon :icon="props.paw?.gender === Male ? 'mdi-gender-male' : 'mdi-gender-female'" start></v-icon>
 
         <div class="text-truncate">{{ props.paw?.gender }}</div>
       </div>
@@ -35,7 +35,7 @@
 </template>
 
 <script lang="ts" setup>
-import { Paw, Gender } from '@/model/Paw.model';
+import { Paw, Male } from '@/model/Paw.model';
 import AppLink from '@/components/AppLink.vue'
 
 const props = defineProps<{

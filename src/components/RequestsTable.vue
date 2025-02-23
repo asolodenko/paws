@@ -6,18 +6,18 @@
       class="elevation-1"
       item-key="pawName"
     >
-      <template v-slot:top>
+      <template #top>
         <v-toolbar flat>
           <v-toolbar-title>{{ tableType }}</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
         </v-toolbar>
       </template>
-      <template v-slot:item.status="{ item }">
+      <template v-slot:[`item.status`]="{ item }">
         <v-chip :color="getStatusColor(item.status)" dark>
           <v-icon left :icon="getStatusIcon(item.status)" />
           <template v-if="item.status === 'rejected'">
             <v-tooltip bottom>
-              <template v-slot:activator="{ isActive, props }">
+              <template v-slot:activator="{ props }">
               <v-icon left v-bind="props" @click="props.isActive = !props.isActive">mdi-information</v-icon>
               </template>
               <span>{{ item.comment }}</span>
@@ -26,7 +26,7 @@
           {{ item.status }}
         </v-chip>
       </template>
-      <template v-slot:item.actions="{ item }">
+      <template v-slot:[`item.actions`]="{ item }">
         <v-icon
           class="mr-2"
           color="success"
@@ -48,7 +48,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, reactive, ref, defineEmits } from 'vue';
+import { computed, ref, defineEmits } from 'vue';
 import { Request } from '@/model/Request.model';
 import { APPROVED, FULFILLED, PENDING, REJECTED, UNFULFILLED } from '@/constants';
 

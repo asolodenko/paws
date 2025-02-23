@@ -51,11 +51,9 @@
 
 <script lang="ts" setup>
 import { computed, ref } from 'vue';
-import { useDate } from 'vuetify';
 
 const date = defineModel<Date>('date');
 const time = defineModel<string>('time');
-const adapter = useDate()
 const timeMenu = ref(false);
 const formatted = computed(() => {
   if (!date.value) return null;

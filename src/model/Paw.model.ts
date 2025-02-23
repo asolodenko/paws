@@ -1,7 +1,7 @@
-export enum Gender {
-  Female = 'Female',
-  Male = 'Male'
-}
+export const Female = 'Female';
+export const Male = 'Male';
+
+type Gender = 'Female' | 'Male';
 
 type ThreeLevel = 'moderate' | 'low' | 'high';
 
