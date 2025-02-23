@@ -1,9 +1,69 @@
-# The Paws
+# essentials
 
-**The Paws** is an adoption app that is designed to streamline the pet adoption process by allowing users to view, request visits, and ultimately adopt pets. It also supports admin features for managing adoption requests and approvals.
-### Main Features:
-- Browse adoptable pets
-- Request visits and adoption approvals
-- Admin panel for handling requests and approvals
-### Target Audience:
- General users and admin staff of adoption centers.
+## Project setup
+
+```
+# yarn
+yarn
+
+# npm
+npm install
+
+# pnpm
+pnpm install
+
+# bun 
+bun install
+```
+
+### Compiles and hot-reloads for development
+
+```
+# yarn
+yarn dev
+
+# npm
+npm run dev
+
+# pnpm
+pnpm dev
+
+# bun 
+bun run dev
+```
+
+### Compiles and minifies for production
+
+```
+# yarn
+yarn build
+
+# npm
+npm run build
+
+# pnpm
+pnpm build
+
+# bun 
+bun run build
+```
+
+### Lints and fixes files
+
+```
+# yarn
+yarn lint
+
+# npm
+npm run lint
+
+# pnpm
+pnpm lint
+
+# bun 
+bun run lint
+```
+
+### Customize configuration
+
+See [Configuration Reference](https://vitejs.dev/config/).
