@@ -6,8 +6,6 @@
     <template v-slot:append>
       <AppLink to="/about" class="mr-4">About us</AppLink>
 
-      <AppLink to="/about" class="mr-4">Contact us</AppLink>
-
       <AppLink v-if="isAdmin" to="/admin" class="mr-4">Admin page</AppLink>
 
       <div v-if="isLoading">
@@ -33,7 +31,6 @@
               color="white"
             ></v-icon>
           </v-avatar>
-          <!-- <div v-if="isAdmin">ADMIN</div> -->
         </v-btn>
       </div>
     </template>
