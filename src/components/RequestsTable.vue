@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-data-table
-      :headers="headersWithActions"
+      :headers="isAdmin ? headersWithActions : headers"
       :items="formattedRequests"
       class="elevation-1"
       item-key="pawName"
@@ -26,22 +26,78 @@
           {{ item.status }}
         </v-chip>
       </template>
-      <template v-slot:[`item.actions`]="{ item }">
-        <v-icon
-          class="mr-2"
-          color="success"
-          size="24"
-          @click="handleAction(item, 'approve')"
-        >
-          mdi-check
-        </v-icon>
-        <v-icon
-          color="error"
-          size="24"
-          @click="handleAction(item, 'reject')"
-        >
-          mdi-close
-        </v-icon>
+      <template v-if="isAdmin" v-slot:[`item.actions`]="{ item }">
+        <v-tooltip bottom>
+          <template v-slot:activator="{ props }">
+            <v-icon
+              v-if="item.status === PENDING"
+              class="mr-2"
+              color="success"
+              size="24"
+              @click="handleAction(item, 'approve')"
+              v-bind="props"
+            >
+              mdi-check
+            </v-icon>
+          </template>
+          <span>Approve</span>
+        </v-tooltip>
+        <v-tooltip bottom>
+          <template v-slot:activator="{ props }">
+            <v-icon
+              v-if="item.status === PENDING"
+              color="error"
+              size="24"
+              @click="handleAction(item, 'reject')"
+              v-bind="props"
+            >
+              mdi-close
+            </v-icon>
+          </template>
+          <span>Reject</span>
+        </v-tooltip>
+        <v-tooltip bottom>
+          <template v-slot:activator="{ props }">
+            <v-icon
+              v-if="item.status === APPROVED"
+              color="success"
+              size="24"
+              @click="handleAction(item, 'fulfill')"
+              v-bind="props"
+            >
+              mdi-check-all
+            </v-icon>
+          </template>
+          <span>Fulfill</span>
+        </v-tooltip>
+        <v-tooltip bottom>
+          <template v-slot:activator="{ props }">
+            <v-icon
+              v-if="item.status === APPROVED"
+              color="error"
+              size="24"
+              @click="handleAction(item, 'unfulfill')"
+              v-bind="props"
+            >
+              mdi-close
+            </v-icon>
+          </template>
+          <span>Unfulfill</span>
+        </v-tooltip>
+        <v-tooltip bottom>
+          <template v-slot:activator="{ props }">
+            <v-icon
+              v-if="item.status === REJECTED"
+              color="blue-grey-darken-2"
+              size="24"
+              @click="handleAction(item, 'unfulfill')"
+              v-bind="props"
+            >
+              mdi-archive-arrow-down
+            </v-icon>
+          </template>
+          <span>Unfulfill</span>
+        </v-tooltip>
       </template>
     </v-data-table>
   </v-container>
@@ -51,6 +107,11 @@
 import { computed, ref, defineEmits } from 'vue';
 import { Request } from '@/model/Request.model';
 import { APPROVED, FULFILLED, PENDING, REJECTED, UNFULFILLED } from '@/constants';
+import { useUserStore } from '@/store/user';
+import { storeToRefs } from 'pinia';
+
+const userStore = useUserStore();
+const { isAdmin } = storeToRefs(userStore);
 
 const props = defineProps<{
   requests: Request[],
@@ -119,13 +180,7 @@ const getStatusIcon = (status: string) => {
   }
 };
 
-// add click handler function that will emit event to the parent component passing the request id and action type
 const handleAction = (request: any, action: string) => {
-  console.log(`Request: ${request}, Action: ${action}`);
-  // emit event to parent component
-  // if (props.requestUpdate) {
-  //   props.requestUpdate(request);
-  // }
   emit('requestUpdate', request, action);
 };
 

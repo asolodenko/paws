@@ -20,7 +20,7 @@
 
       <v-card-actions>
         <v-btn color="primary" @click="close">Close</v-btn>
-        <v-btn color="primary" variant="tonal" @click="send">Send</v-btn>
+        <v-btn :disabled="!time && action === 'visit'" :loading="loading" color="primary" variant="tonal" @click="send">Send</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -49,6 +49,8 @@ const close = () => {
 const date = ref(new Date());
 const time = ref('');
 
+const loading = ref(false);
+
 const send = async () => {
   const pawId = props.paw.id;
   const pawName = props.paw.name;
@@ -69,8 +71,10 @@ const send = async () => {
     ...(props.action === 'visit' && { date: date.value.toISOString(), time: time.value })
   };
 
+  loading.value = true;
   await sendPOST('sendRequest', request);
   dialog.value = false;
+  loading.value = false;
 };
 
 </script>

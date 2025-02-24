@@ -14,7 +14,7 @@
             <RequestsTable :requests="archiveVisitRequests" :table-type="'Archive'" />
           </v-tabs-window-item>
           <v-tabs-window-item :value="1">
-            <RequestsTable :requests="adoptionRequests" :table-type="'Adoption Requests'" />
+            <RequestsTable :requests="adoptionRequests" :table-type="'Adoption Requests'" @request-update="handleRequestUpdated" />
             <RequestsTable :requests="archiveAdoptionRequests" :table-type="'Archive'" />
           </v-tabs-window-item>
         </v-tabs-window>
