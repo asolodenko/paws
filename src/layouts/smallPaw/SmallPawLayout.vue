@@ -4,6 +4,9 @@
     <app-header />
 
     <v-main>
+      <VSnackbar v-model="snackbar.show" :color="snackbar.color">
+        {{ snackbar.text }}
+      </VSnackbar>
       <router-view />
     </v-main>
   </v-app>
@@ -11,6 +14,8 @@
 
 <script lang="ts" setup>
   import AppHeader from '@/components/AppHeader.vue'
+  import { useSnackbarStore } from "@/store/useSnackbarStore";
+  const snackbar = useSnackbarStore();
 </script>
 
 <style>

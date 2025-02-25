@@ -12,7 +12,7 @@ import { createApp } from 'vue'
 
 // Plugins
 import { registerPlugins } from '@/plugins'
-import { monitorAuthStore } from './firebase'
+import { monitorAuthStore } from './auth'
 
 const app = createApp(App)
 

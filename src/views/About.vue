@@ -2,12 +2,32 @@
   <h1 class="text-h1 color-primary">About the paws</h1>
 
   <div class="d-flex w-50 my-8">
-    <p class="text-body-1">
-      We help cats find homes and gentle parents. Some more info...
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus vel sapien convallis, eleifend tortor at, fringilla nulla. Curabitur eu est ornare, malesuada leo id, dignissim ex. Ut sit amet erat rutrum velit hendrerit pharetra dignissim id lacus. Aenean hendrerit dapibus eros id efficitur. Maecenas non ante a elit venenatis porttitor in id nisl. Praesent sollicitudin aliquet ullamcorper. Morbi vel lacus vel leo sodales gravida.
-      Duis varius, leo et tincidunt tempus, justo augue suscipit massa, vel efficitur dolor enim vel lectus. Donec ac dictum lacus. Sed id feugiat ligula, non ullamcorper augue. Donec euismod urna at tortor sagittis, quis faucibus erat varius. Suspendisse sit amet nunc id augue dignissim ornare non eget dolor. Proin eros tortor, sollicitudin ac convallis non, semper a risus. Etiam vulputate feugiat nibh quis euismod.
-    </p>
+    <h3 class="font-weight-medium">
+      The Paws is an adoption app that is designed to streamline the pet adoption process by allowing users to view, request visits, and ultimately adopt pets. It also supports admin features for managing adoption requests and approvals.
+    </h3>
   </div>
+  <v-row lass="d-flex align-center">
+    <v-col cols="12" class="mx-auto">
+      <p class="text-h4 my-4 text-left">Main Features</p>
+      <v-list style="background-color: transparent;">
+        <v-list-item>
+          <v-list-item-content>
+            <v-list-item-title class="text-left">Browse adoptable pets</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item>
+          <v-list-item-content>
+            <v-list-item-title class="text-left">Request visits and adoption approvals</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item>
+          <v-list-item-content>
+            <v-list-item-title class="text-left">Admin panel for handling requests and approvals</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </v-col>
+  </v-row>
 </template>
 
 <script lang="ts" setup>

@@ -1,10 +1,11 @@
 // Utilities
 import { computed, ref } from 'vue';
 import { defineStore } from 'pinia'
-import { User } from 'firebase/auth';
+import { User } from '@/model/User.model';
 
 export const useUserStore = defineStore('user', () => {
-  const user = ref(null as User | null)
+  const initialUser = null as User | null;
+  const user = ref(initialUser)
   const isAdmin = ref(false);
   const isLoading = ref(true);
 
@@ -15,7 +16,7 @@ export const useUserStore = defineStore('user', () => {
   }
 
   function resetCurrentUser() {
-    user.value = null
+    user.value = initialUser;
   }
 
   function setIsAdmin(value: boolean) {

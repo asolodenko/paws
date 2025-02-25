@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { handleSignIn } from '@/firebase';
+import { handleSignIn } from '@/auth';
 
   const login = () => {
     handleSignIn();

@@ -1,22 +1,13 @@
-export enum Gender {
-  Female = 'Female',
-  Male = 'Male'
-}
+export const Female = 'Female';
+export const Male = 'Male';
 
-enum ThreeLevel {
-  Moderate = 'moderate',
-  Low = 'low',
-  High = 'high'
-}
+type Gender = 'Female' | 'Male';
 
-enum HealthCondition {
-  Healthy = 'healthy',
-  Underweight = 'underweight',
-  Overweight = 'overweight',
-  DentalIssues = 'dental issues'
-}
+type ThreeLevel = 'moderate' | 'low' | 'high';
 
-export type Paw = {
+type HealthCondition = 'healthy' | 'underweight' | 'overweight' | 'dental issues';
+
+export interface Paw {
   id: string;
   img: string;
   name: string;

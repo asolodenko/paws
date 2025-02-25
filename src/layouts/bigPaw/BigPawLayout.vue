@@ -3,6 +3,9 @@
     <div class="background-image"></div>
     <app-header />
     <v-main>
+      <VSnackbar v-model="snackbar.show" :color="snackbar.color">
+        {{ snackbar.text }}
+      </VSnackbar>
       <v-container>
         <v-responsive class="text-start mt-16 pt-16">
           <router-view />
@@ -14,6 +17,8 @@
 
 <script lang="ts" setup>
   import AppHeader from '@/components/AppHeader.vue'
+  import { useSnackbarStore } from "@/store/useSnackbarStore";
+  const snackbar = useSnackbarStore();
   // import DefaultView from './View.vue'
 </script>
 
