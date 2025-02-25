@@ -9,7 +9,7 @@ if (!getApps().length) {
     cert({
       projectId: process.env.FIREBASE_PROJECT_ID,
       clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-      privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n') // Replacing the escaped \n characters
+      privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n') // Replacing the escaped \n characters
     })
   });
 }
@@ -38,7 +38,7 @@ export default async (req, res) => {
     return;
   }
 
-  const { userId, pawId, type } = req.body;
+  const { userId, pawId, type, status, createdAt } = req.body;
   if (!userId || !pawId || !type) {
     res.status(400).json({ error: 'Missing one of the required parameters' });
     return;
@@ -54,7 +54,7 @@ export default async (req, res) => {
 
   try {
     const docRef = db.collection("requests").doc();
-    await docRef.set({ ...req.body, id: docRef.id });
+    await docRef.set({ ...req.body, id: docRef.id, status: status || 'pending', createdAt: createdAt || new Date().toISOString() });
 
     res.setHeader('Access-Control-Allow-Origin', '*').status(200).json({ message: 'Request received successfully', id: docRef.id });
   } catch (error) {
