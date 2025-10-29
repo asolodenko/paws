@@ -15,29 +15,31 @@ const compat = new FlatCompat({
     allConfig: js.configs.all
 });
 
-export default [...compat.extends(
-    "plugin:vue/vue3-essential",
-    "eslint:recommended",
-), {
-    languageOptions: {
-        parser: vueParser,
-        parserOptions: {
-            parser: tsParser,
-            sourceType: "module",
-            ecmaVersion: "latest",
+export default [
+    {
+        ignores: ["**/dist/**", "**/node_modules/**", "**/build/**", "**/public/**"],
+    },
+    ...compat.extends(
+        "plugin:vue/vue3-essential",
+        "eslint:recommended",
+    ),
+    {
+        languageOptions: {
+            parser: vueParser,
+            parserOptions: {
+                parser: tsParser,
+                sourceType: "module",
+                ecmaVersion: "latest",
+            },
+            globals: {
+                ...globals.node,
+            },
         },
-        globals: {
-            ...globals.node,
+        plugins: {
+            "@typescript-eslint": ts,
+        },
+        rules: {
+            "vue/multi-word-component-names": "off",
         },
     },
-    plugins: {
-        "@typescript-eslint": ts,
-    },
-    rules: {
-        "vue/multi-word-component-names": "off",
-    },
-    ignores: [
-        path.join(__dirname, "dist"),
-        path.join(__dirname, "node_modules")
-    ],
-}];
+];
