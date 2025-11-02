@@ -65,7 +65,7 @@ const formatted = computed(() => {
 });
 const dateMenu = ref(false);
 
-const timeMin = `${process.env.WORKING_DAY_START ?? 8}:00`;
-const timeMax = `${process.env.WORKING_DAY_END ?? 21 - 1}:50`;
+const timeMin = `${import.meta.env.WORKING_DAY_START ?? 8}:00`;
+const timeMax = `${import.meta.env.WORKING_DAY_END ?? 21 - 1}:50`;
 
 </script>
