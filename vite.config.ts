@@ -31,7 +31,7 @@ export default defineConfig({
     }),
     eslint()
   ],
-  define: { 'process.env': {...process.env, ...loadEnv(process.env.NODE_ENV || 'development', process.cwd())} },
+  define: { 'process.env': loadEnv(process.env.NODE_ENV || 'development', process.cwd()) },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
