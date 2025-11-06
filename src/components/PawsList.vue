@@ -8,7 +8,7 @@
           :items-per-page="8"
           :search="search"
           :sort-by="[{key: 'name', order: 'asc'}]"
-          class="fill-height">
+          class="fill-height bg-transparent">
           <template v-slot:header>
             <v-toolbar class="px-2">
               <v-text-field

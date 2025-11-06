@@ -1,32 +1,28 @@
 <template>
   <v-container>
     <v-row justify="center">
-      <v-col cols="12" md="8">
-        <v-card class="pa-5">
-          <v-card-title>
-            <h1 class="text-h1">Account page</h1>
-          </v-card-title>
-          <v-card-text>
-            <div class="py-4">
-              <v-row>
-                <v-col cols="12" md="6">
-                  <div>{{ user?.displayName }}</div>
-                </v-col>
-                <v-col cols="12" md="6">
-                  <div>{{ user?.email }}</div>
-                </v-col>
-              </v-row>
-            </div>
-            <v-btn
-              color="primary"
-              @click="logout"
-              class="mb-4"
-            >
-              Sign out
-            </v-btn>
-          </v-card-text>
-        </v-card>
-        <!-- <v-divider class="my-6" /> -->
+      <v-col cols="12" md="10">
+        <h1>Account page</h1>
+        <div class="py-4">
+          <v-row>
+            <v-col cols="12" md="4">
+              <div>{{ user?.displayName }}</div>
+            </v-col>
+            <v-col cols="12" md="4">
+              <div>{{ user?.email }}</div>
+            </v-col>
+            <v-col cols="12" md="4">
+              <v-btn
+                color="primary"
+                @click="logout"
+                class="mb-4"
+              >
+                Logout
+              </v-btn>
+            </v-col>
+          </v-row>
+        </div>
+        <v-divider class="my-2" />
       </v-col>
     </v-row>
     <v-row justify="center">

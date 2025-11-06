@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar flat color="primary">
+  <v-app-bar flat color="background">
     <v-app-bar-title>
       <AppLink to="/" class="text-h5">The paws</AppLink>
     </v-app-bar-title>

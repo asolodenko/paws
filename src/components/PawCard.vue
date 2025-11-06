@@ -1,5 +1,5 @@
 <template>
-  <v-card color="primaryLight" style="width: 250px; height: 410px;">
+  <v-card style="width: 250px; height: 410px;">
     <div class="pa-6">
       <v-img src='./../assets/00001.jpg'></v-img>
     </div>

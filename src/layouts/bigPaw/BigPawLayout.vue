@@ -25,14 +25,15 @@
 <style>
 .background-image {
   /* Set your background image here */
-  background-image: url('@/assets/bigpaw.svg');
+  background-image: url('@/assets/cat-paw.png');
   /* Adjust background styles as needed */
   background-position: bottom right;
   background-repeat: no-repeat;
+  background-size: contain;
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  bottom: 1rem;
+  right: 1rem;
+  width: 30%;
+  height: 30%;
 }
 </style>
