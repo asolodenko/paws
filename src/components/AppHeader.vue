@@ -18,9 +18,9 @@
         <VIcon icon="mdi-sync" color="white" />
       </div>
       <div v-else>
-        <AppLink v-if="!isAuth" to="/login">
+        <VBtn v-if="!isAuth" icon="mdi-login" @click="handleSignIn">
           <VIcon icon="mdi-login" color="white" />
-        </AppLink>
+        </VBtn>
         <VBtn v-if="isAuth" icon="mdi-account" to="/account">
           <VAvatar
             v-if="isAuth"
@@ -47,6 +47,7 @@
   import { useUserStore } from '@/store/user'
   import AppLink from '@/components/AppLink.vue'
   import { storeToRefs } from 'pinia'
+  import { handleSignIn } from '@/auth'
 
   const userStore = useUserStore()
   const { user, isAdmin, isAuth, isLoading } = storeToRefs(userStore)
