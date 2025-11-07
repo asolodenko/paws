@@ -1,14 +1,14 @@
 
 <template>
-  <router-link
+  <RouterLink
     :to="to"
     :active-class="activeClassDefault"
     :inactive-class="inactiveClassDefault"
     :exact-active-class="exactActiveClass"
     class="text-white text-decoration-none"
   >
-    <slot />
-  </router-link>
+    <slot></slot>
+  </RouterLink>
 </template>
 
 <script lang="ts" setup>
@@ -20,11 +20,11 @@ interface CustomProps {
 }
 
 const props = withDefaults(defineProps<RouterLinkProps & CustomProps>(), {
-  exactActiveClass: 'text-primaryLight'
-});
+  exactActiveClass: 'text-primaryLight',
+})
 
-const activeClassDefault = props.activeClass ?? 'text-white text-decoration-none';
-const inactiveClassDefault = props.inactiveClass ?? 'text-white text-decoration-none';
+const activeClassDefault = props.activeClass ?? 'text-white text-decoration-none'
+const inactiveClassDefault = props.inactiveClass ?? 'text-white text-decoration-none'
 
 </script>
 

@@ -1,35 +1,39 @@
 <template>
-  <v-container class="fill-height">
-    <v-responsive class="align-center text-center fill-height">
+  <VContainer class="fill-height">
+    <VResponsive class="align-center text-center fill-height">
       <!-- <v-img height="300" src="@/assets/logo.svg" /> -->
 
-      <div class="text-body-2 font-weight-light mb-n1">Welcome to</div>
+      <div class="text-body-2 font-weight-light mb-n1">
+        Welcome to
+      </div>
 
-      <h1 class="text-h2 font-weight-bold">Vuetify</h1>
+      <h1 class="text-h2 font-weight-bold">
+        Vuetify
+      </h1>
 
-      <div class="py-14" />
+      <div class="py-14"></div>
 
-      <v-row class="d-flex align-center justify-center">
-        <v-col cols="auto">
-          <v-btn
+      <VRow class="d-flex align-center justify-center">
+        <VCol cols="auto">
+          <VBtn
             href="https://vuetifyjs.com/components/all/"
             min-width="164"
             rel="noopener noreferrer"
             target="_blank"
             variant="text"
           >
-            <v-icon
+            <VIcon
               icon="mdi-view-dashboard"
               size="large"
               start
             />
 
             Components
-          </v-btn>
-        </v-col>
+          </VBtn>
+        </VCol>
 
-        <v-col cols="auto">
-          <v-btn
+        <VCol cols="auto">
+          <VBtn
             color="primary"
             href="https://vuetifyjs.com/introduction/why-vuetify/#feature-guides"
             min-width="228"
@@ -38,36 +42,36 @@
             target="_blank"
             variant="flat"
           >
-            <v-icon
+            <VIcon
               icon="mdi-speedometer"
               size="large"
               start
             />
 
             Get Started
-          </v-btn>
-        </v-col>
+          </VBtn>
+        </VCol>
 
-        <v-col cols="auto">
-          <v-btn
+        <VCol cols="auto">
+          <VBtn
             href="https://community.vuetifyjs.com/"
             min-width="164"
             rel="noopener noreferrer"
             target="_blank"
             variant="text"
           >
-            <v-icon
+            <VIcon
               icon="mdi-account-group"
               size="large"
               start
             />
 
             Community
-          </v-btn>
-        </v-col>
-      </v-row>
-    </v-responsive>
-  </v-container>
+          </VBtn>
+        </VCol>
+      </VRow>
+    </VResponsive>
+  </VContainer>
 </template>
 
 <script lang="ts" setup>

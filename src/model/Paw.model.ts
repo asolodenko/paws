@@ -1,5 +1,5 @@
-export const Female = 'Female';
-export const Male = 'Male';
+export const Female = 'Female'
+export const Male = 'Male'
 
 type Gender = 'Female' | 'Male';
 

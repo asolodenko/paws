@@ -1,112 +1,121 @@
 <template>
-  <v-container class="fill-height">
-    <v-responsive class="fill-height" v-if="paws.length">
+  <VContainer class="fill-height">
+    <VResponsive v-if="paws.length" class="fill-height">
       <!-- <v-card> -->
-        <!-- sort by name, age; other for filters -->
-        <v-data-iterator
-          :items="props.paws"
-          :items-per-page="8"
-          :search="search"
-          :sort-by="[{key: 'name', order: 'asc'}]"
-          class="fill-height bg-transparent">
-          <template v-slot:header>
-            <v-toolbar class="px-2">
-              <v-text-field
-                v-model="search"
-                density="comfortable"
-                placeholder="Search"
-                prepend-inner-icon="mdi-magnify"
-                style="max-width: 300px"
-                variant="solo"
-                clearable
-                hide-details
-              ></v-text-field>
-            </v-toolbar>
-          </template>
+      <!-- sort by name, age; other for filters -->
+      <VDataIterator
+        :items="props.paws"
+        :items-per-page="8"
+        :search="search"
+        :sort-by="[{key: 'name', order: 'asc'}]"
+        class="fill-height bg-transparent"
+      >
+        <template #header>
+          <VToolbar class="px-2">
+            <VTextField
+              v-model="search"
+              density="comfortable"
+              placeholder="Search"
+              prepend-inner-icon="mdi-magnify"
+              style="max-width: 300px"
+              variant="solo"
+              clearable
+              hide-details
+            />
+          </VToolbar>
+        </template>
 
-          <template v-slot:default="{ items }">
-            <v-container class="pa-2" fluid>
-              <v-row dense>
-                <v-col v-for="item in items"
-                  :key="item.raw.id"
-                  :cols="12" lg="3" md="4" sm="6"
-                  class="d-flex justify-center">
-                  <PawCard :paw="item.raw" />
-                </v-col>
-              </v-row>
-            </v-container>
-          </template>
+        <template #default="{ items }">
+          <VContainer class="pa-2" fluid>
+            <VRow dense>
+              <VCol
+                v-for="item in items"
+                :key="item.raw.id"
+                :cols="12"
+                lg="3"
+                md="4"
+                sm="6"
+                class="d-flex justify-center"
+              >
+                <PawCard :paw="item.raw" />
+              </VCol>
+            </VRow>
+          </VContainer>
+        </template>
 
-        <template v-slot:footer="{ page, pageCount, prevPage, nextPage }">
+        <template #footer="{ page, pageCount, prevPage, nextPage }">
           <div class="d-flex align-center justify-center pa-2">
-            <v-btn
+            <VBtn
               :disabled="page === 1"
               density="comfortable"
               icon="mdi-arrow-left"
               variant="tonal"
               rounded
               @click="prevPage"
-            ></v-btn>
+            />
 
             <div class="mx-2 text-caption">
               Page {{ page }} of {{ pageCount }}
             </div>
 
-            <v-btn
+            <VBtn
               :disabled="page >= pageCount"
               density="comfortable"
               icon="mdi-arrow-right"
               variant="tonal"
               rounded
               @click="nextPage"
-            ></v-btn>
+            />
           </div>
         </template>
 
-        <template v-slot:loader>
-          <v-container class="pa-2" fluid>
-          <v-row>
-            <v-col
-              v-for="(_, k) in [0, 1, 2, 3, 4, 5, 6, 7]"
-              :key="k"
-              cols="12" lg="3" md="4" sm="6"
-              class="d-flex justify-center"
-            >
-              <v-skeleton-loader
-                style="height: 410px; width: 250px;"
-                class="border"
-                type="image, article"
-              ></v-skeleton-loader>
-            </v-col>
-          </v-row>
-        </v-container>
+        <template #loader>
+          <VContainer class="pa-2" fluid>
+            <VRow>
+              <VCol
+                v-for="(_, k) in [0, 1, 2, 3, 4, 5, 6, 7]"
+                :key="k"
+                cols="12"
+                lg="3"
+                md="4"
+                sm="6"
+                class="d-flex justify-center"
+              >
+                <VSkeletonLoader
+                  style="height: 410px; width: 250px;"
+                  class="border"
+                  type="image, article"
+                />
+              </VCol>
+            </VRow>
+          </VContainer>
         </template>
-        </v-data-iterator>
+      </VDataIterator>
       <!-- </v-card> -->
-    </v-responsive>
-    <v-responsive v-else>
-      <v-container class="fill-height">
-        <v-row class="fill-height" align="center" justify="center">
-          <v-col cols="12" class="text-center">
-            <v-progress-circular
+    </VResponsive>
+    <VResponsive v-else>
+      <VContainer class="fill-height">
+        <VRow class="fill-height" align="center" justify="center">
+          <VCol cols="12" class="text-center">
+            <VProgressCircular
               indeterminate
               color="primary"
-            ></v-progress-circular>
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-responsive>
-  </v-container>
+            />
+          </VCol>
+        </VRow>
+      </VContainer>
+    </VResponsive>
+  </VContainer>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
-import PawCard from '@/components/PawCard.vue';
-import { Paw } from '@/model/Paw.model';
+import { ref } from 'vue'
+import PawCard from '@/components/PawCard.vue'
+import { Paw } from '@/model/Paw.model'
 const props = defineProps<{
   paws: Paw[]
-}>();
-const search = ref('');
+}>()
+const search = ref('')
 </script>
 
 <style>

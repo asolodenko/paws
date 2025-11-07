@@ -1,4 +1,4 @@
-import { APPROVED, PENDING, REJECTED, FULFILLED, UNFULFILLED, VISIT, ADOPT } from '../constants';
+import { APPROVED, PENDING, REJECTED, FULFILLED, UNFULFILLED, VISIT, ADOPT } from '../constants'
 type Status = typeof APPROVED | typeof REJECTED | typeof PENDING | typeof FULFILLED | typeof UNFULFILLED;
 type RequestType = typeof VISIT | typeof ADOPT;
 

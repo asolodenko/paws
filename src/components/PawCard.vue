@@ -1,46 +1,52 @@
 <template>
-  <v-card style="width: 250px; height: 410px;">
+  <VCard style="width: 250px; height: 410px;">
     <div class="pa-6">
-      <v-img src='./../assets/00001.jpg'></v-img>
+      <VImg src="./../assets/00001.jpg" />
     </div>
     
-    <v-list-item class="mb-2">
-      <template v-slot:title>
+    <VListItem class="mb-2">
+      <template #title>
         <strong class="text-h6 mb-2">{{ props.paw?.name }}</strong>
       </template>
-    </v-list-item>
+    </VListItem>
 
     <div class="d-flex flex-column flex-wrap align-start px-4">
       <div class="d-flex flex-row text-caption">
-        <v-icon :icon="props.paw?.gender === Male ? 'mdi-gender-male' : 'mdi-gender-female'" start></v-icon>
+        <VIcon :icon="props.paw?.gender === Male ? 'mdi-gender-male' : 'mdi-gender-female'" start />
 
-        <div class="text-truncate">{{ props.paw?.gender }}</div>
+        <div class="text-truncate">
+          {{ props.paw?.gender }}
+        </div>
       </div>
       <div class="d-flex flex-row text-caption">
-        <v-icon icon="mdi-shape" start></v-icon>
-        <div class="text-truncate">{{ props.paw?.breed }}</div>
+        <VIcon icon="mdi-shape" start />
+        <div class="text-truncate">
+          {{ props.paw?.breed }}
+        </div>
       </div>
       <div class="d-flex flex-row text-caption">
-        <v-icon icon="mdi-cake" start></v-icon>
-        <div class="text-truncate">{{ props.paw?.birthDate }}</div>
+        <VIcon icon="mdi-cake" start />
+        <div class="text-truncate">
+          {{ props.paw?.birthDate }}
+        </div>
       </div>
 
-      <v-card-actions class="w-100 justify-end">
-        <AppLink :to="`/paws/${props.paw?.id}`" inactiveClass="text-primary text-decoration-none">
+      <VCardActions class="w-100 justify-end">
+        <AppLink :to="`/paws/${props.paw?.id}`" inactive-class="text-primary text-decoration-none">
           See more >>>
         </AppLink>
-      </v-card-actions>
+      </VCardActions>
     </div>
-  </v-card>
+  </VCard>
 </template>
 
 <script lang="ts" setup>
-import { Paw, Male } from '@/model/Paw.model';
+import { Paw, Male } from '@/model/Paw.model'
 import AppLink from '@/components/AppLink.vue'
 
 const props = defineProps<{
   paw: Paw | null
-}>();
+}>()
 </script>
 
 <style>

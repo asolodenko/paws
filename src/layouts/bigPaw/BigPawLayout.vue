@@ -1,24 +1,24 @@
 <template>
-  <v-app :icon="'mdi-paw'">
+  <VApp :icon="'mdi-paw'">
     <div class="background-image"></div>
-    <app-header />
-    <v-main>
+    <AppHeader />
+    <VMain>
       <VSnackbar v-model="snackbar.show" :color="snackbar.color">
         {{ snackbar.text }}
       </VSnackbar>
-      <v-container>
-        <v-responsive class="text-start mt-16 pt-16">
-          <router-view />
-        </v-responsive>
-      </v-container>
-    </v-main>
-  </v-app>
+      <VContainer>
+        <VResponsive class="text-start mt-16 pt-16">
+          <RouterView />
+        </VResponsive>
+      </VContainer>
+    </VMain>
+  </VApp>
 </template>
 
 <script lang="ts" setup>
   import AppHeader from '@/components/AppHeader.vue'
-  import { useSnackbarStore } from "@/store/useSnackbarStore";
-  const snackbar = useSnackbarStore();
+  import { useSnackbarStore } from '@/store/useSnackbarStore'
+  const snackbar = useSnackbarStore()
   // import DefaultView from './View.vue'
 </script>
 

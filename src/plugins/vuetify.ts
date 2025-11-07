@@ -31,6 +31,6 @@ export default createVuetify({
     },
   },
   components: {
-    VTimePicker
-  }
+    VTimePicker,
+  },
 })

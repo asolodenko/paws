@@ -1,7 +1,7 @@
-import axios from 'axios';
-import { firebaseApp } from "@/firebase";
-import { getAuth } from 'firebase/auth';
-import { useSnackbarStore } from "@/store/useSnackbarStore";
+import axios from 'axios'
+import { firebaseApp } from '@/firebase'
+import { getAuth } from 'firebase/auth'
+import { useSnackbarStore } from '@/store/useSnackbarStore'
 
 // Create a new Axios instance
 const instance = axios.create({
@@ -10,47 +10,47 @@ const instance = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-});
+})
 
 instance.interceptors.request.use(async (config) => {
-  const auth = getAuth(firebaseApp);
-  const idToken = await auth?.currentUser?.getIdToken();
+  const auth = getAuth(firebaseApp)
+  const idToken = await auth?.currentUser?.getIdToken()
   if (idToken) {
-    config.headers.Authorization = idToken;
+    config.headers.Authorization = idToken
   }
-  return config;
+  return config
 
 }, error => {
   // Do something with request error
-  return Promise.reject(error);
-});
+  return Promise.reject(error)
+})
 
 // Add a response interceptor
 instance.interceptors.response.use((response) => {
   // Do something with response data
-  return response;
+  return response
 }, error => {
-  const snackbar = useSnackbarStore(); // Get snackbar store
-  snackbar.triggerSnackbar(`Request failed: ${error.message}`, "error");
+  const snackbar = useSnackbarStore() // Get snackbar store
+  snackbar.triggerSnackbar(`Request failed: ${error.message}`, 'error')
   // Do something with response error
-  return Promise.reject(error);
-});
+  return Promise.reject(error)
+})
 
 export const sendPOST = async (api: string, body: object) => {
-  const snackbar = useSnackbarStore(); // Get snackbar store
+  const snackbar = useSnackbarStore() // Get snackbar store
   try {
-    const response = await instance.post(`/${api}`, body);
+    const response = await instance.post(`/${api}`, body)
 
     if (response.status !== 200) {
-      throw new Error(`Error: ${response.statusText}`);
+      throw new Error(`Error: ${response.statusText}`)
     }
 
-    snackbar.triggerSnackbar("Request successful!", "success");
-    return response.data;
+    snackbar.triggerSnackbar('Request successful!', 'success')
+    return response.data
   } catch (error) {
-    snackbar.triggerSnackbar("Error sending request", "error");
-    console.error("Error sending request:", error);
+    snackbar.triggerSnackbar('Error sending request', 'error')
+    console.error('Error sending request:', error)
   }
 }
 
-export default instance;
+export default instance

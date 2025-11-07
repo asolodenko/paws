@@ -33,12 +33,12 @@ const routes = [
       {
         path: '',
         name: 'Paws',
-        component: () => import('@/views/Paws.vue')
+        component: () => import('@/views/Paws.vue'),
       },
       {
         path: '/paws/:id',
         name: 'Paw',
-        component: () => import('@/views/Paw.vue')
+        component: () => import('@/views/Paw.vue'),
       },
     ],
     // isAdmin?: boolean
@@ -52,8 +52,8 @@ const routes = [
         path: '',
         name: 'Account',
         component: () => import('@/views/Account.vue'),
-      }
-    ]
+      },
+    ],
   },
   {
     path: '/admin',
@@ -63,9 +63,9 @@ const routes = [
         path: '',
         name: 'Admin',
         component: () => import('@/views/Admin.vue'),
-      }
+      },
     ],
-  }
+  },
 ]
 
 const router = createRouter({
