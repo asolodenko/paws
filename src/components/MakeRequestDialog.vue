@@ -19,14 +19,14 @@
       </VCardText>
 
       <VCardActions>
-        <VBtn color="primary" @click="close">
+        <VBtn @click="close">
           Close
         </VBtn>
         <VBtn
           :disabled="!time && action === 'visit'"
           :loading="loading"
-          color="primary"
-          variant="tonal"
+          color="secondary"
+          variant="elevated"
           @click="send"
         >
           Send

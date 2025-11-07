@@ -1,7 +1,7 @@
 <template>
-  <VContainer>
+  <VContainer fluid>
     <VRow justify="center">
-      <VCol cols="12" md="10">
+      <VCol cols="12">
         <h1>Account page</h1>
         <div class="py-4">
           <VRow>
@@ -26,7 +26,7 @@
       </VCol>
     </VRow>
     <VRow justify="center">
-      <VCol cols="12" md="10">
+      <VCol cols="12">
         <VTabs v-model="activeTab">
           <VTab>Visit Requests</VTab>
           <VTab>Adoption Requests</VTab>

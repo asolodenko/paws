@@ -7,7 +7,7 @@
         {{ snackbar.text }}
       </VSnackbar>
       <VContainer>
-        <VResponsive class="text-start mt-16 pt-16">
+        <VResponsive class="text-start mt-12 pt-12">
           <RouterView />
         </VResponsive>
       </VContainer>

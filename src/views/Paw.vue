@@ -1,6 +1,13 @@
 <template>
   <VContainer>
     <VRow>
+      <VCol cols="12">
+        <VBtn prepend-icon="mdi-arrow-left" variant="plain" to="/paws">
+          Back to Paws List
+        </VBtn>
+      </VCol>
+    </VRow>
+    <VRow>
       <VCol cols="12" md="6">
         <VImg 
           src="./../assets/00001.jpg"

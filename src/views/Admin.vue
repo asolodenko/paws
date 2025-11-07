@@ -1,7 +1,7 @@
 <template>
-  <VContainer>
+  <VContainer fluid>
     <VRow justify="center">
-      <VCol cols="12" md="10">
+      <VCol cols="12">
         <h1>Admin</h1>
         <VDivider class="my-6" />
         <VTabs v-model="activeTab">

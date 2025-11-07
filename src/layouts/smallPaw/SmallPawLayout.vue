@@ -7,7 +7,11 @@
       <VSnackbar v-model="snackbar.show" :color="snackbar.color">
         {{ snackbar.text }}
       </VSnackbar>
-      <RouterView />
+      <VContainer fluid>
+        <VResponsive>
+          <RouterView />
+        </VResponsive>
+      </VContainer>
     </VMain>
   </VApp>
 </template>

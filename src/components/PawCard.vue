@@ -1,5 +1,5 @@
 <template>
-  <VCard style="width: 250px; height: 410px;">
+  <VCard color="primaryLight" style="width: 250px; height: 410px;">
     <div class="pa-6">
       <VImg src="./../assets/00001.jpg" />
     </div>
