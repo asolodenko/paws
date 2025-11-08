@@ -74,6 +74,34 @@
           </VCardText>
         </VCard>
 
+        <!-- Visit Counter Progress Bar -->
+        <VCard v-if="isAuth" class="pa-4 mt-4">
+          <VCardTitle class="text-subtitle-1">
+            Your Visit Progress
+          </VCardTitle>
+          <VCardText>
+            <div class="d-flex align-center mb-2">
+              <span class="text-body-2 mr-2">{{ visitCount }} / 5 visits completed</span>
+            </div>
+            <VProgressLinear
+              :model-value="(visitCount / 5) * 100"
+              :color="visitCount >= 5 ? 'success' : 'primary'"
+              height="20"
+              rounded
+            >
+              <template #default>
+                <strong class="text-white">{{ Math.round((visitCount / 5) * 100) }}%</strong>
+              </template>
+            </VProgressLinear>
+            <div v-if="visitCount >= 5" class="text-success text-caption mt-2">
+              <VIcon icon="mdi-check-circle" size="small" /> You're eligible to adopt {{ currentPaw.name }}!
+            </div>
+            <div v-else class="text-caption mt-2">
+              Complete {{ 5 - visitCount }} more visit{{ 5 - visitCount > 1 ? 's' : '' }} to become eligible for adoption
+            </div>
+          </VCardText>
+        </VCard>
+
         <!-- Actions -->
         <VRow v-if="isAuth" class="mt-4">
           <VCol cols="6">
@@ -113,9 +141,10 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { usePawStore } from '@/store/paw'
+import { useRequestStore } from '@/store/request'
 import { storeToRefs } from 'pinia'
 import MakeRequestDialog from '@/components/MakeRequestDialog.vue'
 import { useUserStore } from '@/store/user'
@@ -125,13 +154,31 @@ const pawId = route.params.id as string
 const { fetchPawData } = usePawStore()
 const pawStore = usePawStore()
 const userStore = useUserStore()
+const requestStore = useRequestStore()
 const { currentPaw } = storeToRefs(pawStore)
 const { isAuth, user } = storeToRefs(userStore)
 const isModalOpen = ref(false)
 const modalAction = ref<'visit' | 'adopt'>('visit')
 
+// Computed property for visit count
+const visitCount = computed(() => {
+  if (!user.value || !pawId) {
+    return 0
+  }
+  return requestStore.getFulfilledVisitCount(user.value.uid, pawId)
+})
+
 onMounted(async () => {
   await fetchPawData(pawId)
+  
+  // Subscribe to user requests if authenticated
+  if (user.value) {
+    requestStore.subscribeToUserRequests(user.value.uid)
+  }
+})
+
+onUnmounted(() => {
+  requestStore.cleanup()
 })
 
 const openModal = (action: 'visit' | 'adopt') => {

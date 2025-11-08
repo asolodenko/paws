@@ -8,9 +8,19 @@
       <VCardText>
         <VisitForm v-if="action === 'visit'" v-model:date="date" v-model:time="time" />
         <div v-else>
-          Adopt pet {{ props.paw.name }}
+          <p>
+            Adopt pet {{ props.paw.name }}
+          </p>
           <br />
-          <br />
+          <p v-if="!isEligible" class="text-warning mb-4">
+            <VIcon icon="mdi-alert" size="small" />
+            To adopt {{ props.paw.name }}, you need to complete 5 visits first.
+            You currently have {{ visitCount }} fulfilled visit{{ visitCount !== 1 ? 's' : '' }}.
+          </p>
+          <p v-if="isEligible" class="text-success mb-4">
+            <VIcon icon="mdi-check-circle" size="small" />
+            You're eligible to adopt {{ props.paw.name }}!
+          </p>
           <p>
             In accordance with the rules of the shelter, to adopt a pet you need to send a request to the shelter administration.
             The request will be considered within 24 hours. If the request is approved, you will see a notification in account page.
@@ -23,7 +33,7 @@
           Close
         </VBtn>
         <VBtn
-          :disabled="!time && action === 'visit'"
+          :disabled="(!time && action === 'visit') || (action === 'adopt' && !isEligible)"
           :loading="loading"
           color="secondary"
           variant="elevated"
@@ -39,11 +49,12 @@
 <script lang="ts" setup>
 import { Paw } from '@/model/Paw.model'
 import { User } from '@/model/User.model'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import VisitForm from './VisitForm.vue'
 import { sendPOST } from '../plugins/axios'
 import { Request } from '@/model/Request.model'
 import { PENDING } from '@/constants'
+import { useRequestStore } from '@/store/request'
 
 const props = defineProps<{
   action: 'visit' | 'adopt',
@@ -51,6 +62,24 @@ const props = defineProps<{
   user: User | null,
 }>()
 const dialog = defineModel<boolean>()
+
+const requestStore = useRequestStore()
+
+// Check if user is eligible to adopt this pet
+const isEligible = computed(() => {
+  if (!props.user || !props.paw.id) {
+    return false
+  }
+  return requestStore.isEligibleToAdopt(props.user.uid, props.paw.id)
+})
+
+// Get visit count for messaging
+const visitCount = computed(() => {
+  if (!props.user || !props.paw.id) {
+    return 0
+  }
+  return requestStore.getFulfilledVisitCount(props.user.uid, props.paw.id)
+})
 
 const close = () => {
   dialog.value = false

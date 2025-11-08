@@ -42,8 +42,8 @@ The platform implements a 2-role hierarchical system:
 
 ## Request adoption
 - An auth-ed user should be able to make an adoption request to adopt a pet.
-  - Adoption should be allowed for users that visited (has fulfilled visit requests) the pet 5 times. - _not in MVP_ 
-  - A pet page shows a counter of visits for logged in user. - _not in MVP_ 
+  - Adoption should be allowed for users that visited (has fulfilled visit requests) the pet 5 times. ✅
+  - A pet page shows a counter of visits for logged in user. ✅
 - Non-auth-ed user shouldn't be able to make an adoption request to adopt a pet.
 
 ### Request state
