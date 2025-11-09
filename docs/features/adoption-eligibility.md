@@ -3,6 +3,11 @@
 ## Original Prompt
 Implement the adoption eligibility check feature for a user. Also implement displaying visit counter on a paw page. I don't have exact design for the counter, but I want it to be a progress bar.
 
+### Round 2:
+Make the next updates:
+- fix the data flow for visit count, it should not send api request, but read data directly from Firestore as described in instructions
+- I find eligibility check in the request dialog redundant as the button opening it is disabled until user is eligible to adopt.
+
 ## Feature Overview
 This feature enforces a requirement that users must complete 5 fulfilled visit requests to a specific pet before they are eligible to submit an adoption request for that pet. It includes visual feedback via a progress bar showing the user's visit count.
 
@@ -25,14 +30,6 @@ db.collection('requests')
   .where('status', '==', 'fulfilled')
   .get()
 ```
-
-#### 2. New API Endpoint: `getVisitCount.js`
-**Created:** New serverless function to fetch visit count for frontend display
-- Accepts `userId` and `pawId` in POST request body
-- Verifies Firebase ID token for authentication
-- Returns JSON with:
-  - `visitCount`: Number of fulfilled visits (0-5+)
-  - `isEligibleForAdoption`: Boolean indicating if user has ≥5 visits
 
 ### Frontend Changes
 
@@ -60,27 +57,35 @@ db.collection('requests')
 - Added reactive state:
   - `visitCount` - Stores current visit count
   - `isEligibleForAdoption` - Stores eligibility status
-- Added `fetchVisitCount()` function that calls `getVisitCount` API
-- Calls `fetchVisitCount()` on mount if user is authenticated
-- Watches `isAuth` to fetch count when user logs in
+- Added `subscribeToVisitCount()` function that creates a real-time Firestore listener
+- Queries Firestore directly for fulfilled visit requests:
+  ```typescript
+  query(
+    collection(firestore, 'requests'),
+    where('userId', '==', user.value.uid),
+    where('pawId', '==', pawId),
+    where('type', '==', 'visit'),
+    where('status', '==', 'fulfilled')
+  )
+  ```
+- Real-time updates via `onSnapshot()` - automatically reflects new fulfilled visits
+- Subscription established on mount if user is authenticated
+- Watches `isAuth` to subscribe when user logs in and unsubscribe when user logs out
 - Updated "Adopt Pet" button:
   - Disabled when `!isEligibleForAdoption`
   - Provides visual feedback that adoption requires prerequisites
-- Passes visit count data to `MakeRequestDialog` component
-- Refetches visit count after a request is sent (via `@request-sent` event)
+- Cleanup: Unsubscribes from Firestore listener on component unmount
 
 #### 3. Component: `MakeRequestDialog.vue`
-**Modified:** Request modal with eligibility enforcement
-- Added new props:
-  - `visitCount: number`
-  - `isEligibleForAdoption: boolean`
-- Added `requestSent` emit event to notify parent after successful request
-- Updated adoption request UI:
-  - Shows warning alert (VAlert) when not eligible
-  - Alert displays: Required visits remaining, current progress (X/5)
-  - "Send" button disabled when `action === 'adopt' && !isEligibleForAdoption`
-  - Only shows adoption instructions when user is eligible
-- Emits `requestSent` event after successful request submission to trigger parent refresh
+**Modified:** Request modal simplified
+- Props remain minimal:
+  - `action: 'visit' | 'adopt'`
+  - `paw: Paw`
+  - `user: User | null`
+- Adoption request UI shows standard instructions
+- "Send" button disabled only for visit requests without time selection
+- No eligibility check in dialog since "Adopt Pet" button in parent is already disabled when not eligible
+- Simpler user experience - eligibility enforcement handled at the page level
 
 ### User Experience Flow
 
@@ -99,27 +104,31 @@ db.collection('requests')
    - "Adopt Pet" button is enabled
    - Success message: "You're eligible to adopt this pet!"
    - Can click "Adopt Pet" to open modal and submit request
+   - Modal shows standard adoption instructions
 
 4. **Attempting to adopt without eligibility**
+   - "Adopt Pet" button remains disabled (cannot open modal)
    - If somehow bypassed (direct API call), backend rejects with 403
    - Frontend shows error via snackbar notification
 
-5. **After submitting a visit request**
-   - Visit count refreshes automatically
+5. **After admin fulfills a visit request**
+   - Real-time Firestore listener automatically updates visit count
    - Progress bar updates to reflect new state
+   - "Adopt Pet" button enables when 5th visit is fulfilled
 
 ### Technical Notes
 
 - **Authentication Required:** Both frontend component display and backend API endpoints require authenticated user
-- **Real-time Updates:** Visit count refetches after each request submission
-- **Firestore Queries:** Backend uses compound queries with 4 conditions (userId, pawId, type, status)
+- **Real-time Updates:** Uses Firestore `onSnapshot()` for live visit count updates
+- **Direct Firestore Access:** Frontend reads fulfilled visits directly (no API endpoint needed) following project's read pattern
+- **Write Operations via API:** Adoption requests still validated server-side in `sendRequest.js`
+- **Firestore Queries:** Uses compound queries with 4 conditions (userId, pawId, type='visit', status='fulfilled')
 - **Error Handling:** Backend returns descriptive error messages that frontend displays via existing snackbar system
 - **State Management:** Visit count is component-level state (not in Pinia store) as it's page-specific data
-- **Props Flow:** `Paw.vue` → `MakeRequestDialog.vue` → validation logic
+- **Memory Management:** Firestore subscription properly cleaned up on unmount and logout
 
 ### Future Enhancements (Not Implemented)
-- Real-time visit count updates via Firestore listeners
-- Caching visit count to reduce API calls
+- Caching visit count to reduce Firestore reads (though onSnapshot is efficient)
 - Admin interface to configure required visit threshold (currently hardcoded to 5)
 - Badge/achievement system for reaching milestones
 - Email notification when user becomes eligible
@@ -127,13 +136,12 @@ db.collection('requests')
 ### Files Modified/Created
 
 **Created:**
-- `/api/getVisitCount.js` - New API endpoint
 - `/src/components/VisitCounter.vue` - New component
 
 **Modified:**
 - `/api/sendRequest.js` - Added eligibility check
-- `/src/views/Paw.vue` - Integrated counter and fetch logic
-- `/src/components/MakeRequestDialog.vue` - Added eligibility props and validation
+- `/src/views/Paw.vue` - Integrated counter with Firestore subscription
+- `/src/components/MakeRequestDialog.vue` - Simplified (removed redundant eligibility UI)
 
 ### Testing Checklist
 - [ ] Unauthenticated users don't see visit counter
@@ -144,5 +152,6 @@ db.collection('requests')
 - [ ] Backend rejects adoption request when visitCount < 5
 - [ ] Backend allows adoption request when visitCount >= 5
 - [ ] Error message displays correct visit count
-- [ ] Visit counter updates after submitting visit request
-- [ ] Modal shows warning when trying to adopt without eligibility
+- [ ] Visit counter updates in real-time when admin fulfills a visit
+- [ ] Firestore subscription cleanup on logout and unmount
+- [ ] Modal shows standard adoption instructions (no eligibility warning needed)

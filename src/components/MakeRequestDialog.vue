@@ -12,23 +12,7 @@
             Adopt pet {{ props.paw.name }}
           </p>
           
-          <!-- Eligibility status -->
-          <VAlert
-            v-if="!props.isEligibleForAdoption"
-            type="warning"
-            variant="tonal"
-            class="mb-3"
-          >
-            <div class="text-body-2">
-              <strong>Adoption Requirements:</strong>
-              <br />
-              You need {{ 5 - props.visitCount }} more fulfilled visit{{ 5 - props.visitCount !== 1 ? 's' : '' }} to this pet before you can adopt.
-              <br />
-              Current visits: {{ props.visitCount }}/5
-            </div>
-          </VAlert>
-          
-          <p v-if="props.isEligibleForAdoption">
+          <p>
             In accordance with the rules of the shelter, to adopt a pet you need to send a request to the shelter administration.
             The request will be considered within 24 hours. If the request is approved, you will see a notification in account page.
           </p>
@@ -40,7 +24,7 @@
           Close
         </VBtn>
         <VBtn
-          :disabled="(!time && action === 'visit') || (action === 'adopt' && !isEligibleForAdoption)"
+          :disabled="!time && action === 'visit'"
           :loading="loading"
           color="secondary"
           variant="elevated"
@@ -66,12 +50,6 @@ const props = defineProps<{
   action: 'visit' | 'adopt',
   paw: Paw,
   user: User | null,
-  visitCount: number,
-  isEligibleForAdoption: boolean,
-}>()
-
-const emit = defineEmits<{
-  requestSent: []
 }>()
 
 const dialog = defineModel<boolean>()
@@ -109,7 +87,6 @@ const send = async () => {
   await sendPOST('sendRequest', request)
   dialog.value = false
   loading.value = false
-  emit('requestSent')
 }
 
 </script>

@@ -116,22 +116,21 @@
       :action="modalAction"
       :paw="currentPaw"
       :user="user"
-      :visit-count="visitCount"
-      :is-eligible-for-adoption="isEligibleForAdoption"
-      @request-sent="fetchVisitCount"
     />
   </VContainer>
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, ref, watch, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { usePawStore } from '@/store/paw'
 import { storeToRefs } from 'pinia'
 import MakeRequestDialog from '@/components/MakeRequestDialog.vue'
 import VisitCounter from '@/components/VisitCounter.vue'
 import { useUserStore } from '@/store/user'
-import { sendPOST } from '@/plugins/axios'
+import { collection, query, where, onSnapshot } from 'firebase/firestore'
+import { firestore } from '@/firebase'
+import { FULFILLED } from '@/constants'
 
 const route = useRoute()
 const pawId = route.params.id as string
@@ -144,38 +143,62 @@ const isModalOpen = ref(false)
 const modalAction = ref<'visit' | 'adopt'>('visit')
 const visitCount = ref(0)
 const isEligibleForAdoption = ref(false)
+let unsubscribe: (() => void) | null = null
 
 onMounted(async () => {
   await fetchPawData(pawId)
   if (isAuth.value && user.value) {
-    await fetchVisitCount()
+    subscribeToVisitCount()
   }
 })
 
 // Watch for auth changes to fetch visit count when user logs in
 watch(isAuth, async (newIsAuth) => {
   if (newIsAuth && user.value) {
-    await fetchVisitCount()
+    subscribeToVisitCount()
+  } else {
+    // Clean up subscription when user logs out
+    if (unsubscribe) {
+      unsubscribe()
+      unsubscribe = null
+    }
+    visitCount.value = 0
+    isEligibleForAdoption.value = false
   }
 })
 
-const fetchVisitCount = async () => {
+onUnmounted(() => {
+  if (unsubscribe) {
+    unsubscribe()
+  }
+})
+
+const subscribeToVisitCount = () => {
   if (!user.value) {
     return
   }
   
+  // Clean up existing subscription
+  if (unsubscribe) {
+    unsubscribe()
+  }
+  
   try {
-    const response = await sendPOST('getVisitCount', {
-      userId: user.value.uid,
-      pawId,
-    })
+    const requestsRef = collection(firestore, 'requests')
+    const q = query(
+      requestsRef,
+      where('userId', '==', user.value.uid),
+      where('pawId', '==', pawId),
+      where('type', '==', 'visit'),
+      where('status', '==', FULFILLED),
+    )
     
-    if (response.data) {
-      visitCount.value = response.data.visitCount
-      isEligibleForAdoption.value = response.data.isEligibleForAdoption
-    }
+    unsubscribe = onSnapshot(q, (snapshot) => {
+      visitCount.value = snapshot.size
+      isEligibleForAdoption.value = snapshot.size >= 5
+    })
   } catch (error) {
-    console.error('Error fetching visit count:', error)
+    console.error('Error subscribing to visit count:', error)
   }
 }
 
