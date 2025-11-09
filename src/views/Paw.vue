@@ -19,6 +19,13 @@
       </VCol>
 
       <VCol cols="12" md="6" class="d-flex flex-column justify-space-between">
+        <!-- Visit Counter for authenticated users -->
+        <VisitCounter
+          v-if="isAuth"
+          :visit-count="visitCount"
+          :is-eligible-for-adoption="isEligibleForAdoption"
+        />
+
         <!-- Pet Details -->
         <VCard class="pa-4">
           <VCardTitle class="text-h5">
@@ -88,7 +95,8 @@
           <VCol cols="6">
             <VBtn
               color="secondary" 
-              block 
+              block
+              :disabled="!isEligibleForAdoption"
               @click="openModal('adopt')"
             >
               Adopt Pet
@@ -108,17 +116,22 @@
       :action="modalAction"
       :paw="currentPaw"
       :user="user"
+      :visit-count="visitCount"
+      :is-eligible-for-adoption="isEligibleForAdoption"
+      @request-sent="fetchVisitCount"
     />
   </VContainer>
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { usePawStore } from '@/store/paw'
 import { storeToRefs } from 'pinia'
 import MakeRequestDialog from '@/components/MakeRequestDialog.vue'
+import VisitCounter from '@/components/VisitCounter.vue'
 import { useUserStore } from '@/store/user'
+import { sendPOST } from '@/plugins/axios'
 
 const route = useRoute()
 const pawId = route.params.id as string
@@ -129,10 +142,42 @@ const { currentPaw } = storeToRefs(pawStore)
 const { isAuth, user } = storeToRefs(userStore)
 const isModalOpen = ref(false)
 const modalAction = ref<'visit' | 'adopt'>('visit')
+const visitCount = ref(0)
+const isEligibleForAdoption = ref(false)
 
 onMounted(async () => {
   await fetchPawData(pawId)
+  if (isAuth.value && user.value) {
+    await fetchVisitCount()
+  }
 })
+
+// Watch for auth changes to fetch visit count when user logs in
+watch(isAuth, async (newIsAuth) => {
+  if (newIsAuth && user.value) {
+    await fetchVisitCount()
+  }
+})
+
+const fetchVisitCount = async () => {
+  if (!user.value) {
+    return
+  }
+  
+  try {
+    const response = await sendPOST('getVisitCount', {
+      userId: user.value.uid,
+      pawId,
+    })
+    
+    if (response.data) {
+      visitCount.value = response.data.visitCount
+      isEligibleForAdoption.value = response.data.isEligibleForAdoption
+    }
+  } catch (error) {
+    console.error('Error fetching visit count:', error)
+  }
+}
 
 const openModal = (action: 'visit' | 'adopt') => {
   modalAction.value = action
