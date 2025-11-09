@@ -7,6 +7,11 @@ This is a very long task, so it may be beneficial to plan out your work clearly.
 ### Round 2:
 remove excessive documentation files WHATS_NEW, IMPLEMENTATION_SUMMARY and admin-quick-start, keep the admin-pet-inventory file as the one to update with the latest information.
 
+### Round 3:
+Make the next changes on the UI:
+- only the next fields should be required in pet form: name, breed, gender, coat color
+- implement image upload instead of URL
+
 ## Overview
 
 The admin panel has been completely redesigned with a professional dashboard interface. It now features three main sections accessible via tabs:
@@ -65,9 +70,14 @@ The Pet Inventory tab provides full CRUD functionality for managing pets:
 - **Delete Pet** - Remove pets from the system (with confirmation dialog)
 
 #### Pet Fields:
-All fields from the `Paw.model.ts` interface:
-- Name, Breed, Gender, Birth Date
-- Weight, Coat Color, Image URL
+**Required fields:**
+- Name* (required)
+- Breed* (required)
+- Gender* (required)
+- Coat Color* (required)
+
+**Optional fields:**
+- Birth Date, Weight, Image (uploaded file)
 - Temperament, Activity Level, Grooming Needs
 - Health Condition, Food Flavor, Toy Type
 
@@ -84,7 +94,8 @@ Table view of all pets with action buttons (edit/delete) and search functionalit
 
 #### `PetForm.vue`
 Modal dialog form for creating and editing pets. Includes:
-- Validation for all required fields
+- Validation for required fields (name, breed, gender, coat color)
+- Image upload with preview (converts to base64 data URL)
 - Dynamic mode (create vs. edit)
 - Organized layout with icons
 - Date picker for birth date
@@ -98,8 +109,9 @@ Three new serverless functions in `/api`:
 - **Method:** POST
 - **Auth:** Admin only (verified via custom claims)
 - **Payload:** `{ petData: {...} }`
-- **Validates:** All required fields before creation
+- **Validates:** Required fields (name, breed, gender, coatColor) before creation
 - **Returns:** Success status and new pet ID
+- **Note:** Image is stored as base64 data URL in the `img` field
 
 #### `updatePet.js`
 - **Method:** POST
@@ -179,8 +191,9 @@ These provide visual distinction for the statistics cards.
 
 **Adding a New Pet:**
 1. Click "Add New Pet" button
-2. Fill in all required fields
-3. Click "Create" to save
+2. Fill in required fields: Name, Breed, Gender, Coat Color
+3. Optionally upload an image and fill other fields
+4. Click "Create" to save
 
 **Editing a Pet:**
 1. Find the pet in the table
@@ -204,7 +217,7 @@ node setCustomClaims.js YOUR_USER_UID
 Use `vercel dev` instead of `npm run dev`
 
 **Form Won't Submit:**
-All fields are required. Fill in every field before submitting.
+Only name, breed, gender, and coat color are required. Fill in at least these fields before submitting.
 
 ### For Developers
 
@@ -232,7 +245,8 @@ Modify `headers` array in `PetInventory.vue`
 ## Future Enhancements
 
 Potential improvements marked as "not in MVP" in requirements:
-- Image upload instead of URL input
+- ~~Image upload instead of URL input~~ ✅ Implemented
+- Cloud storage for images (currently using base64 data URLs)
 - Batch operations (delete multiple pets)
 - Pet history/audit trail
 - Export pet inventory to CSV

@@ -40,12 +40,8 @@ export default async (req, res) => {
     return
   }
 
-  // Validate required fields
-  const requiredFields = [
-    'name', 'breed', 'gender', 'birthDate', 'weight', 
-    'coatColor', 'img', 'temperament', 'activityLevel', 
-    'groomingNeeds', 'healthCondition', 'foodFlavor', 'toyType',
-  ]
+  // Validate required fields (only name, breed, gender, coatColor are required)
+  const requiredFields = ['name', 'breed', 'gender', 'coatColor']
   
   for (const field of requiredFields) {
     if (!petData[field]) {

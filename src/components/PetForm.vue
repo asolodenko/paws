@@ -43,27 +43,6 @@
               />
             </VCol>
             
-            <!-- Birth Date -->
-            <VCol cols="12" md="6">
-              <VTextField
-                v-model="formData.birthDate"
-                label="Birth Date*"
-                type="date"
-                :rules="[rules.required]"
-                prepend-inner-icon="mdi-calendar"
-              />
-            </VCol>
-            
-            <!-- Weight -->
-            <VCol cols="12" md="6">
-              <VTextField
-                v-model="formData.weight"
-                label="Weight (kg)*"
-                :rules="[rules.required]"
-                prepend-inner-icon="mdi-weight-kilogram"
-              />
-            </VCol>
-            
             <!-- Coat Color -->
             <VCol cols="12" md="6">
               <VTextField
@@ -74,22 +53,62 @@
               />
             </VCol>
             
-            <!-- Image URL -->
-            <VCol cols="12">
+            <!-- Birth Date -->
+            <VCol cols="12" md="6">
               <VTextField
-                v-model="formData.img"
-                label="Image URL*"
-                :rules="[rules.required]"
-                prepend-inner-icon="mdi-image"
+                v-model="formData.birthDate"
+                label="Birth Date"
+                type="date"
+                prepend-inner-icon="mdi-calendar"
               />
+            </VCol>
+            
+            <!-- Weight -->
+            <VCol cols="12" md="6">
+              <VTextField
+                v-model="formData.weight"
+                label="Weight (kg)"
+                prepend-inner-icon="mdi-weight-kilogram"
+              />
+            </VCol>
+            
+            <!-- Image Upload -->
+            <VCol cols="12">
+              <VFileInput
+                v-model="imageFile"
+                label="Pet Image"
+                accept="image/*"
+                prepend-icon="mdi-camera"
+                show-size
+                @change="handleImageUpload"
+              >
+                <template #selection="{ fileNames }">
+                  <VChip
+                    v-if="fileNames.length > 0"
+                    color="primary"
+                    label
+                    size="small"
+                  >
+                    {{ fileNames[0] }}
+                  </VChip>
+                </template>
+              </VFileInput>
+              
+              <div v-if="imagePreview || formData.img" class="mt-2">
+                <VImg
+                  :src="imagePreview || formData.img"
+                  max-height="200"
+                  max-width="200"
+                  class="rounded"
+                />
+              </div>
             </VCol>
             
             <!-- Temperament -->
             <VCol cols="12">
               <VTextField
                 v-model="formData.temperament"
-                label="Temperament*"
-                :rules="[rules.required]"
+                label="Temperament"
                 prepend-inner-icon="mdi-emoticon-happy"
                 hint="e.g., Friendly, Energetic, Calm"
               />
@@ -99,9 +118,8 @@
             <VCol cols="12" md="4">
               <VSelect
                 v-model="formData.activityLevel"
-                label="Activity Level*"
+                label="Activity Level"
                 :items="threeLevelOptions"
-                :rules="[rules.required]"
                 prepend-inner-icon="mdi-run"
               />
             </VCol>
@@ -110,9 +128,8 @@
             <VCol cols="12" md="4">
               <VSelect
                 v-model="formData.groomingNeeds"
-                label="Grooming Needs*"
+                label="Grooming Needs"
                 :items="threeLevelOptions"
-                :rules="[rules.required]"
                 prepend-inner-icon="mdi-content-cut"
               />
             </VCol>
@@ -121,9 +138,8 @@
             <VCol cols="12" md="4">
               <VSelect
                 v-model="formData.healthCondition"
-                label="Health Condition*"
+                label="Health Condition"
                 :items="healthOptions"
-                :rules="[rules.required]"
                 prepend-inner-icon="mdi-medical-bag"
               />
             </VCol>
@@ -132,8 +148,7 @@
             <VCol cols="12" md="6">
               <VTextField
                 v-model="formData.foodFlavor"
-                label="Preferred Food Flavor*"
-                :rules="[rules.required]"
+                label="Preferred Food Flavor"
                 prepend-inner-icon="mdi-food"
               />
             </VCol>
@@ -142,8 +157,7 @@
             <VCol cols="12" md="6">
               <VTextField
                 v-model="formData.toyType"
-                label="Favorite Toy Type*"
-                :rules="[rules.required]"
+                label="Favorite Toy Type"
                 prepend-inner-icon="mdi-basketball"
               />
             </VCol>
@@ -193,6 +207,8 @@ const dialogModel = computed({
 
 const formRef = ref()
 const formValid = ref(false)
+const imageFile = ref<File[]>([])
+const imagePreview = ref<string | null>(null)
 
 const isEditMode = computed(() => !!props.pet)
 
@@ -222,6 +238,21 @@ const rules = {
   required: (value: string) => !!value || 'This field is required',
 }
 
+// Handle image file upload
+const handleImageUpload = (event: Event) => {
+  const target = event.target as HTMLInputElement
+  const file = target.files?.[0]
+  
+  if (file) {
+    const reader = new FileReader()
+    reader.onload = (e) => {
+      imagePreview.value = e.target?.result as string
+      formData.value.img = e.target?.result as string
+    }
+    reader.readAsDataURL(file)
+  }
+}
+
 // Watch for pet changes to populate form in edit mode
 watch(() => props.pet, (newPet) => {
   if (newPet) {
@@ -229,24 +260,30 @@ watch(() => props.pet, (newPet) => {
       name: newPet.name,
       breed: newPet.breed,
       gender: newPet.gender,
-      birthDate: newPet.birthDate,
-      weight: newPet.weight,
+      birthDate: newPet.birthDate || '',
+      weight: newPet.weight || '',
       coatColor: newPet.coatColor,
-      img: newPet.img,
-      temperament: newPet.temperament,
-      activityLevel: newPet.activityLevel,
-      groomingNeeds: newPet.groomingNeeds,
-      healthCondition: newPet.healthCondition,
-      foodFlavor: newPet.foodFlavor,
-      toyType: newPet.toyType,
+      img: newPet.img || '',
+      temperament: newPet.temperament || '',
+      activityLevel: newPet.activityLevel || '',
+      groomingNeeds: newPet.groomingNeeds || '',
+      healthCondition: newPet.healthCondition || '',
+      foodFlavor: newPet.foodFlavor || '',
+      toyType: newPet.toyType || '',
     }
+    imagePreview.value = null
+    imageFile.value = []
   } else {
     formData.value = { ...defaultFormData }
+    imagePreview.value = null
+    imageFile.value = []
   }
 }, { immediate: true })
 
 const closeDialog = () => {
   formData.value = { ...defaultFormData }
+  imageFile.value = []
+  imagePreview.value = null
   if (formRef.value) {
     formRef.value.reset()
   }
