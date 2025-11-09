@@ -12,6 +12,9 @@ Make the next changes on the UI:
 - only the next fields should be required in pet form: name, breed, gender, coat color
 - implement image upload instead of URL
 
+### Round 4:
+Fix axios error when sending a POST request. The message: "timeout of 5000ms exceeded". The error happens from time to time and to all the requests, not specific ones.
+
 ## Overview
 
 The admin panel has been completely redesigned with a professional dashboard interface. It now features three main sections accessible via tabs:

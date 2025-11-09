@@ -6,7 +6,7 @@ import { useSnackbarStore } from '@/store/useSnackbarStore'
 // Create a new Axios instance
 const instance = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
-  timeout: 5000,
+  timeout: 30000, // 30 seconds - increased for serverless cold starts
   headers: {
     'Content-Type': 'application/json',
   },
