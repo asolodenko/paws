@@ -18,6 +18,9 @@ Fix axios error when sending a POST request. The message: "timeout of 5000ms exc
 ### Round 5:
 The pet inventory table appears to miss a pet's adoption status.
 
+### Round 6:
+The adoption status issue seems to be broader than just UI inconsistency. There should be adopted pets as the dashboard shows 2 successful adoptions, but the inventory table doesn't reflect their adoption status. Investigate and fix the issue.
+
 ## Overview
 
 The admin panel has been completely redesigned with a professional dashboard interface. It now features three main sections accessible via tabs:
@@ -254,13 +257,58 @@ Modify `headers` array in `PetInventory.vue`
 - Custom claims ensure only admins can modify data
 - Firestore rules should restrict write access to admin users only (client-side validation)
 
+## Round 6: Adoption Status Synchronization (Bug Fix)
+
+### Problem Identified
+The dashboard showed "2 Fulfilled Adoptions" based on request status, but the pet inventory table showed all pets as "Available". This revealed a data synchronization issue:
+- **Request status** (pending → approved → fulfilled) was tracked in the `requests` collection
+- **Pet adoption status** (available → pending → adopted) was tracked in the `paws` collection
+- These two states were **not synchronized** - when an adoption request was fulfilled, the pet's `adoptionStatus` field was never updated
+
+### Root Cause
+The `handleRequestTransition.js` API function updated the request's status but didn't update the corresponding pet's `adoptionStatus` field.
+
+### Solution Implemented
+Modified `api/handleRequestTransition.js` to automatically sync pet adoption status when adoption requests change state:
+
+**Adoption Request State Transitions → Pet Status Updates:**
+- `approve` action → pet `adoptionStatus` = `'pending'`
+- `reject` action → pet `adoptionStatus` = `'available'`
+- `fulfill` action → pet `adoptionStatus` = `'adopted'`
+- `unfulfill` action → pet `adoptionStatus` = `'available'`
+
+**Implementation Details:**
+1. Extract request data to check if it's an adoption request (`type === 'adopt'`)
+2. Get the `pawId` from the request
+3. Determine appropriate pet status based on the action
+4. Update both the request status and pet's `adoptionStatus` in the database
+
+**Code Changes:**
+- Added logic to read request data before updating
+- Created `petStatusUpdate` variable to track desired pet status
+- Conditionally update pet document in Firestore after request update
+- Only applies to adoption requests (visit requests don't affect pet status)
+
+### Impact
+- **Dashboard accuracy:** "Fulfilled Adoptions" count now matches pets marked as "adopted"
+- **Data integrity:** Request state and pet state remain synchronized
+- **User experience:** Pet inventory accurately reflects which pets are available, pending adoption, or already adopted
+- **Admin workflow:** No manual intervention needed to update pet status after processing adoption requests
+
+### Testing Recommendations
+1. Verify that approving an adoption request marks the pet as "pending"
+2. Verify that fulfilling an adoption request marks the pet as "adopted"
+3. Verify that rejecting an adoption request marks the pet as "available"
+4. Verify that unfulfilling an adoption request marks the pet back to "available"
+5. Confirm visit requests don't affect pet adoption status
+
 ## Future Enhancements
 
 Potential improvements marked as "not in MVP" in requirements:
 - ~~Image upload instead of URL input~~ ✅ Implemented
+- ~~Pet availability status management~~ ✅ Implemented (auto-synced with request transitions)
 - Cloud storage for images (currently using base64 data URLs)
 - Batch operations (delete multiple pets)
 - Pet history/audit trail
 - Export pet inventory to CSV
 - Analytics charts for dashboard
-- Pet availability status management
