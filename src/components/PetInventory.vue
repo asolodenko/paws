@@ -99,6 +99,24 @@
                   <span>Edit</span>
                 </VTooltip>
                 
+                <VTooltip v-if="item.adoptionStatus === 'adopted'" bottom>
+                  <template #activator="{ props }">
+                    <VBtn
+                      icon
+                      size="small"
+                      color="success"
+                      class="ml-2"
+                      v-bind="props"
+                      @click="openRenewDialog(item)"
+                    >
+                      <VIcon>
+                        mdi-refresh
+                      </VIcon>
+                    </VBtn>
+                  </template>
+                  <span>Renew (Return to shelter)</span>
+                </VTooltip>
+                
                 <VTooltip bottom>
                   <template #activator="{ props }">
                     <VBtn
@@ -152,6 +170,36 @@
         </VCardActions>
       </VCard>
     </VDialog>
+
+    <!-- Renew Confirmation Dialog -->
+    <VDialog v-model="renewDialog" max-width="500">
+      <VCard>
+        <VCardTitle class="text-h5">
+          Confirm Pet Renewal
+        </VCardTitle>
+        <VCardText>
+          Are you sure you want to renew <strong>{{ petToRenew?.name }}</strong>? This will mark the pet as available for adoption again, indicating the pet has returned to the shelter.
+        </VCardText>
+        <VCardActions>
+          <VSpacer />
+          <VBtn
+            color="grey"
+            variant="text"
+            @click="renewDialog = false"
+          >
+            Cancel
+          </VBtn>
+          <VBtn
+            color="success"
+            variant="elevated"
+            :loading="renewLoading"
+            @click="confirmRenew"
+          >
+            Renew
+          </VBtn>
+        </VCardActions>
+      </VCard>
+    </VDialog>
   </VContainer>
 </template>
 
@@ -164,12 +212,15 @@ defineProps<{
   loading: boolean
 }>()
 
-const emit = defineEmits(['create', 'edit', 'delete'])
+const emit = defineEmits(['create', 'edit', 'delete', 'renew'])
 
 const search = ref('')
 const deleteDialog = ref(false)
 const petToDelete = ref<Paw | null>(null)
 const deleteLoading = ref(false)
+const renewDialog = ref(false)
+const petToRenew = ref<Paw | null>(null)
+const renewLoading = ref(false)
 
 const headers = [
   { title: 'Image', key: 'img', sortable: false },
@@ -265,6 +316,26 @@ const confirmDelete = async () => {
     petToDelete.value = null
   } finally {
     deleteLoading.value = false
+  }
+}
+
+const openRenewDialog = (pet: Paw) => {
+  petToRenew.value = pet
+  renewDialog.value = true
+}
+
+const confirmRenew = async () => {
+  if (!petToRenew.value) {
+    return
+  }
+  
+  renewLoading.value = true
+  try {
+    await emit('renew', petToRenew.value.id)
+    renewDialog.value = false
+    petToRenew.value = null
+  } finally {
+    renewLoading.value = false
   }
 }
 </script>

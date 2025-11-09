@@ -21,6 +21,9 @@ The pet inventory table appears to miss a pet's adoption status.
 ### Round 6:
 The adoption status issue seems to be broader than just UI inconsistency. There should be adopted pets as the dashboard shows 2 successful adoptions, but the inventory table doesn't reflect their adoption status. Investigate and fix the issue.
 
+### Round 7:
+Implement missing functionality of pet's renewal in the system.
+
 ## Overview
 
 The admin panel has been completely redesigned with a professional dashboard interface. It now features three main sections accessible via tabs:
@@ -41,6 +44,7 @@ The admin panel has been completely redesigned with a professional dashboard int
 - `api/createPet.js` - Create new pet endpoint
 - `api/updatePet.js` - Update existing pet endpoint
 - `api/deletePet.js` - Delete pet endpoint
+- `api/renewPet.js` - Renew pet endpoint (mark adopted pets as available when returned to shelter)
 
 ### State Management
 - `src/store/petManagement.ts` - Pinia store for pet CRUD operations
@@ -77,6 +81,7 @@ The Pet Inventory tab provides full CRUD functionality for managing pets:
 - **Add New Pet** - Create new pet entries with all required fields
 - **Edit Pet** - Update existing pet information
 - **Delete Pet** - Remove pets from the system (with confirmation dialog)
+- **Renew Pet** - Mark adopted pets as available when they return to the shelter (visible only for adopted pets)
 
 #### Pet Fields:
 **Required fields:**
@@ -118,7 +123,7 @@ Modal dialog form for creating and editing pets. Includes:
 
 ### Backend API
 
-Three new serverless functions in `/api`:
+Four serverless functions in `/api`:
 
 #### `createPet.js`
 - **Method:** POST
@@ -141,6 +146,16 @@ Three new serverless functions in `/api`:
 - **Payload:** `{ petId: string }`
 - **Validates:** Pet exists before deletion
 - **Returns:** Success status
+
+#### `renewPet.js`
+- **Method:** POST
+- **Auth:** Admin only
+- **Payload:** `{ petId: string }`
+- **Validates:** Pet exists and has 'adopted' status
+- **Action:** Updates pet's `adoptionStatus` to 'available', logs renewal timestamp
+- **Returns:** Success status
+- **Use Case:** When an adopted pet is returned to the shelter
+- **Note:** Only works for pets with `adoptionStatus === 'adopted'`
 
 All functions follow the existing pattern:
 1. Verify POST request
@@ -165,6 +180,7 @@ New Pinia store for pet CRUD operations:
 - `createPet(petData)` - Create new pet via API
 - `updatePet(petId, petData)` - Update pet via API
 - `deletePet(petId)` - Delete pet via API
+- `renewPet(petId)` - Renew pet (mark as available) via API
 - `cleanup()` - Unsubscribe from Firestore listeners
 
 ### Theme Updates
@@ -219,6 +235,12 @@ These provide visual distinction for the statistics cards.
 1. Click the trash icon (🗑️)
 2. Confirm deletion in the dialog
 3. Pet is permanently removed
+
+**Renewing an Adopted Pet:**
+1. Find the adopted pet in the table (marked with blue "Adopted" status)
+2. Click the green refresh icon (🔄) - only visible for adopted pets
+3. Confirm renewal in the dialog
+4. Pet status changes to "Available" and can be adopted again
 
 ### Troubleshooting
 
@@ -302,13 +324,95 @@ Modified `api/handleRequestTransition.js` to automatically sync pet adoption sta
 4. Verify that unfulfilling an adoption request marks the pet back to "available"
 5. Confirm visit requests don't affect pet adoption status
 
+## Round 7: Pet Renewal Functionality
+
+### Requirement
+According to functional requirements: "Admin should have a way to renew a pet in the system, due to the pet's returning to the shelter."
+
+When an adopted pet is returned to the shelter, admins need a way to make it available for adoption again without manually editing the pet's adoption status.
+
+### Implementation
+
+#### UI Changes (`src/components/PetInventory.vue`)
+- Added **Renew button** to the actions column
+- Button is **conditionally rendered** - only visible for pets with `adoptionStatus === 'adopted'`
+- Uses green color and refresh icon (`mdi-refresh`)
+- Tooltip: "Renew (Return to shelter)"
+- Clicking opens a confirmation dialog before renewal
+
+#### Confirmation Dialog
+- Title: "Confirm Pet Renewal"
+- Message: Explains that renewal will mark the pet as available again
+- Actions: Cancel (grey) or Renew (green, with loading state)
+- Prevents accidental renewals
+
+#### Backend API (`api/renewPet.js`)
+New serverless function that:
+1. Verifies admin authentication via Firebase ID token
+2. Validates that `petId` is provided
+3. Checks that the pet exists in Firestore
+4. **Validates adoption status** - only allows renewal for pets with `adoptionStatus === 'adopted'`
+5. Updates pet document with:
+   - `adoptionStatus`: 'available'
+   - `renewedAt`: timestamp of renewal
+   - `renewedBy`: admin user ID who performed the renewal
+   - `updatedAt`: timestamp
+   - `updatedBy`: admin user ID
+6. Returns success/error response
+
+**Error Handling:**
+- Returns 400 if trying to renew a non-adopted pet
+- Returns 404 if pet not found
+- Returns 403 if user is not admin
+
+#### Store Action (`src/store/petManagement.ts`)
+Added `renewPet(petId)` action that:
+- Sets loading state
+- Calls `sendPOST('renewPet', { petId })`
+- Handles success/error states
+- Returns boolean success flag
+
+#### Parent Component Integration (`src/views/Admin.vue`)
+- Added `@renew` event handler to `PetInventory` component
+- Created `handleRenewPet(petId)` function that calls store action
+- Real-time updates reflect changes immediately (via Firestore subscription)
+
+### User Flow
+1. Admin views pet inventory table
+2. Adopted pets show a green refresh button
+3. Admin clicks refresh button
+4. Confirmation dialog appears
+5. Admin confirms renewal
+6. Backend validates and updates pet status
+7. Pet instantly appears as "Available" (real-time sync)
+8. Success notification shown via snackbar
+
+### Data Tracking
+The renewal action logs:
+- `renewedAt`: ISO timestamp when pet was renewed
+- `renewedBy`: UID of admin who renewed the pet
+- Enables audit trail of pet returns to shelter
+
+### Business Logic
+- **Only adopted pets can be renewed** - prevents status confusion
+- Renewal resets adoption status to "available"
+- Preserves all other pet data (name, breed, characteristics)
+- Does not delete adoption history (requests remain in database)
+
+### Security
+- Admin-only operation (verified server-side via custom claims)
+- Cannot be bypassed by direct Firestore access (Firestore rules should enforce this)
+- Validates pet state before allowing renewal
+
 ## Future Enhancements
 
 Potential improvements marked as "not in MVP" in requirements:
-- ~~Image upload instead of URL input~~ ✅ Implemented
-- ~~Pet availability status management~~ ✅ Implemented (auto-synced with request transitions)
+- ~~Image upload instead of URL input~~ ✅ Implemented (Round 3)
+- ~~Pet availability status management~~ ✅ Implemented (Round 6 - auto-synced with request transitions)
+- ~~Pet renewal system~~ ✅ Implemented (Round 7)
 - Cloud storage for images (currently using base64 data URLs)
-- Batch operations (delete multiple pets)
-- Pet history/audit trail
+- Batch operations (delete multiple pets, bulk renewal)
+- Pet history/audit trail (detailed view of renewals and adoptions)
 - Export pet inventory to CSV
 - Analytics charts for dashboard
+- Email notifications when pets are renewed

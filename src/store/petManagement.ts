@@ -81,6 +81,22 @@ export const usePetManagementStore = defineStore('petManagement', () => {
     }
   }
 
+  // Renew pet (mark as available after returning to shelter)
+  const renewPet = async (petId: string) => {
+    loading.value = true
+    error.value = null
+    try {
+      await sendPOST('renewPet', { petId })
+      return true
+    } catch (err) {
+      console.error('Error renewing pet:', err)
+      error.value = 'Failed to renew pet'
+      return false
+    } finally {
+      loading.value = false
+    }
+  }
+
   // Cleanup subscription
   const cleanup = () => {
     if (unsubscribe) {
@@ -97,6 +113,7 @@ export const usePetManagementStore = defineStore('petManagement', () => {
     createPet,
     updatePet,
     deletePet,
+    renewPet,
     cleanup,
   }
 })

@@ -56,6 +56,7 @@
               @create="openCreatePetDialog"
               @edit="openEditPetDialog"
               @delete="handleDeletePet"
+              @renew="handleRenewPet"
             />
           </VTabsWindowItem>
         </VTabsWindow>
@@ -185,6 +186,10 @@ const handlePetFormSubmit = async (petData: Partial<Paw> & { id?: string }) => {
 
 const handleDeletePet = async (petId: string) => {
   await petManagementStore.deletePet(petId)
+}
+
+const handleRenewPet = async (petId: string) => {
+  await petManagementStore.renewPet(petId)
 }
 </script>
 
