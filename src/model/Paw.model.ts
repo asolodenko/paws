@@ -7,6 +7,8 @@ type ThreeLevel = 'moderate' | 'low' | 'high';
 
 type HealthCondition = 'healthy' | 'underweight' | 'overweight' | 'dental issues';
 
+type AdoptionStatus = 'available' | 'adopted' | 'pending';
+
 export interface Paw {
   id: string;
   img: string;
@@ -22,4 +24,5 @@ export interface Paw {
   foodFlavor: string;
   toyType: string;
   healthCondition: HealthCondition;
+  adoptionStatus?: AdoptionStatus;
 }

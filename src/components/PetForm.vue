@@ -144,6 +144,16 @@
               />
             </VCol>
             
+            <!-- Adoption Status -->
+            <VCol cols="12" md="4">
+              <VSelect
+                v-model="formData.adoptionStatus"
+                label="Adoption Status"
+                :items="adoptionStatusOptions"
+                prepend-inner-icon="mdi-clipboard-check"
+              />
+            </VCol>
+            
             <!-- Food Flavor -->
             <VCol cols="12" md="6">
               <VTextField
@@ -226,6 +236,7 @@ const defaultFormData = {
   healthCondition: '',
   foodFlavor: '',
   toyType: '',
+  adoptionStatus: 'available',
 }
 
 const formData = ref({ ...defaultFormData })
@@ -233,6 +244,7 @@ const formData = ref({ ...defaultFormData })
 const genderOptions = ['Male', 'Female']
 const threeLevelOptions = ['low', 'moderate', 'high']
 const healthOptions = ['healthy', 'underweight', 'overweight', 'dental issues']
+const adoptionStatusOptions = ['available', 'pending', 'adopted']
 
 const rules = {
   required: (value: string) => !!value || 'This field is required',
@@ -270,6 +282,7 @@ watch(() => props.pet, (newPet) => {
       healthCondition: newPet.healthCondition || '',
       foodFlavor: newPet.foodFlavor || '',
       toyType: newPet.toyType || '',
+      adoptionStatus: newPet.adoptionStatus || 'available',
     }
     imagePreview.value = null
     imageFile.value = []

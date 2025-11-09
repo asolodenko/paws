@@ -15,6 +15,9 @@ Make the next changes on the UI:
 ### Round 4:
 Fix axios error when sending a POST request. The message: "timeout of 5000ms exceeded". The error happens from time to time and to all the requests, not specific ones.
 
+### Round 5:
+The pet inventory table appears to miss a pet's adoption status.
+
 ## Overview
 
 The admin panel has been completely redesigned with a professional dashboard interface. It now features three main sections accessible via tabs:
@@ -83,6 +86,7 @@ The Pet Inventory tab provides full CRUD functionality for managing pets:
 - Birth Date, Weight, Image (uploaded file)
 - Temperament, Activity Level, Grooming Needs
 - Health Condition, Food Flavor, Toy Type
+- Adoption Status (available, pending, adopted - defaults to 'available')
 
 ### New Components
 
@@ -93,16 +97,21 @@ Statistics dashboard with cards displaying key metrics. Uses new theme colors fo
 Extracted requests management into a separate component for better code organization.
 
 #### `PetInventory.vue`
-Table view of all pets with action buttons (edit/delete) and search functionality.
+Table view of all pets with action buttons (edit/delete) and search functionality. Displays:
+- Pet image, name, gender, breed
+- Birth date, weight, health condition
+- **Adoption status** with color-coded chips (green=available, amber=pending, blue=adopted)
+- Edit and delete actions
 
 #### `PetForm.vue`
 Modal dialog form for creating and editing pets. Includes:
 - Validation for required fields (name, breed, gender, coat color)
 - Image upload with preview (converts to base64 data URL)
+- Adoption status selector (available, pending, adopted)
 - Dynamic mode (create vs. edit)
 - Organized layout with icons
 - Date picker for birth date
-- Dropdowns for constrained fields (gender, health condition, etc.)
+- Dropdowns for constrained fields (gender, health condition, adoption status)
 
 ### Backend API
 

@@ -69,6 +69,18 @@
                 </VChip>
               </template>
               
+              <template #[`item.adoptionStatus`]="{ item }">
+                <VChip
+                  :color="getAdoptionStatusColor(item.adoptionStatus)"
+                  size="small"
+                >
+                  <VIcon left size="small">
+                    {{ getAdoptionStatusIcon(item.adoptionStatus) }}
+                  </VIcon>
+                  {{ getAdoptionStatusLabel(item.adoptionStatus) }}
+                </VChip>
+              </template>
+              
               <template #[`item.actions`]="{ item }">
                 <VTooltip bottom>
                   <template #activator="{ props }">
@@ -167,6 +179,7 @@ const headers = [
   { title: 'Birth Date', key: 'birthDate' },
   { title: 'Weight', key: 'weight' },
   { title: 'Health', key: 'healthCondition' },
+  { title: 'Status', key: 'adoptionStatus' },
   { title: 'Actions', key: 'actions', sortable: false },
 ]
 
@@ -185,6 +198,45 @@ const getHealthColor = (condition: string) => {
       return 'error'
     default:
       return 'grey'
+  }
+}
+
+const getAdoptionStatusColor = (status?: string) => {
+  switch (status) {
+    case 'available':
+      return 'success'
+    case 'pending':
+      return 'warning'
+    case 'adopted':
+      return 'info'
+    default:
+      return 'success' // Default to available
+  }
+}
+
+const getAdoptionStatusIcon = (status?: string) => {
+  switch (status) {
+    case 'available':
+      return 'mdi-check-circle'
+    case 'pending':
+      return 'mdi-clock-outline'
+    case 'adopted':
+      return 'mdi-heart'
+    default:
+      return 'mdi-check-circle' // Default to available
+  }
+}
+
+const getAdoptionStatusLabel = (status?: string) => {
+  switch (status) {
+    case 'available':
+      return 'Available'
+    case 'pending':
+      return 'Pending'
+    case 'adopted':
+      return 'Adopted'
+    default:
+      return 'Available' // Default to available
   }
 }
 
