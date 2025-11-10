@@ -213,7 +213,7 @@ const search = ref('')
 
 <style scoped>
 .paws-list-container {
-  padding: 2rem 1rem;
+  padding: 2rem 0.5rem;
 }
 
 .search-bar-card {
@@ -229,7 +229,7 @@ const search = ref('')
 }
 
 .cards-grid {
-  gap: 1.5rem;
+  gap: 0.5rem;
 }
 
 .paw-card-col {
@@ -264,7 +264,11 @@ const search = ref('')
 
 @media (max-width: 600px) {
   .paws-list-container {
-    padding: 1rem 0.5rem;
+    padding: 1rem 0.25rem;
+  }
+  
+  .cards-grid {
+    gap: 0.25rem;
   }
 }
 </style>

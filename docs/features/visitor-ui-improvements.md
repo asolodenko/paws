@@ -10,6 +10,9 @@ Make the next updates to the UI:
 - change the icons color on the paw page for a better contrast
 - propose a new primary color or additional color to be used on cards
 
+### Round 3:
+Decrease gaps between cards in the paws list. As seen on the screenshot another column could be added if decreasing gaps.
+
 **Date**: November 10, 2025  
 **Status**: Completed  
 **Target Users**: Visitors and potential pet adopters
