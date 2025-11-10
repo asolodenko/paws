@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
+import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import {
   createFirebaseAdminMocks,
   createMockRequest,
@@ -604,8 +604,10 @@ describe('handleRequestTransition API Handler', () => {
         }),
       })
 
-      const pawRef = mockFirestore.collection('paws').doc('paw1')
-      pawRef.update = vi.fn().mockRejectedValue(new Error('Pet update failed'))
+      // First update succeeds (request update), second update fails (pet update)
+      mockDocRef.update
+        .mockResolvedValueOnce({})  // Request update succeeds
+        .mockRejectedValueOnce(new Error('Pet update failed'))  // Pet update fails
 
       req.body = { requestId: 'req1', action: 'approve' }
 

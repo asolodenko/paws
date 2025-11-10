@@ -99,7 +99,12 @@ export default async (req, res) => {
   // Update the pet's adoption status if needed
   if (petStatusUpdate && pawId) {
     const pawRef = db.collection('paws').doc(pawId)
-    await pawRef.update({ adoptionStatus: petStatusUpdate })
+    try {
+      await pawRef.update({ adoptionStatus: petStatusUpdate })
+    } catch {
+      // If pet update fails, throw error to prevent inconsistent state
+      throw new Error('Pet update failed')
+    }
   }
 
   res.status(200).send({ success: true })
