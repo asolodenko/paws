@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
+import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import {
   createFirebaseAdminMocks,
   createMockRequest,
@@ -25,8 +25,6 @@ describe('deletePet API Handler', () => {
   beforeEach(() => {
     req = createMockRequest()
     res = createMockResponse()
-    resetFirebaseMocks()
-    vi.clearAllMocks()
 
     // Set up default mocks for admin user
     mockAuth.verifyIdToken.mockResolvedValue({ uid: 'admin-user-id' })

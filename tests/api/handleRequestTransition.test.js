@@ -25,8 +25,6 @@ describe('handleRequestTransition API Handler', () => {
   beforeEach(() => {
     req = createMockRequest()
     res = createMockResponse()
-    resetFirebaseMocks()
-    vi.clearAllMocks()
 
     // Set up default mocks
     mockAuth.verifyIdToken.mockResolvedValue({ uid: 'admin-user-id' })

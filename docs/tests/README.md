@@ -10,6 +10,9 @@ Review failed tests to determine real vs acceptable failures
 ### Round 3:
 Fix mock state pollution issue
 
+### Round 4:
+Why reset Firebase mocks is called in both beforeEach and afterEach? I find it redundant. Review all test suites and remove unnecessary calls.
+
 ## Summary
 
 Comprehensive unit test suite for all serverless API functions in The Paws pet adoption application. Tests cover authentication, authorization, validation, business logic, error handling, and edge cases.

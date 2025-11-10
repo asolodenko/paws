@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
+import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import {
   createFirebaseAdminMocks,
   createMockRequest,
@@ -25,8 +25,6 @@ describe('sendRequest API Handler', () => {
   beforeEach(() => {
     req = createMockRequest()
     res = createMockResponse()
-    resetFirebaseMocks()
-    vi.clearAllMocks()
 
     // Set up default successful mocks
     mockAuth.verifyIdToken.mockResolvedValue({ uid: 'test-user-id' })
