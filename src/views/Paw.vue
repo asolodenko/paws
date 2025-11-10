@@ -92,7 +92,7 @@
               >
                 <div class="stat-item">
                   <VIcon
-                    color="primary"
+                    color="accent"
                     size="small"
                     class="mb-1"
                   >
@@ -112,7 +112,7 @@
               >
                 <div class="stat-item">
                   <VIcon
-                    color="primary"
+                    color="accent"
                     size="small"
                     class="mb-1"
                   >
@@ -132,7 +132,7 @@
               >
                 <div class="stat-item">
                   <VIcon
-                    color="primary"
+                    color="accent"
                     size="small"
                     class="mb-1"
                   >
@@ -155,7 +155,7 @@
               <div class="info-row">
                 <div class="info-label">
                   <VIcon
-                    color="primary"
+                    color="accent"
                     size="small"
                   >
                     mdi-palette
@@ -170,7 +170,7 @@
               <div class="info-row">
                 <div class="info-label">
                   <VIcon
-                    color="primary"
+                    color="accent"
                     size="small"
                   >
                     mdi-emoticon-happy
@@ -185,7 +185,7 @@
               <div class="info-row">
                 <div class="info-label">
                   <VIcon
-                    color="primary"
+                    color="accent"
                     size="small"
                   >
                     mdi-heart-pulse
@@ -200,7 +200,7 @@
               <div class="info-row">
                 <div class="info-label">
                   <VIcon
-                    color="primary"
+                    color="accent"
                     size="small"
                   >
                     mdi-run
@@ -215,7 +215,7 @@
               <div class="info-row">
                 <div class="info-label">
                   <VIcon
-                    color="primary"
+                    color="accent"
                     size="small"
                   >
                     mdi-content-cut
@@ -230,7 +230,7 @@
               <div class="info-row">
                 <div class="info-label">
                   <VIcon
-                    color="primary"
+                    color="accent"
                     size="small"
                   >
                     mdi-food
@@ -245,7 +245,7 @@
               <div class="info-row">
                 <div class="info-label">
                   <VIcon
-                    color="primary"
+                    color="accent"
                     size="small"
                   >
                     mdi-toys

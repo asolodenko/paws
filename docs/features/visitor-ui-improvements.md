@@ -3,6 +3,13 @@
 ## Original Prompt
 So far we've improved the UI for admin users, let's now focus on visitors who are also potential pet adopters. Work on improving the landing page, paws and paw pages design. For paws page keep the card-based layouts with subtle shadows. Include thoughtful details like hover states, transitions, and micro-interactions. Apply design principles: hierarchy, contrast, balance, and movement. Use the latest Vuetify API via #vuetify-mcp 
 
+### Round 2:
+Make the next updates to the UI:
+- change the icons color on the landing page card for a better contrast
+- change the icons and button color on the paw card for a better contrast
+- change the icons color on the paw page for a better contrast
+- propose a new primary color or additional color to be used on cards
+
 **Date**: November 10, 2025  
 **Status**: Completed  
 **Target Users**: Visitors and potential pet adopters

@@ -52,7 +52,7 @@
           <VIcon
             icon="mdi-shape"
             size="small"
-            color="primary"
+            color="accent"
             class="info-icon"
           />
           <span class="text-body-2 text-truncate">{{ props.paw?.breed }}</span>
@@ -62,7 +62,7 @@
           <VIcon
             icon="mdi-cake"
             size="small"
-            color="primary"
+            color="accent"
             class="info-icon"
           />
           <span class="text-body-2 text-truncate">{{ props.paw?.birthDate }}</span>
@@ -74,8 +74,8 @@
     <VCardActions class="px-4 pb-4 pt-0">
       <VBtn
         :to="`/paws/${props.paw?.id}`"
-        variant="tonal"
-        color="primary"
+        variant="flat"
+        color="accent"
         block
         class="text-none learn-more-btn"
         rounded="lg"

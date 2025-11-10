@@ -23,6 +23,7 @@ export default createVuetify({
           primary: '#365738ff',
           secondary: '#FFFFFF',
           primaryLight: '#558f58ff',
+          accent: '#D4844E', // Warm terracotta/coral - complements green, great contrast
           background: '#231c1cff', //'#909690',
           surface: '#434a44ff',
           border: '#707570',

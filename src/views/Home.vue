@@ -72,9 +72,14 @@
           class="feature-card h-100 text-center pa-6"
           elevation="0"
           variant="tonal"
+          color="accent"
           rounded="xl"
         >
-          <VIcon size="64" color="primary" class="mb-4">
+          <VIcon
+            size="64"
+            color="error"
+            class="mb-4"
+          >
             mdi-heart
           </VIcon>
           <h3 class="text-h5 font-weight-bold mb-3">
@@ -91,9 +96,14 @@
           class="feature-card h-100 text-center pa-6"
           elevation="0"
           variant="tonal"
+          color="accent"
           rounded="xl"
         >
-          <VIcon size="64" color="primary" class="mb-4">
+          <VIcon
+            size="64"
+            color="info"
+            class="mb-4"
+          >
             mdi-calendar-check
           </VIcon>
           <h3 class="text-h5 font-weight-bold mb-3">
@@ -110,9 +120,14 @@
           class="feature-card h-100 text-center pa-6"
           elevation="0"
           variant="tonal"
+          color="accent"
           rounded="xl"
         >
-          <VIcon size="64" color="primary" class="mb-4">
+          <VIcon
+            size="64"
+            color="success"
+            class="mb-4"
+          >
             mdi-shield-check
           </VIcon>
           <h3 class="text-h5 font-weight-bold mb-3">
