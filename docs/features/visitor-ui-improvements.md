@@ -13,6 +13,9 @@ Make the next updates to the UI:
 ### Round 3:
 Decrease gaps between cards in the paws list. As seen on the screenshot another column could be added if decreasing gaps.
 
+### Round 4:
+Reflect the latest changes to pet inventory in the paws list. Do not show adopted pets in the list. Render pet's image if it's provided. 
+
 **Date**: November 10, 2025  
 **Status**: Completed  
 **Target Users**: Visitors and potential pet adopters

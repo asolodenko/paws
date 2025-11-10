@@ -10,7 +10,7 @@
     <!-- Image Section -->
     <div class="image-wrapper">
       <VImg
-        src="./../assets/00001.jpg"
+        :src="props.paw?.img || './../assets/00001.jpg'"
         :alt="`Photo of ${props.paw?.name}`"
         height="220"
         cover
@@ -22,6 +22,16 @@
               indeterminate
               color="primary"
             />
+          </div>
+        </template>
+        <template #error>
+          <div class="d-flex align-center justify-center fill-height bg-surface-variant">
+            <VIcon
+              size="64"
+              color="primary"
+            >
+              mdi-cat
+            </VIcon>
           </div>
         </template>
       </VImg>

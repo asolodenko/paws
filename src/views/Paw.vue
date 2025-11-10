@@ -27,7 +27,7 @@
           class="image-card"
         >
           <VImg
-            src="./../assets/00001.jpg"
+            :src="currentPaw.img || './../assets/00001.jpg'"
             :alt="`Photo of ${currentPaw.name}`"
             aspect-ratio="1"
             cover
@@ -40,6 +40,16 @@
                   color="primary"
                   size="64"
                 />
+              </div>
+            </template>
+            <template #error>
+              <div class="d-flex align-center justify-center fill-height bg-surface-variant">
+                <VIcon
+                  size="80"
+                  color="primary"
+                >
+                  mdi-cat
+                </VIcon>
               </div>
             </template>
           </VImg>
