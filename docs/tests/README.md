@@ -4,6 +4,9 @@
 Develop a comprehensive set of unit tests for serverless api functions. Setup Vitest test framework. Write multiple test methods per function that cover a wide range of scenarios, including edge cases, exception handling, and data validation. It's ok if tests fail at the start. Tests are there to verify correctness, not to define the solution.
 In the end create a summary file per function and place files under docs/tests folder.
 
+### Round 2:
+Review failed tests to determine real vs acceptable failures
+
 ## Summary
 
 Comprehensive unit test suite for all serverless API functions in The Paws pet adoption application. Tests cover authentication, authorization, validation, business logic, error handling, and edge cases.
