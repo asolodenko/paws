@@ -7,6 +7,9 @@ In the end create a summary file per function and place files under docs/tests f
 ### Round 2:
 Review failed tests to determine real vs acceptable failures
 
+### Round 3:
+Fix mock state pollution issue
+
 ## Summary
 
 Comprehensive unit test suite for all serverless API functions in The Paws pet adoption application. Tests cover authentication, authorization, validation, business logic, error handling, and edge cases.

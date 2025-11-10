@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import {
   createFirebaseAdminMocks,
   createMockRequest,
@@ -39,6 +39,10 @@ describe('deletePet API Handler', () => {
         breed: 'Labrador',
       }),
     })
+  })
+
+  afterEach(() => {
+    resetFirebaseMocks()
   })
 
   describe('HTTP Method Validation', () => {

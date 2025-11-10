@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import {
   createFirebaseAdminMocks,
   createMockRequest,
@@ -35,6 +35,10 @@ describe('sendRequest API Handler', () => {
       exists: true,
       data: () => ({ id: 'test-user-id', email: 'test@example.com' }),
     })
+  })
+
+  afterEach(() => {
+    resetFirebaseMocks()
   })
 
   describe('HTTP Method Validation', () => {

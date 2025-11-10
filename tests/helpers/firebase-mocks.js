@@ -131,19 +131,42 @@ export const createMockResponse = () => {
 }
 
 /**
- * Reset all Firebase Admin mocks
+ * Reset all Firebase Admin mocks to their default state
+ * This should be called in afterEach to prevent state pollution between tests
  */
 export const resetFirebaseMocks = () => {
-  mockDocRef.set.mockClear()
-  mockDocRef.get.mockClear()
-  mockDocRef.update.mockClear()
-  mockDocRef.delete.mockClear()
-  mockCollectionRef.doc.mockClear()
-  mockCollectionRef.add.mockClear()
-  mockCollectionRef.where.mockClear()
-  mockCollectionRef.get.mockClear()
-  mockAuth.verifyIdToken.mockClear()
-  mockAuth.getUser.mockClear()
-  mockFirestore.collection.mockClear()
-  mockFirestore.doc.mockClear()
+  // Clear all mock call history and instances
+  vi.clearAllMocks()
+  
+  // Reset mockDocRef to default implementations
+  mockDocRef.set.mockResolvedValue({})
+  mockDocRef.get.mockResolvedValue({
+    exists: true,
+    data: () => ({ id: 'mock-doc-id', name: 'Test' }),
+  })
+  mockDocRef.update.mockResolvedValue({})
+  mockDocRef.delete.mockResolvedValue({})
+  
+  // Reset mockCollectionRef to default implementations
+  mockCollectionRef.doc.mockImplementation((id) => {
+    if (id) {
+      return { ...mockDocRef, id }
+    }
+    return mockDocRef
+  })
+  mockCollectionRef.add.mockResolvedValue(mockDocRef)
+  mockCollectionRef.where.mockReturnThis()
+  mockCollectionRef.get.mockResolvedValue({
+    size: 5,
+    docs: [],
+    empty: false,
+  })
+  
+  // Reset mockAuth to default implementations
+  mockAuth.verifyIdToken.mockResolvedValue(mockDecodedToken)
+  mockAuth.getUser.mockResolvedValue(mockUser)
+  
+  // Reset mockFirestore to default implementations
+  mockFirestore.collection.mockReturnValue(mockCollectionRef)
+  mockFirestore.doc.mockReturnValue(mockDocRef)
 }

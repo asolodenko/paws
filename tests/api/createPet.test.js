@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import {
   createFirebaseAdminMocks,
   createMockRequest,
@@ -31,6 +31,10 @@ describe('createPet API Handler', () => {
     // Set up default mocks for admin user
     mockAuth.verifyIdToken.mockResolvedValue({ uid: 'admin-user-id' })
     mockAuth.getUser.mockResolvedValue(mockAdminUser)
+  })
+
+  afterEach(() => {
+    resetFirebaseMocks()
   })
 
   describe('HTTP Method Validation', () => {
