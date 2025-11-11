@@ -3,6 +3,9 @@
 ## Original Prompt
 Create comprehensive user guides for a regular user and admin user. Include all the information necessary to understand how to work with the app. Put a regular user guide into About page available to all users. Admin guide should only be visible for admins.
 
+### Round 2: 
+Provided guides are missing the latest implemented functionality, for example adoption eligibility check. Review the app state and update user guides accordingly.
+
 ## Overview
 Comprehensive user guides have been implemented for both regular users and administrators to help them understand and use The Paws pet adoption platform effectively.
 

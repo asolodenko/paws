@@ -30,14 +30,17 @@
           <VListItem @click="scrollTo('request-lifecycle')">
             <VListItemTitle>4. Request Lifecycle Management</VListItemTitle>
           </VListItem>
+          <VListItem @click="scrollTo('adoption-status-sync')">
+            <VListItemTitle>5. Adoption Status Synchronization</VListItemTitle>
+          </VListItem>
           <VListItem @click="scrollTo('pet-inventory')">
-            <VListItemTitle>5. Pet Inventory Management</VListItemTitle>
+            <VListItemTitle>6. Pet Inventory Management</VListItemTitle>
           </VListItem>
           <VListItem @click="scrollTo('best-practices')">
-            <VListItemTitle>6. Best Practices</VListItemTitle>
+            <VListItemTitle>7. Best Practices</VListItemTitle>
           </VListItem>
           <VListItem @click="scrollTo('troubleshooting')">
-            <VListItemTitle>7. Troubleshooting</VListItemTitle>
+            <VListItemTitle>8. Troubleshooting</VListItemTitle>
           </VListItem>
         </VList>
       </VCardText>
@@ -553,10 +556,209 @@
       </VCard>
     </section>
 
+    <!-- Adoption Status Synchronization -->
+    <section id="adoption-status-sync" class="mb-8">
+      <h2 class="text-h4 mb-4">
+        5. Adoption Status Synchronization
+      </h2>
+      <VCard variant="outlined">
+        <VCardText>
+          <p class="mb-4">
+            The system automatically synchronizes pet adoption statuses with adoption request states. 
+            This ensures data consistency and accurate inventory tracking.
+          </p>
+
+          <h3 class="text-h6 mb-3">
+            How It Works
+          </h3>
+          <p class="mb-4">
+            When you take action on an <strong>adoption request</strong> (not visit requests), the 
+            corresponding pet's adoption status is automatically updated:
+          </p>
+
+          <VRow class="mb-4">
+            <VCol cols="12" md="6">
+              <VCard variant="outlined" class="h-100">
+                <VCardTitle class="text-subtitle-1 bg-green-lighten-5">
+                  <VIcon color="green" class="mr-2">
+                    mdi-check-circle
+                  </VIcon>
+                  Approve Adoption Request
+                </VCardTitle>
+                <VCardText>
+                  <p class="mb-2">
+                    <strong>Action:</strong> Click "Approve" on pending adoption request
+                  </p>
+                  <p class="mb-2">
+                    <strong>Request Status:</strong> Changes to "Approved"
+                  </p>
+                  <p class="mb-2">
+                    <strong>Pet Status:</strong> Automatically set to <VChip
+                      size="small"
+                      color="amber"
+                    >
+                      Pending
+                    </VChip>
+                  </p>
+                  <p class="text-caption text-medium-emphasis">
+                    Indicates the pet has an adoption in progress
+                  </p>
+                </VCardText>
+              </VCard>
+            </VCol>
+
+            <VCol cols="12" md="6">
+              <VCard variant="outlined" class="h-100">
+                <VCardTitle class="text-subtitle-1 bg-blue-lighten-5">
+                  <VIcon color="blue" class="mr-2">
+                    mdi-check-all
+                  </VIcon>
+                  Fulfill Adoption Request
+                </VCardTitle>
+                <VCardText>
+                  <p class="mb-2">
+                    <strong>Action:</strong> Click "Mark Fulfilled" on approved adoption request
+                  </p>
+                  <p class="mb-2">
+                    <strong>Request Status:</strong> Changes to "Fulfilled"
+                  </p>
+                  <p class="mb-2">
+                    <strong>Pet Status:</strong> Automatically set to <VChip
+                      size="small"
+                      color="blue"
+                    >
+                      Adopted
+                    </VChip>
+                  </p>
+                  <p class="text-caption text-medium-emphasis">
+                    Pet is removed from available listings and marked as adopted
+                  </p>
+                </VCardText>
+              </VCard>
+            </VCol>
+
+            <VCol cols="12" md="6">
+              <VCard variant="outlined" class="h-100">
+                <VCardTitle class="text-subtitle-1 bg-red-lighten-5">
+                  <VIcon color="red" class="mr-2">
+                    mdi-close-circle
+                  </VIcon>
+                  Reject Adoption Request
+                </VCardTitle>
+                <VCardText>
+                  <p class="mb-2">
+                    <strong>Action:</strong> Click "Reject" on pending adoption request
+                  </p>
+                  <p class="mb-2">
+                    <strong>Request Status:</strong> Changes to "Rejected"
+                  </p>
+                  <p class="mb-2">
+                    <strong>Pet Status:</strong> Reset to <VChip
+                      size="small"
+                      color="green"
+                    >
+                      Available
+                    </VChip>
+                  </p>
+                  <p class="text-caption text-medium-emphasis">
+                    Pet becomes available for other potential adopters
+                  </p>
+                </VCardText>
+              </VCard>
+            </VCol>
+
+            <VCol cols="12" md="6">
+              <VCard variant="outlined" class="h-100">
+                <VCardTitle class="text-subtitle-1 bg-grey-lighten-3">
+                  <VIcon color="grey-darken-2" class="mr-2">
+                    mdi-cancel
+                  </VIcon>
+                  Unfulfill Adoption Request
+                </VCardTitle>
+                <VCardText>
+                  <p class="mb-2">
+                    <strong>Action:</strong> Click "Mark Unfulfilled" on approved adoption request
+                  </p>
+                  <p class="mb-2">
+                    <strong>Request Status:</strong> Changes to "Unfulfilled"
+                  </p>
+                  <p class="mb-2">
+                    <strong>Pet Status:</strong> Reset to <VChip
+                      size="small"
+                      color="green"
+                    >
+                      Available
+                    </VChip>
+                  </p>
+                  <p class="text-caption text-medium-emphasis">
+                    Used when adoption falls through; pet becomes available again
+                  </p>
+                </VCardText>
+              </VCard>
+            </VCol>
+          </VRow>
+
+          <VAlert type="info" variant="tonal" class="mb-4">
+            <strong>Important:</strong> Visit requests do NOT affect pet adoption status. Only 
+            adoption requests trigger automatic status updates for pets.
+          </VAlert>
+
+          <h3 class="text-h6 mb-3">
+            Pet Adoption Status Values
+          </h3>
+          <p class="mb-4">
+            Pets can have three adoption statuses, each represented by a color-coded chip in the 
+            Pet Inventory table:
+          </p>
+
+          <VRow>
+            <VCol cols="12" md="4">
+              <VCard color="green-lighten-5" class="text-center pa-4">
+                <VChip color="green" class="mb-2">
+                  Available
+                </VChip>
+                <p class="text-body-2">
+                  Pet is available for adoption and visible in the public pet listings
+                </p>
+              </VCard>
+            </VCol>
+
+            <VCol cols="12" md="4">
+              <VCard color="amber-lighten-5" class="text-center pa-4">
+                <VChip color="amber" class="mb-2">
+                  Pending
+                </VChip>
+                <p class="text-body-2">
+                  An adoption request has been approved; adoption is in progress
+                </p>
+              </VCard>
+            </VCol>
+
+            <VCol cols="12" md="4">
+              <VCard color="blue-lighten-5" class="text-center pa-4">
+                <VChip color="blue" class="mb-2">
+                  Adopted
+                </VChip>
+                <p class="text-body-2">
+                  Pet has been successfully adopted and is removed from public listings
+                </p>
+              </VCard>
+            </VCol>
+          </VRow>
+
+          <VAlert type="success" variant="tonal" class="mt-4">
+            <strong>Automatic Updates:</strong> You don't need to manually update pet statuses! 
+            The system handles this automatically when you process adoption requests, ensuring 
+            data consistency across the platform.
+          </VAlert>
+        </VCardText>
+      </VCard>
+    </section>
+
     <!-- Pet Inventory -->
     <section id="pet-inventory" class="mb-8">
       <h2 class="text-h4 mb-4">
-        5. Pet Inventory Management
+        6. Pet Inventory Management
       </h2>
       <VCard variant="outlined">
         <VCardText>
@@ -579,16 +781,25 @@
               Fill in all required fields:
               <ul class="ml-6 mt-2">
                 <li>
-                  <strong>Name:</strong> The pet's name
+                  <strong>Name*:</strong> The pet's name (required)
                 </li>
                 <li>
-                  <strong>Breed:</strong> Specific breed or mix
+                  <strong>Breed*:</strong> Specific breed or mix (required)
                 </li>
                 <li>
-                  <strong>Birth Date:</strong> Date of birth (used to calculate age)
+                  <strong>Gender*:</strong> Male or Female (required)
                 </li>
                 <li>
-                  <strong>Gender:</strong> Male or Female
+                  <strong>Coat Color*:</strong> Primary color of the pet's coat (required)
+                </li>
+                <li>
+                  <strong>Birth Date:</strong> Date of birth (optional, used to calculate age)
+                </li>
+                <li>
+                  <strong>Weight:</strong> Weight in kilograms (optional)
+                </li>
+                <li>
+                  <strong>Image:</strong> Upload a photo of the pet (optional)
                 </li>
                 <li>
                   <strong>Temperament:</strong> Personality traits (e.g., "Friendly, energetic")
@@ -600,17 +811,28 @@
                   <strong>Grooming Needs:</strong> Grooming requirements
                 </li>
                 <li>
-                  <strong>Health Condition:</strong> Current health status and any medical notes
+                  <strong>Health Condition:</strong> Current health status (Healthy, Underweight, Overweight, Dental Issues)
                 </li>
                 <li>
-                  <strong>Photo URL:</strong> Link to pet's photo
+                  <strong>Food Flavor:</strong> Preferred food type (optional)
+                </li>
+                <li>
+                  <strong>Toy Type:</strong> Favorite toy (optional)
+                </li>
+                <li>
+                  <strong>Adoption Status:</strong> Available, Pending, or Adopted (defaults to Available)
                 </li>
               </ul>
             </li>
             <li>
-              Click "Save" to add the pet to the system
+              Click "Create" to add the pet to the system
             </li>
           </ol>
+
+          <VAlert type="info" variant="tonal" class="mb-4">
+            <strong>Required Fields:</strong> Only Name, Breed, Gender, and Coat Color are required. 
+            All other fields are optional but recommended for better user experience.
+          </VAlert>
 
           <h3 class="text-h6 mb-3">
             Editing Pet Information
@@ -623,18 +845,23 @@
               Click the "Edit" button (pencil icon)
             </li>
             <li>
-              Update any fields as needed
+              Update any fields as needed (including adoption status if necessary)
             </li>
             <li>
-              Click "Save" to apply changes
+              Click "Update" to apply changes
             </li>
           </ol>
+
+          <VAlert type="success" variant="tonal" class="mb-4">
+            <strong>Tip:</strong> While you can manually edit adoption status, it's usually better 
+            to let the system update it automatically when processing adoption requests.
+          </VAlert>
 
           <h3 class="text-h6 mb-3">
             Deleting a Pet
           </h3>
           <p class="mb-2">
-            Use this when a pet is permanently removed from the shelter (e.g., adopted, transferred).
+            Use this when a pet is permanently removed from the shelter (e.g., transferred to another facility).
           </p>
           <ol class="ml-6 mb-4">
             <li>
@@ -649,34 +876,120 @@
           </ol>
 
           <VAlert type="warning" variant="tonal" class="mb-4">
-            <strong>Warning:</strong> Deleting a pet removes it from the system permanently. Make 
-            sure all related adoption requests are completed first.
+            <strong>Warning:</strong> Deleting a pet removes it from the system permanently. For 
+            successful adoptions, use the renewal feature instead if the pet might return. Consider 
+            completing all related adoption requests before deletion.
           </VAlert>
 
           <h3 class="text-h6 mb-3">
-            Renewing a Pet
+            Renewing a Pet (Returned Adoptions)
           </h3>
-          <p class="mb-2">
-            Use the renew function when a pet returns to the shelter after an adoption that didn't work out.
+          <p class="mb-4">
+            The renewal feature is specifically designed for when an adopted pet is returned to the 
+            shelter and needs to be made available for adoption again.
+          </p>
+
+          <VCard color="purple-lighten-5" class="mb-4">
+            <VCardTitle class="text-subtitle-1">
+              <VIcon color="purple" class="mr-2">
+                mdi-refresh
+              </VIcon>
+              When to Use Renewal
+            </VCardTitle>
+            <VCardText>
+              <ul class="ml-4">
+                <li>
+                  An adopted pet is returned to the shelter due to unforeseen circumstances
+                </li>
+                <li>
+                  The adoption didn't work out for the pet or the adopter
+                </li>
+                <li>
+                  You need to make an adopted pet available for adoption again
+                </li>
+              </ul>
+            </VCardText>
+          </VCard>
+
+          <p class="mb-4">
+            <strong>How to Renew a Pet:</strong>
           </p>
           <ol class="ml-6 mb-4">
             <li>
-              Find the pet in the inventory list
+              Navigate to the Pet Inventory tab
             </li>
             <li>
-              Click the "Renew" button (refresh icon)
+              Find the pet with "Adopted" status (shown with a blue chip)
             </li>
             <li>
-              Confirm the renewal
+              Click the green "Renew" button (refresh icon) - only visible for adopted pets
             </li>
             <li>
-              The pet becomes available for adoption again
+              Read the confirmation dialog explaining what renewal does
+            </li>
+            <li>
+              Click "Renew" to confirm
+            </li>
+            <li>
+              The pet's adoption status instantly changes to "Available"
+            </li>
+            <li>
+              The pet reappears in public listings and can be adopted again
             </li>
           </ol>
 
-          <VAlert type="info" variant="tonal">
-            <strong>Tip:</strong> Keep detailed health condition notes updated, especially after 
-            vet visits. This helps users understand each pet's needs.
+          <p class="mb-4">
+            <strong>What Happens During Renewal:</strong>
+          </p>
+          <ul class="ml-6 mb-4">
+            <li>
+              Pet's adoption status changes from "Adopted" to "Available"
+            </li>
+            <li>
+              System logs the renewal timestamp (<code>renewedAt</code>)
+            </li>
+            <li>
+              Your admin user ID is recorded (<code>renewedBy</code>)
+            </li>
+            <li>
+              Pet becomes visible in public pet listings immediately
+            </li>
+            <li>
+              All pet details (name, breed, health, etc.) are preserved
+            </li>
+            <li>
+              Previous adoption request history remains in the system
+            </li>
+          </ul>
+
+          <VAlert type="info" variant="tonal" class="mb-4">
+            <strong>Important:</strong> The renewal button only appears for pets with "Adopted" 
+            status. You cannot renew pets that are "Available" or "Pending" - only genuinely 
+            adopted pets can be renewed.
+          </VAlert>
+
+          <h3 class="text-h6 mb-3">
+            Understanding Pet Visibility
+          </h3>
+          <p class="mb-4">
+            Pets are displayed in public listings based on their adoption status:
+          </p>
+          <ul class="ml-6 mb-4">
+            <li>
+              <strong>Available:</strong> Visible in public listings; users can request visits and adoptions
+            </li>
+            <li>
+              <strong>Pending:</strong> Still visible but indicates adoption in progress
+            </li>
+            <li>
+              <strong>Adopted:</strong> Removed from public listings; only visible to admins in inventory
+            </li>
+          </ul>
+
+          <VAlert type="success" variant="tonal">
+            <strong>Best Practice:</strong> Keep detailed health condition notes updated, especially 
+            after vet visits or when renewing a returned pet. This helps potential adopters 
+            understand each pet's current needs and ensures successful adoptions.
           </VAlert>
         </VCardText>
       </VCard>
@@ -685,7 +998,7 @@
     <!-- Best Practices -->
     <section id="best-practices" class="mb-8">
       <h2 class="text-h4 mb-4">
-        6. Best Practices
+        7. Best Practices
       </h2>
       <VCard variant="outlined">
         <VCardText>
@@ -723,18 +1036,54 @@
               health conditions
             </li>
             <li>
-              <strong>Use quality photos:</strong> Clear, well-lit photos help pets get noticed
+              <strong>Use quality photos:</strong> Upload clear, well-lit photos during pet creation 
+              to help pets get noticed
             </li>
             <li>
               <strong>Be honest about needs:</strong> Accurate temperament and activity level info 
               leads to better matches
             </li>
             <li>
-              <strong>Remove adopted pets promptly:</strong> Delete or mark pets as unavailable 
-              once adoptions are finalized
+              <strong>Let status auto-update:</strong> Trust the automatic adoption status synchronization 
+              when processing adoption requests rather than manually editing
             </li>
             <li>
-              <strong>Update after vet visits:</strong> Keep health condition notes current
+              <strong>Use renewal for returns:</strong> When adopted pets return, use the renewal 
+              feature instead of manual status changes
+            </li>
+            <li>
+              <strong>Document renewals:</strong> Update health notes when a pet is renewed, especially 
+              if circumstances changed
+            </li>
+            <li>
+              <strong>Update after vet visits:</strong> Keep health condition notes current, particularly 
+              for adopted pets that return
+            </li>
+            <li>
+              <strong>Monitor adoption status:</strong> Regularly check that pet statuses accurately 
+              reflect their availability
+            </li>
+          </ul>
+
+          <h3 class="text-h6 mb-3">
+            Adoption Eligibility
+          </h3>
+          <ul class="ml-6 mb-4">
+            <li>
+              <strong>Fulfill visit requests promptly:</strong> Users need 5 fulfilled visits before 
+              they can adopt, so timely fulfillment helps progression
+            </li>
+            <li>
+              <strong>Encourage multiple visits:</strong> The 5-visit requirement exists for good 
+              reason - support it by making visit scheduling easy
+            </li>
+            <li>
+              <strong>Be consistent:</strong> Apply the same 5-visit standard to all users to maintain 
+              fairness
+            </li>
+            <li>
+              <strong>Track patterns:</strong> If a user has 4 fulfilled visits and requests a 5th, 
+              prioritize it as they're close to adoption eligibility
             </li>
           </ul>
 
@@ -783,7 +1132,7 @@
     <!-- Troubleshooting -->
     <section id="troubleshooting" class="mb-8">
       <h2 class="text-h4 mb-4">
-        7. Troubleshooting
+        8. Troubleshooting
       </h2>
       <VExpansionPanels variant="accordion">
         <VExpansionPanel>

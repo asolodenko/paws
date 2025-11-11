@@ -30,17 +30,20 @@
           <VListItem @click="scrollTo('visiting-pets')">
             <VListItemTitle>4. Requesting a Visit</VListItemTitle>
           </VListItem>
+          <VListItem @click="scrollTo('adoption-eligibility')">
+            <VListItemTitle>5. Adoption Eligibility</VListItemTitle>
+          </VListItem>
           <VListItem @click="scrollTo('adopting-pets')">
-            <VListItemTitle>5. Adoption Process</VListItemTitle>
+            <VListItemTitle>6. Adoption Process</VListItemTitle>
           </VListItem>
           <VListItem @click="scrollTo('managing-requests')">
-            <VListItemTitle>6. Managing Your Requests</VListItemTitle>
+            <VListItemTitle>7. Managing Your Requests</VListItemTitle>
           </VListItem>
           <VListItem @click="scrollTo('request-statuses')">
-            <VListItemTitle>7. Understanding Request Statuses</VListItemTitle>
+            <VListItemTitle>8. Understanding Request Statuses</VListItemTitle>
           </VListItem>
           <VListItem @click="scrollTo('faq')">
-            <VListItemTitle>8. Frequently Asked Questions</VListItemTitle>
+            <VListItemTitle>9. Frequently Asked Questions</VListItemTitle>
           </VListItem>
         </VList>
       </VCardText>
@@ -181,49 +184,205 @@
       </VCard>
     </section>
 
-    <!-- Adopting Pets -->
-    <section id="adopting-pets" class="mb-8">
+    <!-- Adoption Eligibility -->
+    <section id="adoption-eligibility" class="mb-8">
       <h2 class="text-h4 mb-4">
-        5. Adoption Process
+        5. Adoption Eligibility
       </h2>
       <VCard variant="outlined">
         <VCardText>
           <p class="mb-4">
-            Ready to give a pet a forever home? Here's how the adoption process works:
+            To ensure the best match between pets and their future families, The Paws requires you to 
+            complete <strong>5 fulfilled visit requests</strong> with a specific pet before you can submit 
+            an adoption request for that pet.
+          </p>
+
+          <h3 class="text-h6 mb-3">
+            Understanding the Visit Progress Tracker
+          </h3>
+          <p class="mb-4">
+            When you're logged in and viewing a pet's detail page, you'll see a "Your Visit Progress" 
+            card that tracks your eligibility:
+          </p>
+
+          <VRow class="mb-4">
+            <VCol cols="12" md="6">
+              <VCard color="blue-lighten-5">
+                <VCardTitle class="text-subtitle-1">
+                  <VIcon color="blue" class="mr-2">
+                    mdi-information
+                  </VIcon>
+                  Progress Indicator
+                </VCardTitle>
+                <VCardText>
+                  <ul class="ml-4">
+                    <li>
+                      Shows your current visit count (e.g., "3/5 visits completed")
+                    </li>
+                    <li>
+                      Displays a visual progress bar with color coding:
+                      <ul class="ml-6 mt-2">
+                        <li>
+                          <strong>Blue:</strong> 0-2 visits
+                        </li>
+                        <li>
+                          <strong>Orange:</strong> 3-4 visits
+                        </li>
+                        <li>
+                          <strong>Green:</strong> 5+ visits (eligible!)
+                        </li>
+                      </ul>
+                    </li>
+                    <li>
+                      Updates in real-time as admins fulfill your visit requests
+                    </li>
+                  </ul>
+                </VCardText>
+              </VCard>
+            </VCol>
+
+            <VCol cols="12" md="6">
+              <VCard color="green-lighten-5">
+                <VCardTitle class="text-subtitle-1">
+                  <VIcon color="green" class="mr-2">
+                    mdi-check-circle
+                  </VIcon>
+                  Becoming Eligible
+                </VCardTitle>
+                <VCardText>
+                  <ul class="ml-4">
+                    <li>
+                      Schedule and complete 5 visits with the pet
+                    </li>
+                    <li>
+                      Each visit must be approved and marked as "Fulfilled" by shelter staff
+                    </li>
+                    <li>
+                      Once you reach 5 fulfilled visits, the "Adopt Pet" button becomes active
+                    </li>
+                    <li>
+                      You'll see a green checkmark with "You're eligible to adopt this pet!"
+                    </li>
+                  </ul>
+                </VCardText>
+              </VCard>
+            </VCol>
+          </VRow>
+
+          <VAlert type="info" variant="tonal" class="mb-4">
+            <strong>Why 5 Visits?</strong> Multiple visits help ensure you and the pet are truly 
+            compatible. It gives you time to observe the pet's behavior in different situations 
+            and make an informed, confident decision.
+          </VAlert>
+
+          <p class="mb-4">
+            <strong>What counts as a fulfilled visit:</strong>
+          </p>
+          <ul class="ml-6 mb-4">
+            <li>
+              You submit a visit request with a specific date and time
+            </li>
+            <li>
+              The shelter approves your request
+            </li>
+            <li>
+              You visit the shelter at the scheduled time
+            </li>
+            <li>
+              Shelter staff confirms your visit and marks it as "Fulfilled"
+            </li>
+          </ul>
+
+          <VAlert type="warning" variant="tonal">
+            <strong>Important:</strong> Visit counts are specific to each pet. If you're interested 
+            in multiple pets, you'll need to complete 5 visits with each individual pet before you 
+            can adopt them.
+          </VAlert>
+        </VCardText>
+      </VCard>
+    </section>
+
+    <!-- Adopting Pets -->
+    <section id="adopting-pets" class="mb-8">
+      <h2 class="text-h4 mb-4">
+        6. Adoption Process
+      </h2>
+      <VCard variant="outlined">
+        <VCardText>
+          <p class="mb-4">
+            Once you've completed 5 visits with a pet and become eligible, you're ready to submit 
+            an adoption request!
           </p>
           
           <p class="mb-4">
             <strong>Steps to Request Adoption:</strong>
           </p>
           <ol class="ml-6 mb-4">
-            <li>Make sure you're logged in</li>
-            <li>Navigate to the pet's detail page</li>
-            <li>Click the "Adopt Pet" button</li>
-            <li>Read the information in the dialog about shelter adoption rules</li>
-            <li>Click "Send" to submit your adoption request</li>
+            <li>
+              Make sure you're logged in
+            </li>
+            <li>
+              Navigate to the pet's detail page
+            </li>
+            <li>
+              Verify your visit progress shows 5/5 visits completed
+            </li>
+            <li>
+              Click the "Adopt Pet" button (it will be enabled once you're eligible)
+            </li>
+            <li>
+              Read the information in the dialog about shelter adoption rules
+            </li>
+            <li>
+              Click "Send" to submit your adoption request
+            </li>
           </ol>
+
+          <VAlert type="warning" variant="tonal" class="mb-4">
+            <strong>Note:</strong> The "Adopt Pet" button will be disabled (grayed out) until you 
+            complete 5 fulfilled visits. You'll see a message: "Visit at least 5 times to unlock adoption"
+          </VAlert>
           
           <p class="mb-4">
             <strong>Review Process:</strong>
           </p>
           <ul class="ml-6 mb-4">
-            <li>The shelter administration will review your request within 24 hours</li>
-            <li>They may contact you for additional information or to schedule an interview</li>
-            <li>Check your Account page regularly for status updates</li>
+            <li>
+              The shelter administration will review your request within 24 hours
+            </li>
+            <li>
+              They may contact you for additional information or to schedule an interview
+            </li>
+            <li>
+              Check your Account page regularly for status updates
+            </li>
           </ul>
           
           <p class="mb-4">
             <strong>If Approved:</strong>
           </p>
           <ul class="ml-6 mb-4">
-            <li>You'll see an approval notification in your Account page</li>
-            <li>The shelter will contact you to arrange the adoption paperwork and pickup</li>
-            <li>Once the adoption is complete, the request will be marked as "Fulfilled"</li>
+            <li>
+              You'll see an approval notification in your Account page
+            </li>
+            <li>
+              The pet's status will change to "Pending Adoption" in the system
+            </li>
+            <li>
+              The shelter will contact you to arrange the adoption paperwork and pickup
+            </li>
+            <li>
+              Once the adoption is complete, the request will be marked as "Fulfilled"
+            </li>
+            <li>
+              The pet will be marked as "Adopted" and removed from available listings
+            </li>
           </ul>
 
           <VAlert type="success" variant="tonal" class="mt-4">
-            <strong>Tip:</strong> We recommend scheduling visits with a pet before submitting an 
-            adoption request. This helps ensure the pet is a good fit for your home and lifestyle.
+            <strong>Success!</strong> After completing the adoption, you'll have given a loving pet 
+            a forever home. The shelter staff will provide you with all necessary care information 
+            and support for your new family member.
           </VAlert>
         </VCardText>
       </VCard>
@@ -232,7 +391,7 @@
     <!-- Managing Requests -->
     <section id="managing-requests" class="mb-8">
       <h2 class="text-h4 mb-4">
-        6. Managing Your Requests
+        7. Managing Your Requests
       </h2>
       <VCard variant="outlined">
         <VCardText>
@@ -294,7 +453,7 @@
     <!-- Request Statuses -->
     <section id="request-statuses" class="mb-8">
       <h2 class="text-h4 mb-4">
-        7. Understanding Request Statuses
+        8. Understanding Request Statuses
       </h2>
       <VCard variant="outlined">
         <VCardText>
@@ -385,7 +544,7 @@
     <!-- FAQ -->
     <section id="faq" class="mb-8">
       <h2 class="text-h4 mb-4">
-        8. Frequently Asked Questions
+        9. Frequently Asked Questions
       </h2>
       <VExpansionPanels variant="accordion">
         <VExpansionPanel>
@@ -395,6 +554,53 @@
           <VExpansionPanelText>
             No! You can browse all available pets and view their details without creating an account. 
             However, you'll need to sign in with Google to request visits or adoptions.
+          </VExpansionPanelText>
+        </VExpansionPanel>
+
+        <VExpansionPanel>
+          <VExpansionPanelTitle>
+            Why do I need to visit a pet 5 times before adopting?
+          </VExpansionPanelTitle>
+          <VExpansionPanelText>
+            The 5-visit requirement ensures that both you and the pet are truly compatible. Multiple 
+            visits allow you to observe the pet's behavior in different situations, interact with them 
+            in various contexts, and make a confident, informed decision about adoption. This significantly 
+            increases the success rate of adoptions and reduces the likelihood of pets being returned to 
+            the shelter.
+          </VExpansionPanelText>
+        </VExpansionPanel>
+
+        <VExpansionPanel>
+          <VExpansionPanelTitle>
+            Can I adopt a pet without completing 5 visits?
+          </VExpansionPanelTitle>
+          <VExpansionPanelText>
+            No, the 5-visit requirement is mandatory for all adoptions. The "Adopt Pet" button will 
+            remain disabled until you have 5 fulfilled visits with that specific pet. This policy is 
+            in place to protect both the pets and adopters, ensuring the best possible matches.
+          </VExpansionPanelText>
+        </VExpansionPanel>
+
+        <VExpansionPanel>
+          <VExpansionPanelTitle>
+            Do my visits with one pet count toward adopting a different pet?
+          </VExpansionPanelTitle>
+          <VExpansionPanelText>
+            No, visit counts are specific to each individual pet. If you're interested in multiple 
+            pets, you'll need to complete 5 fulfilled visits with each pet separately before you can 
+            submit an adoption request for them. This ensures you have adequate experience with the 
+            specific pet you wish to adopt.
+          </VExpansionPanelText>
+        </VExpansionPanel>
+
+        <VExpansionPanel>
+          <VExpansionPanelTitle>
+            What if my scheduled visit is cancelled? Does it count toward the 5 visits?
+          </VExpansionPanelTitle>
+          <VExpansionPanelText>
+            Only visits that are marked as "Fulfilled" by shelter staff count toward your eligibility. 
+            If a visit is cancelled, rejected, or marked as "Unfulfilled", it will not count toward 
+            your 5 required visits. You can track your progress on each pet's detail page.
           </VExpansionPanelText>
         </VExpansionPanel>
 
@@ -430,12 +636,12 @@
 
         <VExpansionPanel>
           <VExpansionPanelTitle>
-            Can I adopt a pet without visiting first?
+            Why don't I see some pets in the list anymore?
           </VExpansionPanelTitle>
           <VExpansionPanelText>
-            While it's technically possible to submit an adoption request without visiting, we 
-            strongly recommend meeting the pet in person first. This helps ensure the pet is a 
-            good match for your home and lifestyle.
+            Pets that have been adopted are automatically removed from the available pets list. 
+            This ensures you only see pets that are currently available for adoption. If a pet 
+            shows a "Pending Adoption" status, it means an adoption is in progress but not yet finalized.
           </VExpansionPanelText>
         </VExpansionPanel>
 
@@ -458,7 +664,7 @@
           <VExpansionPanelText>
             Once you've completed all adoption paperwork and taken your new pet home, the shelter 
             will mark your adoption request as "Fulfilled". You'll see this status update in your 
-            Account page.
+            Account page. The pet will also be marked as "Adopted" in the system.
           </VExpansionPanelText>
         </VExpansionPanel>
 
