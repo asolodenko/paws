@@ -26,6 +26,12 @@
             </VIcon>
             Pet Inventory
           </VTab>
+          <VTab>
+            <VIcon left>
+              mdi-book-open-variant
+            </VIcon>
+            Admin Guide
+          </VTab>
         </VTabs>
         
         <VTabsWindow v-model="activeTab" class="mt-4">
@@ -59,6 +65,11 @@
               @renew="handleRenewPet"
             />
           </VTabsWindowItem>
+          
+          <!-- Admin Guide Tab -->
+          <VTabsWindowItem :value="3">
+            <AdminGuide />
+          </VTabsWindowItem>
         </VTabsWindow>
       </VCol>
     </VRow>
@@ -83,6 +94,7 @@ import AdminDashboard from '@/components/AdminDashboard.vue'
 import AdminRequests from '@/components/AdminRequests.vue'
 import PetInventory from '@/components/PetInventory.vue'
 import PetForm from '@/components/PetForm.vue'
+import AdminGuide from '@/components/AdminGuide.vue'
 import { FULFILLED, UNFULFILLED } from '@/constants'
 import { sendPOST } from '../plugins/axios'
 import { usePetManagementStore } from '@/store/petManagement'
