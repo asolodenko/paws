@@ -52,6 +52,31 @@ export default async (req, res) => {
     }
   }
 
+  // Check adoption eligibility: user must have 5 fulfilled visits for this pet
+  if (type === 'adopt') {
+    try {
+      const requestsSnapshot = await db.collection('requests')
+        .where('userId', '==', userId)
+        .where('pawId', '==', pawId)
+        .where('type', '==', 'visit')
+        .where('status', '==', 'fulfilled')
+        .get()
+
+      const fulfilledVisitCount = requestsSnapshot.size
+
+      if (fulfilledVisitCount < 5) {
+        res.status(403).json({ 
+          error: `Adoption not allowed. You need 5 fulfilled visits to adopt this pet. Current visits: ${fulfilledVisitCount}/5`,
+        })
+        return
+      }
+    } catch (error) {
+      console.error('Error checking adoption eligibility: ', error)
+      res.status(500).json({ error: 'Error checking adoption eligibility' })
+      return
+    }
+  }
+
   try {
     const docRef = db.collection('requests').doc()
     await docRef.set({ ...req.body, id: docRef.id, status: status || 'pending', createdAt: createdAt || new Date().toISOString() })

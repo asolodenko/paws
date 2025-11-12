@@ -47,31 +47,65 @@ export default async (req, res) => {
     return
   }
 
+  const requestData = request.data()
+  const isAdoptionRequest = requestData.type === 'adopt'
+  const pawId = requestData.pawId
+
   const updateData = {
     adminId: req.user ? req.user.uid : null,
     respondedAt: new Date().toISOString(),
   }
 
+  let petStatusUpdate = null
+
   switch (action) {
     case 'approve':
       updateData.status = 'approved'
+      // When adoption request is approved, mark pet as pending
+      if (isAdoptionRequest) {
+        petStatusUpdate = 'pending'
+      }
       break
     case 'reject':
       updateData.status = 'rejected'
       updateData.comment = comment || ''
+      // When adoption request is rejected, mark pet as available
+      if (isAdoptionRequest) {
+        petStatusUpdate = 'available'
+      }
       break
     case 'fulfill':
       updateData.status = 'fulfilled'
+      // When adoption is fulfilled, mark pet as adopted
+      if (isAdoptionRequest) {
+        petStatusUpdate = 'adopted'
+      }
       break
     case 'unfulfill':
       updateData.status = 'unfulfilled'
+      // When adoption is unfulfilled, mark pet as available
+      if (isAdoptionRequest) {
+        petStatusUpdate = 'available'
+      }
       break
     default:
       res.status(400).send({ message: 'Invalid action' })
       return
   }
 
+  // Update the request status
   await requestRef.update(updateData)
+
+  // Update the pet's adoption status if needed
+  if (petStatusUpdate && pawId) {
+    const pawRef = db.collection('paws').doc(pawId)
+    try {
+      await pawRef.update({ adoptionStatus: petStatusUpdate })
+    } catch {
+      // If pet update fails, throw error to prevent inconsistent state
+      throw new Error('Pet update failed')
+    }
+  }
 
   res.status(200).send({ success: true })
 }

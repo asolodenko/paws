@@ -8,9 +8,10 @@
       <VCardText>
         <VisitForm v-if="action === 'visit'" v-model:date="date" v-model:time="time" />
         <div v-else>
-          Adopt pet {{ props.paw.name }}
-          <br />
-          <br />
+          <p class="mb-3">
+            Adopt pet {{ props.paw.name }}
+          </p>
+          
           <p>
             In accordance with the rules of the shelter, to adopt a pet you need to send a request to the shelter administration.
             The request will be considered within 24 hours. If the request is approved, you will see a notification in account page.
@@ -50,6 +51,7 @@ const props = defineProps<{
   paw: Paw,
   user: User | null,
 }>()
+
 const dialog = defineModel<boolean>()
 
 const close = () => {

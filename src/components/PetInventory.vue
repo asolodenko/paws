@@ -1,0 +1,347 @@
+<template>
+  <VContainer fluid>
+    <VRow>
+      <VCol cols="12">
+        <VCard elevation="2">
+          <VCardTitle class="d-flex align-center">
+            <VIcon class="mr-2">
+              mdi-paw
+            </VIcon>
+            Pet Inventory Management
+            <VSpacer />
+            <VBtn
+              color="primary"
+              prepend-icon="mdi-plus"
+              @click="openCreateDialog"
+            >
+              Add New Pet
+            </VBtn>
+          </VCardTitle>
+          
+          <VCardText>
+            <VTextField
+              v-model="search"
+              prepend-inner-icon="mdi-magnify"
+              label="Search pets..."
+              single-line
+              hide-details
+              class="mb-4"
+              clearable
+            />
+            
+            <VDataTable
+              :headers="headers"
+              :items="pets"
+              :search="search"
+              :loading="loading"
+              item-key="id"
+              class="elevation-1"
+            >
+              <template #[`item.img`]="{ item }">
+                <VAvatar size="48" class="my-2">
+                  <VImg :src="item.img" :alt="item.name" />
+                </VAvatar>
+              </template>
+              
+              <template #[`item.gender`]="{ item }">
+                <VChip
+                  :color="item.gender === 'Male' ? 'blue' : 'pink'"
+                  size="small"
+                  dark
+                >
+                  <VIcon left size="small">
+                    {{ item.gender === 'Male' ? 'mdi-gender-male' : 'mdi-gender-female' }}
+                  </VIcon>
+                  {{ item.gender }}
+                </VChip>
+              </template>
+              
+              <template #[`item.birthDate`]="{ item }">
+                {{ formatDate(item.birthDate) }}
+              </template>
+              
+              <template #[`item.healthCondition`]="{ item }">
+                <VChip
+                  :color="getHealthColor(item.healthCondition)"
+                  size="small"
+                >
+                  {{ item.healthCondition }}
+                </VChip>
+              </template>
+              
+              <template #[`item.adoptionStatus`]="{ item }">
+                <VChip
+                  :color="getAdoptionStatusColor(item.adoptionStatus)"
+                  size="small"
+                >
+                  <VIcon left size="small">
+                    {{ getAdoptionStatusIcon(item.adoptionStatus) }}
+                  </VIcon>
+                  {{ getAdoptionStatusLabel(item.adoptionStatus) }}
+                </VChip>
+              </template>
+              
+              <template #[`item.actions`]="{ item }">
+                <VTooltip bottom>
+                  <template #activator="{ props }">
+                    <VBtn
+                      icon
+                      size="small"
+                      color="primary"
+                      v-bind="props"
+                      @click="openEditDialog(item)"
+                    >
+                      <VIcon>
+                        mdi-pencil
+                      </VIcon>
+                    </VBtn>
+                  </template>
+                  <span>Edit</span>
+                </VTooltip>
+                
+                <VTooltip v-if="item.adoptionStatus === 'adopted'" bottom>
+                  <template #activator="{ props }">
+                    <VBtn
+                      icon
+                      size="small"
+                      color="success"
+                      class="ml-2"
+                      v-bind="props"
+                      @click="openRenewDialog(item)"
+                    >
+                      <VIcon>
+                        mdi-refresh
+                      </VIcon>
+                    </VBtn>
+                  </template>
+                  <span>Renew (Return to shelter)</span>
+                </VTooltip>
+                
+                <VTooltip bottom>
+                  <template #activator="{ props }">
+                    <VBtn
+                      icon
+                      size="small"
+                      color="error"
+                      class="ml-2"
+                      v-bind="props"
+                      @click="openDeleteDialog(item)"
+                    >
+                      <VIcon>
+                        mdi-delete
+                      </VIcon>
+                    </VBtn>
+                  </template>
+                  <span>Delete</span>
+                </VTooltip>
+              </template>
+            </VDataTable>
+          </VCardText>
+        </VCard>
+      </VCol>
+    </VRow>
+    
+    <!-- Delete Confirmation Dialog -->
+    <VDialog v-model="deleteDialog" max-width="500">
+      <VCard>
+        <VCardTitle class="text-h5">
+          Confirm Deletion
+        </VCardTitle>
+        <VCardText>
+          Are you sure you want to delete <strong>{{ petToDelete?.name }}</strong>? This action cannot be undone.
+        </VCardText>
+        <VCardActions>
+          <VSpacer />
+          <VBtn
+            color="grey"
+            variant="text"
+            @click="deleteDialog = false"
+          >
+            Cancel
+          </VBtn>
+          <VBtn
+            color="error"
+            variant="elevated"
+            :loading="deleteLoading"
+            @click="confirmDelete"
+          >
+            Delete
+          </VBtn>
+        </VCardActions>
+      </VCard>
+    </VDialog>
+
+    <!-- Renew Confirmation Dialog -->
+    <VDialog v-model="renewDialog" max-width="500">
+      <VCard>
+        <VCardTitle class="text-h5">
+          Confirm Pet Renewal
+        </VCardTitle>
+        <VCardText>
+          Are you sure you want to renew <strong>{{ petToRenew?.name }}</strong>? This will mark the pet as available for adoption again, indicating the pet has returned to the shelter.
+        </VCardText>
+        <VCardActions>
+          <VSpacer />
+          <VBtn
+            color="grey"
+            variant="text"
+            @click="renewDialog = false"
+          >
+            Cancel
+          </VBtn>
+          <VBtn
+            color="success"
+            variant="elevated"
+            :loading="renewLoading"
+            @click="confirmRenew"
+          >
+            Renew
+          </VBtn>
+        </VCardActions>
+      </VCard>
+    </VDialog>
+  </VContainer>
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue'
+import { Paw } from '@/model/Paw.model'
+
+defineProps<{
+  pets: Paw[]
+  loading: boolean
+}>()
+
+const emit = defineEmits(['create', 'edit', 'delete', 'renew'])
+
+const search = ref('')
+const deleteDialog = ref(false)
+const petToDelete = ref<Paw | null>(null)
+const deleteLoading = ref(false)
+const renewDialog = ref(false)
+const petToRenew = ref<Paw | null>(null)
+const renewLoading = ref(false)
+
+const headers = [
+  { title: 'Image', key: 'img', sortable: false },
+  { title: 'Name', key: 'name' },
+  { title: 'Gender', key: 'gender' },
+  { title: 'Breed', key: 'breed' },
+  { title: 'Birth Date', key: 'birthDate' },
+  { title: 'Weight', key: 'weight' },
+  { title: 'Health', key: 'healthCondition' },
+  { title: 'Status', key: 'adoptionStatus' },
+  { title: 'Actions', key: 'actions', sortable: false },
+]
+
+const formatDate = (dateString: string) => {
+  return new Date(dateString).toLocaleDateString()
+}
+
+const getHealthColor = (condition: string) => {
+  switch (condition) {
+    case 'healthy':
+      return 'success'
+    case 'underweight':
+    case 'overweight':
+      return 'warning'
+    case 'dental issues':
+      return 'error'
+    default:
+      return 'grey'
+  }
+}
+
+const getAdoptionStatusColor = (status?: string) => {
+  switch (status) {
+    case 'available':
+      return 'success'
+    case 'pending':
+      return 'warning'
+    case 'adopted':
+      return 'info'
+    default:
+      return 'success' // Default to available
+  }
+}
+
+const getAdoptionStatusIcon = (status?: string) => {
+  switch (status) {
+    case 'available':
+      return 'mdi-check-circle'
+    case 'pending':
+      return 'mdi-clock-outline'
+    case 'adopted':
+      return 'mdi-heart'
+    default:
+      return 'mdi-check-circle' // Default to available
+  }
+}
+
+const getAdoptionStatusLabel = (status?: string) => {
+  switch (status) {
+    case 'available':
+      return 'Available'
+    case 'pending':
+      return 'Pending'
+    case 'adopted':
+      return 'Adopted'
+    default:
+      return 'Available' // Default to available
+  }
+}
+
+const openCreateDialog = () => {
+  emit('create')
+}
+
+const openEditDialog = (pet: Paw) => {
+  emit('edit', pet)
+}
+
+const openDeleteDialog = (pet: Paw) => {
+  petToDelete.value = pet
+  deleteDialog.value = true
+}
+
+const confirmDelete = async () => {
+  if (!petToDelete.value) {
+    return
+  }
+  
+  deleteLoading.value = true
+  try {
+    await emit('delete', petToDelete.value.id)
+    deleteDialog.value = false
+    petToDelete.value = null
+  } finally {
+    deleteLoading.value = false
+  }
+}
+
+const openRenewDialog = (pet: Paw) => {
+  petToRenew.value = pet
+  renewDialog.value = true
+}
+
+const confirmRenew = async () => {
+  if (!petToRenew.value) {
+    return
+  }
+  
+  renewLoading.value = true
+  try {
+    await emit('renew', petToRenew.value.id)
+    renewDialog.value = false
+    petToRenew.value = null
+  } finally {
+    renewLoading.value = false
+  }
+}
+</script>
+
+<style scoped>
+.v-data-table {
+  border-radius: 4px;
+}
+</style>
