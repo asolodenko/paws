@@ -1,47 +1,54 @@
 <template>
-  <v-app-bar flat color="primary">
-    <v-app-bar-title>
-      <AppLink to="/" class="text-h5">The paws</AppLink>
-    </v-app-bar-title>
-    <template v-slot:append>
-      <AppLink to="/about" class="mr-4">About us</AppLink>
+  <VAppBar flat color="background">
+    <VAppBarTitle>
+      <AppLink to="/" class="text-h5">
+        The paws
+      </AppLink>
+    </VAppBarTitle>
+    <template #append>
+      <AppLink to="/about" class="mr-4">
+        About us
+      </AppLink>
 
-      <AppLink v-if="isAdmin" to="/admin" class="mr-4">Admin page</AppLink>
+      <AppLink v-if="isAdmin" to="/admin" class="mr-4">
+        Admin page
+      </AppLink>
 
       <div v-if="isLoading">
-        <v-icon icon="mdi-sync" color="white"></v-icon>
+        <VIcon icon="mdi-sync" color="white" />
       </div>
       <div v-else>
-        <AppLink to="/login" v-if="!isAuth">
-          <v-icon icon="mdi-login" color="white"></v-icon>
-        </AppLink>
-        <v-btn icon="mdi-account" v-if="isAuth" to="/account">
-          <v-avatar
-            size="36px"
+        <VBtn v-if="!isAuth" icon="mdi-login" @click="handleSignIn">
+          <VIcon icon="mdi-login" color="white" />
+        </VBtn>
+        <VBtn v-if="isAuth" icon="mdi-account" to="/account">
+          <VAvatar
             v-if="isAuth"
+            size="36px"
           >
-            <v-img
+            <VImg
               v-if="user?.photoURL"
               alt="Avatar"
               :src="user?.photoURL"
-            ></v-img>
-            <v-icon
+            />
+            <VIcon
               v-else
               icon="mdi-account"
               color="white"
-            ></v-icon>
-          </v-avatar>
-        </v-btn>
+            />
+          </VAvatar>
+        </VBtn>
       </div>
     </template>
-  </v-app-bar>
+  </VAppBar>
 </template>
 
 <script lang="ts" setup>
-  import { useUserStore } from '@/store/user';
+  import { useUserStore } from '@/store/user'
   import AppLink from '@/components/AppLink.vue'
-  import { storeToRefs } from 'pinia';
+  import { storeToRefs } from 'pinia'
+  import { handleSignIn } from '@/auth'
 
-  const userStore = useUserStore();
-  const { user, isAdmin, isAuth, isLoading } = storeToRefs(userStore);
+  const userStore = useUserStore()
+  const { user, isAdmin, isAuth, isLoading } = storeToRefs(userStore)
 </script>

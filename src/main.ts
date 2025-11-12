@@ -20,4 +20,4 @@ registerPlugins(app)
 
 app.mount('#app')
 
-monitorAuthStore();
+monitorAuthStore()

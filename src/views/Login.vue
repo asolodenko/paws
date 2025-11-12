@@ -1,19 +1,21 @@
 <template>
-  <h1 class="text-h1">Sign up</h1>
+  <h1 class="text-h1">
+    Sign up
+  </h1>
 
-  <div class="py-14" />
-  <v-btn
+  <div class="py-14"></div>
+  <VBtn
     color="primary"
     @click="login"
   >
     Sign in with Google btn
-  </v-btn>
+  </VBtn>
 </template>
 
 <script lang="ts" setup>
-import { handleSignIn } from '@/auth';
+import { handleSignIn } from '@/auth'
 
   const login = () => {
-    handleSignIn();
+    handleSignIn()
   }
 </script>

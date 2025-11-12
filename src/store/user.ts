@@ -1,13 +1,13 @@
 // Utilities
-import { computed, ref } from 'vue';
+import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
-import { User } from '@/model/User.model';
+import { User } from '@/model/User.model'
 
 export const useUserStore = defineStore('user', () => {
-  const initialUser = null as User | null;
+  const initialUser = null as User | null
   const user = ref(initialUser)
-  const isAdmin = ref(false);
-  const isLoading = ref(true);
+  const isAdmin = ref(false)
+  const isLoading = ref(true)
 
   const isAuth = computed(() => !!user.value && !isLoading.value)
 
@@ -16,7 +16,7 @@ export const useUserStore = defineStore('user', () => {
   }
 
   function resetCurrentUser() {
-    user.value = initialUser;
+    user.value = initialUser
   }
 
   function setIsAdmin(value: boolean) {
@@ -24,7 +24,7 @@ export const useUserStore = defineStore('user', () => {
   }
 
   function setLoading(value: boolean) {
-    isLoading.value = value;
+    isLoading.value = value
   }
 
   return { user, isAdmin, isAuth, isLoading, setCurrentUser, resetCurrentUser, setIsAdmin, setLoading }

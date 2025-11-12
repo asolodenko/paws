@@ -1,5 +1,6 @@
-type Status = 'pending' | 'approved' | 'rejected' | 'fulfilled' | 'unfulfilled';
-type RequestType = 'visit' | 'adopt';
+import { APPROVED, PENDING, REJECTED, FULFILLED, UNFULFILLED, VISIT, ADOPT } from '../constants'
+type Status = typeof APPROVED | typeof REJECTED | typeof PENDING | typeof FULFILLED | typeof UNFULFILLED;
+type RequestType = typeof VISIT | typeof ADOPT;
 
 export interface Request {
   id: string,

@@ -1,5 +1,7 @@
 <template>
-  <h1 class="text-h1 color-primary">The paws</h1>
+  <h1 class="text-h1 color-primary">
+    The paws
+  </h1>
 
   <div class="d-flex w-50 my-8">
     <h3 class="font-weight-medium">
@@ -7,30 +9,30 @@
     </h3>
   </div>
 
-  <v-row class="d-flex align-center">
-    <v-col cols="auto">
-      <v-btn
+  <VRow class="d-flex align-center">
+    <VCol cols="auto">
+      <VBtn
         to="/paws"
         color="primary"
       >
         Find my paws
-      </v-btn>
-    </v-col>
+      </VBtn>
+    </VCol>
 
-    <v-col cols="auto">
-      <v-btn
+    <VCol cols="auto">
+      <VBtn
+        v-if="!userStore.isAuth"
         variant="outlined"
         to="/login"
-        v-if="!userStore.isAuth"
       >
         Login
-      </v-btn>
-    </v-col>
-  </v-row>
+      </VBtn>
+    </VCol>
+  </VRow>
 </template>
 
 <script lang="ts" setup>
-  import { useUserStore } from '@/store/user';
+  import { useUserStore } from '@/store/user'
 
-  const userStore = useUserStore();
+  const userStore = useUserStore()
 </script>

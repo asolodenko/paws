@@ -15,29 +15,78 @@ const compat = new FlatCompat({
     allConfig: js.configs.all
 });
 
-export default [...compat.extends(
-    "plugin:vue/vue3-essential",
-    "eslint:recommended",
-), {
-    languageOptions: {
-        parser: vueParser,
-        parserOptions: {
-            parser: tsParser,
-            sourceType: "module",
-            ecmaVersion: "latest",
+export default [
+    {
+        ignores: [
+            "**/dist/**", 
+            "**/node_modules/**", 
+            "**/build/**", 
+            "**/public/**",
+            "**/*.config.js",
+            "**/*.config.mjs"
+        ],
+    },
+    ...compat.extends(
+        "plugin:vue/vue3-recommended",
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
+    ),
+    {
+        languageOptions: {
+            parser: vueParser,
+            parserOptions: {
+                parser: tsParser,
+                sourceType: "module",
+                ecmaVersion: "latest",
+                extraFileExtensions: [".vue"],
+            },
+            globals: {
+                ...globals.browser,
+                ...globals.node,
+                ...globals.es2021,
+            },
         },
-        globals: {
-            ...globals.node,
+        plugins: {
+            "@typescript-eslint": ts,
+        },
+        rules: {
+            // Vue-specific rules
+            "vue/multi-word-component-names": "off",
+            "vue/component-name-in-template-casing": ["error", "PascalCase", {
+                registeredComponentsOnly: false,
+            }],
+            "vue/html-indent": ["error", 2],
+            "vue/max-attributes-per-line": ["error", {
+                singleline: { max: 3 },
+                multiline: { max: 1 }
+            }],
+            "vue/html-self-closing": ["error", {
+                html: { void: "always", normal: "never", component: "always" },
+                svg: "always",
+                math: "always"
+            }],
+            "vue/no-v-html": "warn",
+            
+            // TypeScript rules
+            "@typescript-eslint/no-explicit-any": "warn",
+            "@typescript-eslint/no-unused-vars": ["error", { 
+                argsIgnorePattern: "^_",
+                varsIgnorePattern: "^_" 
+            }],
+            "@typescript-eslint/explicit-function-return-type": "off",
+            "@typescript-eslint/explicit-module-boundary-types": "off",
+            
+            // General JavaScript/TypeScript rules
+            "no-console": ["warn", { allow: ["warn", "error"] }],
+            "no-debugger": "warn",
+            "no-unused-vars": "off", // Use @typescript-eslint/no-unused-vars instead
+            "prefer-const": "error",
+            "no-var": "error",
+            "eqeqeq": ["error", "always"],
+            "curly": ["error", "all"],
+            "semi": ["error", "never"],
+            "quotes": ["error", "single", { avoidEscape: true }],
+            "comma-dangle": ["error", "always-multiline"],
         },
     },
-    plugins: {
-        "@typescript-eslint": ts,
-    },
-    rules: {
-        "vue/multi-word-component-names": "off",
-    },
-    ignores: [
-        path.join(__dirname, "dist"),
-        path.join(__dirname, "node_modules")
-    ],
-}];
+];

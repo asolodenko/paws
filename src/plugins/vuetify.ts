@@ -20,14 +20,17 @@ export default createVuetify({
     themes: {
       light: {
         colors: {
-          primary: '#425643',
+          primary: '#365738ff',
           secondary: '#FFFFFF',
-          primaryLight: '9EB49F'
+          primaryLight: '#558f58ff',
+          background: '#231c1cff', //'#909690',
+          surface: '#434a44ff',
+          border: '#707570',
         },
       },
     },
   },
   components: {
-    VTimePicker
-  }
+    VTimePicker,
+  },
 })

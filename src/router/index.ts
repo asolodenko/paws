@@ -19,11 +19,6 @@ const routes = [
         name: 'About',
         component: () => import('@/views/About.vue'),
       },
-      {
-        path: '/login',
-        name: 'Login',
-        component: () => import('@/views/Login.vue'),
-      },
     ],
   },
   {
@@ -33,12 +28,12 @@ const routes = [
       {
         path: '',
         name: 'Paws',
-        component: () => import('@/views/Paws.vue')
+        component: () => import('@/views/Paws.vue'),
       },
       {
         path: '/paws/:id',
         name: 'Paw',
-        component: () => import('@/views/Paw.vue')
+        component: () => import('@/views/Paw.vue'),
       },
     ],
     // isAdmin?: boolean
@@ -52,8 +47,8 @@ const routes = [
         path: '',
         name: 'Account',
         component: () => import('@/views/Account.vue'),
-      }
-    ]
+      },
+    ],
   },
   {
     path: '/admin',
@@ -63,13 +58,13 @@ const routes = [
         path: '',
         name: 'Admin',
         component: () => import('@/views/Admin.vue'),
-      }
+      },
     ],
-  }
+  },
 ]
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes,
 })
 
